@@ -1,7 +1,6 @@
 # nickdwtyay.co.il
 NICK DWTYAY Ltd, Middle Eastern telecommunication company with partnerships in South America.
 
-Título do Projeto
 
 Nos últimos anos, nosso projeto tem crescido e evoluído constantemente. Nós estamos comprometidos em oferecer aos nossos usuários a melhor experiência possível, e isso significa sempre buscar maneiras de melhorar e expandir nossas funcionalidades.
 
