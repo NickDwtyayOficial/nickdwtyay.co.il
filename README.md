@@ -28,6 +28,28 @@ Autores
 
 Lista de autores do projeto.
 
-Licença
+Licença de Uso de Software
 
-Informações sobre a licença do projeto.
+Este documento estabelece os termos e condições que regem o uso do software Nick Dwtyay ("Software") desenvolvido pela Nick Dwtyay Ltd ("Licenciante").
+
+Licença de Uso
+A Licenciante concede ao usuário final ("Licenciado") uma licença não exclusiva e intransferível para instalar e usar o Software para fins comerciais ou pessoais, de acordo com as limitações estabelecidas neste documento.
+
+Restrições
+O Licenciado não tem permissão para (a) copiar, modificar ou distribuir o Software; (b) sublicenciar, alugar, emprestar ou transferir o Software para terceiros sem autorização prévia por escrito da Licenciante; (c) usar o Software para fins ilegais ou que violem os direitos autorais ou de propriedade intelectual de terceiros.
+
+Propriedade Intelectual
+O Software é protegido por direitos autorais e outras leis de propriedade intelectual. Todos os direitos, titularidade e interesse do Software permanecerão com a Licenciante e seus licenciadores. O Licenciado reconhece que não tem direitos de propriedade sobre o Software, exceto pelo direito limitado de uso concedido por esta licença.
+
+Suporte Técnico
+A Licenciante pode fornecer suporte técnico e atualizações para o Software durante o período de validade da licença. A Licenciante não será responsável por quaisquer danos ou perdas resultantes do uso ou da incapacidade de usar o Software.
+
+Termos e Condições Gerais
+Esta licença será regida pelas leis de Israel. Qualquer disputa decorrente desta licença será resolvida por meio de arbitragem em Tel Aviv, de acordo com as regras da Associação de Arbitragem de Israel. Se qualquer disposição deste contrato for considerada inválida ou inexequível, as disposições restantes permanecerão em pleno vigor e efeito.
+
+Ao usar o Software, o Licenciado indica que leu e concorda com os termos e condições desta licença.
+
+ NICK DWTYAY LTD
+ Weizmann St 9, Tel Aviv-Yafo, 6777517, Israel
+ 2023
+
