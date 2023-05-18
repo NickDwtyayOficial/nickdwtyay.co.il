@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Tabela com imagem e texto centralizados</title>
+    <style>
+      /* Define as regras para a tabela */
+      table {
+        margin: auto; /* Centraliza a tabela na página */
+        width: 50%; /* Define a largura da tabela */
+        border-collapse: collapse; /* Remove espaços entre as células */
+      }
+
+      /* Define as regras para as células */
+      td {
+        text-align: center; /* Centraliza o texto na célula */
+        padding: 10px; /* Define a distância entre o conteúdo e a borda da célula */
+      }
+
+      /* Define as regras para as imagens */
+      img {
+        display: block; /* Faz com que a imagem seja um bloco, para poder centralizar */
+        margin: auto; /* Centraliza a imagem na célula */
+        max-width: 100%; /* Faz com que a imagem não ultrapasse a largura da célula */
+        height: auto; /* Mantém a proporção da imagem */
+      }
+    </style>
+  </head>
+  <body>
+    <table>
+      <tr>
+        <td>
+          <img src="imagem1.jpg" alt="Imagem 1">
+          <p>Texto descritivo da imagem 1</p>
+        </td>
+        <td>
+          <img src="imagem2.jpg" alt="Imagem 2">
+          <p>Texto descritivo da imagem 2</p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <img src="imagem3.jpg" alt="Imagem 3">
+          <p>Texto descritivo da imagem 3</p>
+        </td>
+        <td>
+          <img src="imagem4.jpg" alt="Imagem 4">
+          <p>Texto descritivo da imagem 4</p>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
