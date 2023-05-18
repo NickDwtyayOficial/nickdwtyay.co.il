@@ -4,116 +4,28 @@
 <head>
 	<title>Downloads</title>
 	
-	<style>/* Global styles */
-body {
-	font-family: Arial, sans-serif;
-	margin: 0;
-	padding: 0;
-}
-
-a {
-	color: #1c8adb;
-	text-decoration: none;
-}
-
-ul {
-	list-style: none;
-	margin: 0;
-	padding: 0;
-}
-
-/* Header styles */
-header {
-	background-color: #1c8adb;
-	color: white;
-	display: flex;
-	justify-content: space-between;
-	padding: 1em;
-}
-
-header h1 {
-	margin: 0;
-}
-
-nav ul {
-	display: flex;
-}
-
-nav li {
-	margin-left: 1em;
-}
-
-nav li:first-child {
-	margin-left: 0;
-}
-
-/* Main styles */
-main {
-	padding: 2em;
-}
-
-section {
-	margin-bottom: 2em;
-}
-
-section h2 {
-	margin-bottom: 1em;
-}
-
-section ul {
-	display: flex;
-	flex-wrap: wrap;
-}
-
-section li {
-	flex-basis: 33.33%;
-	margin-bottom: 1em;
-	padding: 1em;
-	background-color: #f7f7f7;
-	border-radius: 5px;
-	box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-
-section h3 {
-	margin: 0;
-}
-
-section a {
-	display: block;
-	margin-top: 1em;
-	background-color: #1c8adb;
-	color: white;
-	padding: 0.5em 1em;
-	border-radius: 5px;
-	transition: background-color 0.2s;
-}
-
-section a:hover {
-	background-color: #0f6ebd;
+	<style>.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .download-item {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
+  margin: 10px;
+  width: 250px;
+  text-align: center;
 }
 
 .download-item img {
-	max-width: 100%;
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
 }
 
 .download-item p {
-	margin: 1em 0 0 0;
-	font-weight: bold;
-	text-align: center;
+  margin-top: 10px;
 }
 
-/* Footer styles */
-footer {
-	background-color: #ccc;
-	padding: 1em;
-	text-align: center;
-}
 </style>
 	
 </head>
@@ -130,24 +42,35 @@ footer {
 	</header>
 	<main>
 		<section>
-			<h2>Downloads</h2>
-			<ul>
-				<div class="container">
-				  <div class="download-item">
-				    <img src="imagem1.jpg" alt="Imagem 1">
-				    <p>Download 1</p>
-				  </div>
-				  <div class="download-item">
-				    <img src="imagem2.jpg" alt="Imagem 2">
-				    <p>Download 2</p>
-				  </div>
-				  <div class="download-item">
-				    <img src="imagem3.jpg" alt="Imagem 3">
-				    <p>Download 3</p>
-				  </div>
-				</div>
-			</ul>
-		</section>
+  <h2>Downloads</h2>
+  <div class="container">
+    <div class="download-item">
+      <img src="imagem1.jpg" alt="Imagem 1">
+      <p>Download 1</p>
+    </div>
+    <div class="download-item">
+      <img src="imagem2.jpg" alt="Imagem 2">
+      <p>Download 2</p>
+    </div>
+    <div class="download-item">
+      <img src="imagem3.jpg" alt="Imagem 3">
+      <p>Download 3</p>
+    </div>
+    <div class="download-item">
+      <img src="imagem4.jpg" alt="Imagem 4">
+      <p>Download 4</p>
+    </div>
+    <div class="download-item">
+      <img src="imagem5.jpg" alt="Imagem 5">
+      <p>Download 5</p>
+    </div>
+    <div class="download-item">
+      <img src="imagem6.jpg" alt="Imagem 6">
+      <p>Download 6</p>
+    </div>
+  </div>
+</section>
+
 	</main>
 	<footer>
 		<p>Meu Site &copy; 2023</p>
