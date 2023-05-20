@@ -51,11 +51,15 @@
       background-color: #fff;
       margin-bottom: 20px;
       padding: 10px;
+      display: flex;
+      flex-direction: row-reverse; /* Alinha os artigos da direita para a esquerda */
     }
 
     article {
       background-color: #fff;
       padding: 10px;
+      width: 45%; /* Ajuste a largura conforme necessário */
+      margin-right: 20px; /* Define a margem entre os artigos */
     }
 
     footer {
@@ -92,7 +96,7 @@
   </style>
 </head>
 <body>
-  <header style="background-image: url(https://www.nickdwtyay.com.br/498879574974859389587584587548579584594395879574954859478987978re9t874387ft37t47ft47q908194804059q3.webp);">
+  <header style="background-image: url(caminho_da_imagem.jpg);">
     <!-- Conteúdo do cabeçalho aqui -->
   </header>
   <nav>
@@ -103,8 +107,9 @@
     </ul>
   </nav>
   <main>
-    <aside>
-      <h1>As the sun sets over the horizon</h1><p>Painting the sky in hues of orange and pink, I can't help but feel a sense of awe and wonder. The world is filled with countless marvels and mysteries waiting to be discovered. From the vast depths of the ocean to the majestic peaks of mountains, there is so much to explore and learn.</p>
+    <section>
+      <article class="post">
+       <h1>As the sun sets over the horizon</h1><p>Painting the sky in hues of orange and pink, I can't help but feel a sense of awe and wonder. The world is filled with countless marvels and mysteries waiting to be discovered. From the vast depths of the ocean to the majestic peaks of mountains, there is so much to explore and learn.</p>
 
   <p>In this ever-changing landscape, we find ourselves on a journey of self-discovery. Each day brings new opportunities and challenges that shape us into who we are meant to be. It is through these experiences that we learn the true essence of life - the importance of love, compassion, and gratitude.</p>
 
@@ -117,11 +122,6 @@
   <p>Remember, every step forward is a step closer to a brighter future. Keep exploring, keep learning, and keep spreading kindness. The possibilities are endless, and the world is waiting for you to leave your mark.</p>
 
   <p>Go forth and make a difference, for the world needs your light.</p>
-    </aside>
-    <section>
-      <article class="post">
-        <h2>Título do Artigo 1</h2>
-        <p>Conteúdo do artigo 1...</p>
       </article>
       <article class="post">
         <h2>Título do Artigo 2</h2>
@@ -132,6 +132,9 @@
   <footer>
     <p>Rodapé do website &copy; 2023</p>
   </footer>
+</body>
+</html>
+
 
   <script>
     // Exemplo de JavaScript para adicionar posts dinamicamente
