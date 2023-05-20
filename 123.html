@@ -6,68 +6,79 @@
     /* Estilos CSS para o layout básico */
     body {
       display: flex;
-    }
-
-    aside {
-      width: 200px;
-      background-color: #e0e0e0;
-      padding: 20px;
-    }
-    
-    header {
-      background-color: #f2f2f2;
-      padding: 20px;
-      text-align: center;
-    }
-
-    nav {
-      background-color: #333;
-      color: #fff;
-      padding: 10px;
-    }
-
-    nav ul {
-      list-style-type: none;
+      flex-direction: column;
+      min-height: 100vh;
       margin: 0;
       padding: 0;
     }
 
-    nav ul li {
-      display: inline;
-      margin-right: 10px;
-    }
+css
 
-    main {
-      flex: 1;
-      background-color: #f2f2f2;
-      padding: 20px;
-    }
+header {
+  background-color: #f2f2f2;
+  padding: 20px;
+  text-align: center;
+}
 
-    section {
-      background-color: #fff;
-      margin-bottom: 20px;
-      padding: 10px;
-    }
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+}
 
-    article {
-      background-color: #fff;
-      padding: 10px;
-    }
+nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
 
-    header {
-      background-image: url(caminho_da_imagem.jpg);
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      height: 300px; /* ajuste a altura conforme necessário */
-    }
+nav ul li {
+  display: inline;
+  margin-right: 10px;
+}
+
+main {
+  flex: 1;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+
+section {
+  background-color: #fff;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+article {
+  background-color: #fff;
+  padding: 10px;
+}
+
+footer {
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}
+
+header {
+  background-image: url(caminho_da_imagem.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 300px; /* ajuste a altura conforme necessário */
+}
+
   </style>
 </head>
 <body>
   <header style="background-image: url(caminho_da_imagem.jpg);">
     <!-- Conteúdo do cabeçalho aqui -->
   </header>
-
   <nav>
     <ul>
       <li><a href="#">Home</a></li>
@@ -75,9 +86,9 @@
       <li><a href="#">Contato</a></li>
     </ul>
   </nav>
-  <asider>
-   <h1>As the sun sets over the horizon</h1>
-  <p>Painting the sky in hues of orange and pink, I can't help but feel a sense of awe and wonder. The world is filled with countless marvels and mysteries waiting to be discovered. From the vast depths of the ocean to the majestic peaks of mountains, there is so much to explore and learn.</p>
+  <main>
+    <aside>
+      <h1>As the sun sets over the horizon</h1><p>Painting the sky in hues of orange and pink, I can't help but feel a sense of awe and wonder. The world is filled with countless marvels and mysteries waiting to be discovered. From the vast depths of the ocean to the majestic peaks of mountains, there is so much to explore and learn.</p>
 
   <p>In this ever-changing landscape, we find ourselves on a journey of self-discovery. Each day brings new opportunities and challenges that shape us into who we are meant to be. It is through these experiences that we learn the true essence of life - the importance of love, compassion, and gratitude.</p>
 
@@ -90,20 +101,21 @@
   <p>Remember, every step forward is a step closer to a brighter future. Keep exploring, keep learning, and keep spreading kindness. The possibilities are endless, and the world is waiting for you to leave your mark.</p>
 
   <p>Go forth and make a difference, for the world needs your light.</p>
-
-  </asider>
-  <section>
-    <article>
-      <h2>Título do Artigo 1</h2>
-      <p>Conteúdo do artigo 1...</p>
-    </article>
-    <article>
-      <h2>Título do Artigo 2</h2>
-      <p>Conteúdo do artigo 2...</p>
-    </article>
-  </section>
+    </aside>
+    <section>
+      <article>
+        <h2>Título do Artigo 1</h2>
+        <p>Conteúdo do artigo 1...</p>
+      </article>
+      <article>
+        <h2>Título do Artigo 2</h2>
+        <p>Conteúdo do artigo 2...</p>
+      </article>
+    </section>
+  </main>
   <footer>
     <p>Rodapé do website &copy; 2023</p>
   </footer>
 </body>
 </html>
+  
