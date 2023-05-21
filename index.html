@@ -248,7 +248,21 @@ aside {
 
   <div>
     <section>
-      <!-- Section 1 content here -->
+     <iframe src="pagina_incorporada.html" width="100%" height="500"></iframe>
+    
+    <p>Conteúdo adicional na página principal.</p>
+    
+    <script>
+        // Exemplo de redimensionamento responsivo do iframe
+        function redimensionarIframe() {
+            var iframe = document.querySelector('iframe');
+            var altura = window.innerHeight - iframe.offsetTop;
+            iframe.style.height = altura + 'px';
+        }
+        
+        window.addEventListener('resize', redimensionarIframe);
+        redimensionarIframe();
+    </script>
     </section>
 
     <section>
