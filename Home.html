@@ -11,38 +11,28 @@
     setTimeout(redirect, 30000); // Tempo em milissegundos, 30 segundos = 30000 milissegundos
   </script>
   <style>
-     /* Estilos para o menu de navegação */
+   /* Estilos para o menu de navegação */
     .nav {
-      background-color: #f0f0f0;
-      display: flex; /* Exibe os itens em linha */
-      justify-content: center; /* Centraliza os itens horizontalmente */
-      padding: 10px; /* Adiciona espaçamento interno */
+        background-color: #f0f0f0;
+        display: flex; /* Exibe os itens em linha */
+        justify-content: center; /* Centraliza os itens horizontalmente */
+        padding: 10px; /* Adiciona espaçamento interno */
     }
 
     .nav li {
-      list-style-type: none; /* Remove as marcações de lista */
-      margin-right: 10px; /* Adiciona espaçamento horizontal entre os itens */
+        list-style-type: none; /* Remove as marcações de lista */
+        margin-right: 10px; /* Adiciona espaçamento horizontal entre os itens */
     }
 
     .nav a {
-      text-decoration: none; /* Remove o sublinhado dos links */
-      color: #333; /* Define a cor do texto */
-      padding: 5px; /* Adiciona espaçamento interno nos links */
+        text-decoration: none; /* Remove o sublinhado dos links */
+        color: #333; /* Define a cor do texto */
+        padding: 5px; /* Adiciona espaçamento interno nos links */
+        border: 1px solid blue; /* Adiciona borda azul */
+        transition: background-color 0.3s ease; /* Transição suave de cor de fundo */
     }
 
     .nav a:hover {
-      color: #666; /* Altera a cor do texto quando o mouse está sobre o link */
-    }
-    
-        .nav-link {
-        border: 1px solid blue; /* Adiciona borda azul */
-        transition: background-color 0.3s ease; /* Transição suave de cor de fundo */
-        padding: 5px 10px; /* Espaçamento interno para os links */
-        display: inline-block; /* Mantém os links na mesma linha */
-        text-decoration: none; /* Remove sublinhado dos links */
-    }
-
-    .nav-link:hover {
         background-color: blue; /* Muda a cor de fundo ao passar o mouse */
         color: white; /* Altera a cor do texto para branco */
     }
