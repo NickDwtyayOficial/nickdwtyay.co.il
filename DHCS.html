@@ -27,6 +27,59 @@
     statisticsElement.style.display = 'block';
   });
 </script>
+<script>
+  // Função para obter a geolocalização do usuário
+function obterGeolocalizacao() {
+  if ("geolocation" in navigator) {
+    navigator.geolocation.getCurrentPosition(
+      function (position) {
+        var latitude = position.coords.latitude;
+        var longitude = position.coords.longitude;
+        console.log("Latitude: " + latitude + ", Longitude: " + longitude);
+        // Aqui você pode enviar as informações de geolocalização para o servidor
+      },
+      function (error) {
+        console.error("Erro ao obter geolocalização: " + error.message);
+      }
+    );
+  } else {
+    console.log("Geolocalização não suportada");
+  }
+}
 
+// Função para obter informações do navegador
+function obterInformacoesNavegador() {
+  var informacoesNavegador = {
+    agenteUsuario: navigator.userAgent,
+    idioma: navigator.language,
+    plataforma: navigator.platform,
+    cookiesHabilitados: navigator.cookieEnabled
+  };
+
+  console.log("Informações do navegador: ", informacoesNavegador);
+  // Aqui você pode enviar as informações do navegador para o servidor
+}
+
+// Função para obter o endereço IP do usuário
+function obterEnderecoIP() {
+  fetch("https://api.ipify.org?format=json")
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      var enderecoIP = data.ip;
+      console.log("Endereço IP: " + enderecoIP);
+      // Aqui você pode enviar o endereço IP para o servidor
+    })
+    .catch(function (error) {
+      console.error("Erro ao obter endereço IP: " + error);
+    });
+}
+
+// Chamar as funções para obter as informações
+obterGeolocalizacao();
+obterInformacoesNavegador();
+obterEnderecoIP();
+</script>
 </body>
 </html>
