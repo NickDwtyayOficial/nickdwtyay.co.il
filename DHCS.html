@@ -11,8 +11,22 @@
     <p>Total de usuários: <span id="total-users"></span></p>
     <p>Usuários ativos: <span id="active-users"></span></p>
   </div>
+<script>
+  // Espera que a página seja carregada completamente
+  document.addEventListener('DOMContentLoaded', function() {
+    // Obtém a referência para o elemento de estatísticas
+    var statisticsElement = document.getElementById('statistics');
 
-  <!-- Incluir o arquivo JavaScript externo -->
-  <script src="https://nickdwtyay.com.br/statistics.js"></script>
+    // Atualiza as estatísticas (pode ser feito por AJAX ou WebSocket, conforme mencionado anteriormente)
+    var totalUsers = 1000;
+    var activeUsers = 500;
+    document.getElementById('total-users').textContent = totalUsers;
+    document.getElementById('active-users').textContent = activeUsers;
+
+    // Exibe o elemento de estatísticas
+    statisticsElement.style.display = 'block';
+  });
+</script>
+
 </body>
 </html>
