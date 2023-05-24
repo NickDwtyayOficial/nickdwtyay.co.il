@@ -204,7 +204,9 @@
 
         <priority>0.5</priority>
 
-    </url>><url>
+    </url>>
+    
+    <url>
 
         <loc>https://www.nickdwtyay.com.br/Nickdwtyay-email.html</loc>
 
@@ -214,7 +216,9 @@
 
         <priority>0.5</priority>
 
-    </url>><url>
+    </url>>
+    
+    <url>
 
         <loc>https://www.nickdwtyay.com.br/Privacy_Policy.html</loc>
 
@@ -224,7 +228,9 @@
 
         <priority>0.5</priority>
 
-    </url>><url>
+    </url>>
+    
+    <url>
 
         <loc>https://www.nickdwtyay.com.br/Update README.md</loc>
 
@@ -234,7 +240,9 @@
 
         <priority>0.5</priority>
 
-    </url>><url>
+    </url>>
+    
+    <url>
 
         <loc>https://www.nickdwtyay.com.br/SECURITY.md</loc>
 
@@ -244,7 +252,9 @@
 
         <priority>0.5</priority>
 
-    </url>><url>
+    </url>>
+    
+    <url>
 
         <loc>https://www.nickdwtyay.com.br/Sabor_Da_Roca.html</loc>
 
@@ -254,7 +264,10 @@
 
         <priority>0.5</priority>
 
-    </url>><url>
+    </url>>
+    
+    
+    <url>
 
         <loc>https://www.nickdwtyay.com.br/To_find_all_CGNAT_on_the_network.py</loc>
 
@@ -264,7 +277,9 @@
 
         <priority>0.5</priority>
 
-    </url>><url>
+    </url>>
+    
+    <url>
 
         <loc>https://www.nickdwtyay.com.br/Tropico_4_Download.html</loc>
 
@@ -274,7 +289,9 @@
 
         <priority>0.5</priority>
 
-    </url>><url>
+    </url>>
+    
+    <url>
 
         <loc>https://www.nickdwtyay.com.br/check-UP-IP_Nick-Dwtyay_LTD.py</loc>
 
@@ -284,7 +301,9 @@
 
         <priority>0.5</priority>
 
-    </url>><url>
+    </url>>
+    
+    <url>
 
         <loc>https://www.nickdwtyay.com.br/r23op.html</loc>
 
@@ -294,7 +313,9 @@
 
         <priority>0.5</priority>
 
-    </url>><url>
+    </url>>
+    
+    <url>
 
         <loc>https://www.nickdwtyay.com.br/</loc>
 
@@ -304,7 +325,9 @@
 
         <priority>0.5</priority>
 
-    </url>><url>
+    </url>>
+    
+    <url>
 
         <loc>https://www.nickdwtyay.com.br/whois_domain.py</loc>
 
@@ -316,7 +339,17 @@
 
     </url>><url>
 
-        
+      <url>
+
+        <loc>https://www.nickdwtyay.com.br/Sign_in.html</loc>
+
+        <lastmod>2022-05-14</lastmod>
+
+        <changefreq>weekly</changefreq>
+
+        <priority>0.5</priority>
+
+    </url>>
         
 </urlset>
 
