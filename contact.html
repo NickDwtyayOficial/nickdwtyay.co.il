@@ -309,21 +309,26 @@ aside {
         <h1>Contact Us</h1>
     </header>
     <div class="container">
-        <form id="contact-form">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>
+  <form action="https://formspree.io/nickdwtyay_ltd.co.il@protonmail.com" method="POST">
+  <label for="first-name">Nome:</label>
+  <input type="text" name="first-name" id="first-name" required>
 
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
+  <label for="last-name">Sobrenome:</label>
+  <input type="text" name="last-name" id="last-name" required>
 
-            <label for="phone">Phone:</label>
-            <input type="text" id="phone" name="phone" required>
+  <label for="email">E-mail:</label>
+  <input type="email" name="email" id="email" required>
 
-            <label for="message">Message:</label>
-            <textarea id="message" name="message" rows="5" required></textarea>
+  <label for="message">Mensagem:</label>
+  <textarea name="message" id="message" required></textarea>
 
-            <button type="submit">Send Message</button>
-        </form>
+  <div class="g-recaptcha" data-sitekey="6LdVdkAmAAAAAEPaxH7ruztXB75DxSKFhtD-T8Su"></div>
+
+  <button type="submit">Enviar</button>
+</form>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+
     </div>  
 	<div style="display: none;">
   <a href="/"><img src="//sstatic1.histats.com/0.gif?4579522&amp;101" alt="free webpage hit counter" roeboeg6i=""></a>
@@ -333,30 +338,6 @@ aside {
 <div>&nbsp;</div>
 
 
-    <script>
-        // JavaScript
-        const form = document.querySelector('#contact-form');
-
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-
-            const name = document.querySelector('#name').value;
-            const email = document.querySelector('#email').value;
-            const phone = document.querySelector('#phone').value;
-            const message = document.querySelector('#message').value;
-
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', 'send-message.php', true);
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    alert('Message sent!');
-                } else {
-                    alert('Message failed to send. Please try again.');
-                }
-            };
-            xhr.send('name=' + encodeURIComponent(name) + '&email=' + encodeURIComponent(email) + '&phone=' + encodeURIComponent(phone) + '&message=' + encodeURIComponent(message));
-        });
-    </script>
+    
 </body>
 </html>
