@@ -322,9 +322,11 @@ aside {
   <label for="message">Mensagem:</label>
   <textarea name="message" id="message" required></textarea>
 
-  <div class="g-recaptcha" data-sitekey="6LdVdkAmAAAAAJYNzy-bBRcgxstMpJMzuqmEici1"></div>
+  
+<div class="g-recaptcha" data-sitekey="6LdVdkAmAAAAAJYNzy-bBRcgxstMpJMzuqmEici1"></div>
 
-  <button type="submit">Enviar</button>
+  <but  
+	tton type="submit">Enviar</button>
 </form>
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
@@ -338,6 +340,14 @@ aside {
 <div>&nbsp;</div>
 
 
-    
+    <script>
+
+   function onSubmit(token) {
+
+     document.getElementById("demo-form").submit();
+
+
+
+ </script> 
 </body>
 </html>
