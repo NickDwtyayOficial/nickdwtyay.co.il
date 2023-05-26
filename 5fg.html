@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Tabela de Frangos</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<h1>Tabela de Frangos</h1>
+	<form action="salvar.php" method="post">
+		<table>
+			<tr>
+				<th>Data</th>
+				<th>Quantidade</th>
+				<th>Peso (kg)</th>
+				<th>Valor (R$)</th>
+			</tr>
+			<tr>
+				<td><input type="date" name="data" required></td>
+				<td><input type="number" name="quantidade" required></td>
+				<td><input type="number" step="0.01" name="peso" required></td>
+				<td><input type="number" step="0.01" name="valor" required></td>
+			</tr>
+		</table>
+		<button type="submit">Adicionar</button>
+	</form>
+</body>
+</html>
