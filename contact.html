@@ -303,26 +303,22 @@ aside {
         <h1>Contact Us</h1>
     </header>
     <div class="container">
-  <form action="https://formspree.io/nickdwtyay_ltd.co.il@protonmail.com" method="POST">
-    <label for="first-name">Nome:</label>
-    <input type="text" name="first-name" id="first-name" required>
-
-    <label for="last-name">Sobrenome:</label>
-    <input type="text" name="last-name" id="last-name" required>
-
-    <label for="email">E-mail:</label>
-    <input type="email" name="email" id="email" required>
-
-    <label for="message">Mensagem:</label>
-    <textarea name="message" id="message" required></textarea>
-
-    <div class="g-recaptcha" data-sitekey="6LdVdkAmAAAAAJYNzy-bBRcgxstMpJMzuqmEici1"></div>
-
-    <button type="submit">Enviar</button>
-  </form>
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-</div>
-
+  <!-- modify this form HTML and place wherever you want your form -->
+<form
+  action="https://formspree.io/f/xwkjjyke"
+  method="POST"
+  enctype="multipart/form-data"
+>
+  <label>
+    Your email:
+    <input type="email" name="email">
+  </label>
+  <label>
+    Your file:
+    <input type="file" name="upload">
+  </label>
+  <button type="submit">Send</button>
+</form>
 
     </div>  
 	<div style="display: none;">
