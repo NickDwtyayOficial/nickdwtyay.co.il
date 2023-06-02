@@ -349,7 +349,41 @@
 
         <priority>0.5</priority>
 
-    </url>>
-        
+    </url>
+    
+         <url>
+
+        <loc>https://www.nickdwtyay.com.br/18000909.html</loc>
+
+        <lastmod>2022-05-14</lastmod>
+
+        <changefreq>weekly</changefreq>
+
+        <priority>0.5</priority>
+
+    </url>     <url>
+
+        <loc>https://www.nickdwtyay.com.br/ht.html</loc>
+
+        <lastmod>2022-05-14</lastmod>
+
+        <changefreq>weekly</changefreq>
+
+        <priority>0.5</priority>
+
+    </url>
+    
+     <url>
+
+        <loc>https://www.nickdwtyay.com.br/dwtyay_favicon.gif </loc>
+
+        <lastmod>2022-05-14</lastmod>
+
+        <changefreq>weekly</changefreq>
+
+        <priority>0.5</priority>
+
+    </url>
+    
 </urlset>
 
