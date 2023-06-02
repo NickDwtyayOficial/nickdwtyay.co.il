@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><link rel="icon" href="dwtyay_favicon.gif" type="image/gif">
 	<meta charset="utf-8">
 	<title>Tabela de Frangos</title>
 	<link rel="stylesheet" href="style.css">
