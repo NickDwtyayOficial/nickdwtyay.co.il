@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Mapa com Marca Luminosa</title>
+  <style>
+    #map {
+      height: 400px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <h1>Mapa com Marca Luminosa</h1>
+  <div id="map"></div>
+
+  <script>
+    function initMap() {
+      // Coordenadas para Israel
+      var israel = { lat: 31.0461, lng: 34.8516 };
+
+      // Coordenadas para o Brasil
+      var brasil = { lat: -14.2350, lng: -51.9253 };
+
+      // Criação do mapa
+      var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 3,
+        center: israel // Centraliza o mapa em Israel
+      });
+
+      // Adiciona uma marca luminosa para Israel
+      var markerIsrael = new google.maps.Marker({
+        position: israel,
+        map: map,
+        title: 'Israel'
+      });
+
+      // Adiciona uma marca luminosa para o Brasil
+      var markerBrasil = new google.maps.Marker({
+        position: brasil,
+        map: map,
+        title: 'Brasil'
+      });
+    }
+  </script>
+
+  <!-- Inclui a API do Google Maps -->
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=SUA_CHAVE_DA_API&callback=initMap"></script>
+</body>
+</html>
