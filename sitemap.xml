@@ -383,7 +383,32 @@
 
         <priority>0.5</priority>
 
-    </url>
+    </url>   
+    
+   <url>
+
+        <loc>https://www.nickdwtyay.com.br/sponsors.html </loc>
+
+        <lastmod>2022-05-14</lastmod>
+
+        <changefreq>weekly</changefreq>
+
+        <priority>0.5</priority>
+
+    </url>    
+ 
+       <url>
+
+        <loc>https://www.nickdwtyay.com.br/Abety.htm </loc>
+
+        <lastmod>2022-05-14</lastmod>
+
+        <changefreq>weekly</changefreq>
+
+        <priority>0.5</priority>
+
+    </url>    
+ 
     
 </urlset>
 
