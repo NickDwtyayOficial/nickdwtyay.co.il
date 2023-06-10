@@ -6,7 +6,7 @@
   <style>
     /* Estilos CSS para o layout básico */
     /* ... Estilos CSS omitidos ... */
-      body {
+    body {
       display: flex;
       flex-direction: column;
       min-height: 100vh;
@@ -20,8 +20,6 @@
       text-align: center;
     }
 
-    
-   
     main {
       flex: 1;
       background-color: #f2f2f2;
@@ -42,7 +40,8 @@
       width: 45%; /* Ajuste a largura conforme necessário */
       margin-right: 20px; /* Define a margem entre os artigos */
     }
-  header {
+
+    header {
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -64,83 +63,60 @@
     .post p {
       margin-bottom: 10px;
     }
-nav {
-  /* ... outros estilos ... */
-  background-color: #333;
-  color: #fff;
-  padding: 10px;
-  border-bottom: 2px solid blue; /* Adiciona uma borda inferior azul */
-  display: flex; /* Adiciona display flex */
-  align-items: center; /* Centraliza verticalmente */
-}
 
-nav ul li a {
-  color: #fff; /* Define a cor do texto dos links da navegação */
-}
+    nav {
+      /* ... outros estilos ... */
+      background-color: #333;
+      color: #fff;
+      padding: 10px;
+      border-bottom: 2px solid blue; /* Adiciona uma borda inferior azul */
+      display: flex; /* Adiciona display flex */
+      justify-content: center; /* Centraliza o conteúdo horizontalmente */
+    }
 
-.footer {
-  /* ... outros estilos ... */
-  background-color: blue;
-  color: yellow;
-}
+    nav ul li {
+      display: inline;
+      margin-right: 10px;
+    }
 
-nav {
-  /* ... outros estilos ... */
-  background-color: #333;
-  color: #fff;
-  padding: 10px;
-  border-bottom: 2px solid blue; /* Adiciona uma borda inferior azul */
-  display: flex; /* Adiciona display flex */
-  justify-content: center; /* Centraliza o conteúdo horizontalmente */
-}
+    nav ul li a {
+      color: #fff; /* Define a cor do texto dos links da navegação */
+      text-decoration: none; /* Remove a decoração do link */
+    }
 
-nav ul li {
-  display: inline;
-  margin-right: 10px;
-}
+    .footer {
+      /* ... outros estilos ... */
+      background-color: blue;
+      color: yellow;
+      display: flex; /* Adiciona display flex */
+      justify-content: space-between; /* Distribui os elementos horizontalmente */
+      align-items: center; /* Centraliza verticalmente */
+      padding: 10px;
+    }
 
-nav ul li a {
-  color: #fff; /* Define a cor do texto dos links da navegação */
-}
+    .footer-nav {
+      display: flex;
+    }
 
-.footer {
-  /* ... outros estilos ... */
-  background-color: blue;
-  color: yellow;
-}
+    .footer-nav-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
 
-.footer-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+    .footer-nav-item {
+      margin-right: 10px;
+    }
 
-.footer-nav {
-  display: flex;
-}
+    .footer-nav-link {
+      color: yellow; /* Define a cor do texto dos links do rodapé */
+      text-decoration: none; /* Remove a decoração do link */
+    }
 
-.footer-nav-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.footer-nav-item {
-  margin-right: 10px;
-}
-
-.footer-nav-link {
-  color: yellow; /* Define a cor do texto dos links do rodapé */
-  text-decoration: none;
-}
-
-.footer-text {
-  text-align: center;
-}
-
-
+    .footer-text {
+      text-align: center;
+      margin: 0;
+    }
   </style>
 </head>
 <body>
@@ -233,4 +209,3 @@ nav ul li a {
   
   </body>
 </html>
-
