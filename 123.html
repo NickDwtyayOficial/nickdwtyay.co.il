@@ -31,18 +31,14 @@
       display: flex;
       justify-content: center; /* Centraliza o conteúdo horizontalmente */
     }
-
-    nav ul {
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
-    }
-
-    nav ul li {
-      display: inline;
-      margin-right: 10px;
-    }
-
+nav {
+  /* ... outros estilos ... */
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+  border-bottom: 2px solid #0000FF; /* Adiciona uma borda inferior azul */
+}
+   
     main {
       flex: 1;
       background-color: #f2f2f2;
@@ -86,45 +82,58 @@
       margin-bottom: 10px;
     }
     
-    
-  .footer {
+ nav {
+  /* ... outros estilos ... */
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+  border-bottom: 2px solid blue; /* Adiciona uma borda inferior azul */
+}
+
+.footer {
+  /* ... outros estilos ... */
+  background-color: blue;
+  color: yellow;
+}
+
+.footer {
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
 }
 
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-    .footer-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+.footer-nav {
+  display: flex;
+}
 
-    .footer-nav {
-      display: flex;
-    }
+.footer-nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
 
-    .footer-nav-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
+.footer-nav-item {
+  margin-right: 10px;
+}
 
-    .footer-nav-item {
-      margin-right: 10px;
-    }
+.footer-nav-link {
+  color: #800080;
+  text-decoration: none;
+}
 
-    .footer-nav-link {
-      color: #800080;
-      text-decoration: none;
-    }
+.footer-text {
+  text-align: center;
+}
 
-    .footer-text {
-      text-align: center;
-    }
   </style>
 </head>
 <body>
