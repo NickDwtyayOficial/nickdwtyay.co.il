@@ -6,6 +6,86 @@
   <style>
     /* Estilos CSS para o layout básico */
     /* ... Estilos CSS omitidos ... */
+      body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #f2f2f2;
+      padding: 20px;
+      text-align: center;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #333;
+      color: #fff;
+      padding: 10px;
+      display: flex;
+      justify-content: center; /* Centraliza o conteúdo horizontalmente */
+    }
+
+    nav ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul li {
+      display: inline;
+      margin-right: 10px;
+    }
+
+    main {
+      flex: 1;
+      background-color: #f2f2f2;
+      padding: 20px;
+    }
+
+    section {
+      background-color: #fff;
+      margin-bottom: 20px;
+      padding: 10px;
+      display: flex;
+      flex-direction: row-reverse; /* Alinha os artigos da direita para a esquerda */
+    }
+
+    article {
+      background-color: #fff;
+      padding: 10px;
+      width: 45%; /* Ajuste a largura conforme necessário */
+      margin-right: 20px; /* Define a margem entre os artigos */
+    }
+  header {
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      height: 300px; /* ajuste a altura conforme necessário */
+    }
+
+    /* Estilos CSS para a página Home */
+    .post {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 20px;
+    }
+
+    .post h2 {
+      font-size: 18px;
+      margin-top: 0;
+    }
+
+    .post p {
+      margin-bottom: 10px;
+    }
+    
     
     .footer {
       background-color: #f2f2f2;
@@ -56,22 +136,52 @@
       </ul>
     </nav>
   </header>
-
   <main>
     <section>
       <!-- Artigos dinâmicos serão adicionados aqui -->
     </section>
   </main>
 
+ 
+
   <!-- Google tag (gtag.js) -->
-  <!-- ... Código JavaScript omitido ... -->
-  
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1922092235705770" crossorigin="anonymous"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-5F4Q111FPX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-5F4Q111FPX');
+  </script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1922092235705770"
+     crossorigin="anonymous"></script>
   
   <script>
     // Exemplo de JavaScript para adicionar posts dinamicamente
-    // ... Código JavaScript omitido ...
+    const main = document.querySelector('main');
+
+    // Função para adicionar um novo post
+    function adicionarPost(titulo, conteudo) {
+      const article = document.createElement('article');
+      article.classList.add('post');
+
+      const tituloElement = document.createElement('h2');
+      tituloElement.textContent = titulo;
+
+      const conteudoElement = document.createElement('p');
+      conteudoElement.textContent = conteudo;
+
+      article.appendChild(tituloElement);
+      article.appendChild(conteudoElement);
+
+      main.querySelector('section').appendChild(article);
+    }
+
+    // Chamada da função para adicionar novos posts
+    adicionarPost('Título do Artigo 3', 'Conteúdo do artigo 3...');
+    adicionarPost('Título do Artigo 4', 'Conteúdo do artigo 4...');
   </script>
+  
   
   <footer class="footer">
     <div class="footer-container">
