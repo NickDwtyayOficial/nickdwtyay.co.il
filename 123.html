@@ -1,127 +1,51 @@
 <!DOCTYPE html>
 <html>
-<head><link rel="icon" href="dwtyay_favicon.gif" type="image/gif">
-
+<head>
+  <link rel="icon" href="dwtyay_favicon.gif" type="image/gif">
   <title>Meu Website</title>
   <style>
     /* Estilos CSS para o layout básico */
-    body {
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-      margin: 0;
-      padding: 0;
-    }
-
-    header {
+    /* ... Estilos CSS omitidos ... */
+    
+    .footer {
       background-color: #f2f2f2;
       padding: 20px;
-      text-align: center;
     }
 
-    nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      background-color: #333;
-      color: #fff;
-      padding: 10px;
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
       display: flex;
-      justify-content: center; /* Centraliza o conteúdo horizontalmente */
+      justify-content: space-between;
+      align-items: center;
     }
 
-    nav ul {
-      list-style-type: none;
-      margin: 0;
+    .footer-nav {
+      display: flex;
+    }
+
+    .footer-nav-list {
+      list-style: none;
       padding: 0;
+      margin: 0;
     }
 
-    nav ul li {
-      display: inline;
+    .footer-nav-item {
       margin-right: 10px;
     }
 
-    main {
-      flex: 1;
-      background-color: #f2f2f2;
-      padding: 20px;
+    .footer-nav-link {
+      color: #800080;
+      text-decoration: none;
     }
 
-    section {
-      background-color: #fff;
-      margin-bottom: 20px;
-      padding: 10px;
-      display: flex;
-      flex-direction: row-reverse; /* Alinha os artigos da direita para a esquerda */
+    .footer-text {
+      text-align: center;
     }
-
-    article {
-      background-color: #fff;
-      padding: 10px;
-      width: 45%; /* Ajuste a largura conforme necessário */
-      margin-right: 20px; /* Define a margem entre os artigos */
-    }
-
-   .footer-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.footer-nav {
-  display: flex;
-}
-
-.footer-nav-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.footer-nav-item {
-  margin-right: 10px;
-}
-
-.footer-nav-link {
-  color: #800080;
-  text-decoration: none;
-}
-
-.footer-text {
-  text-align: center;
-}
-
-
-    header {
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      height: 300px; /* ajuste a altura conforme necessário */
-    }
-
-    /* Estilos CSS para a página Home */
-    .post {
-      border: 1px solid #ccc;
-      padding: 10px;
-      margin-bottom: 20px;
-    }
-
-    .post h2 {
-      font-size: 18px;
-      margin-top: 0;
-    }
-
-    .post p {
-      margin-bottom: 10px;
-    }
-
   </style>
 </head>
 <body>
-<header style="background-image: url(  498879574974859389587584587548579584594395879574954859478987978re9t874387ft37t47ft47q908194804059q3.webp );">
+<header style="background-image: url(498879574974859389587584587548579584594395879574954859478987978re9t874387ft37t47ft47q908194804059q3.webp);">
     <!-- Conteúdo do cabeçalho aqui -->
     <nav>
       <ul>
@@ -132,7 +56,6 @@
       </ul>
     </nav>
   </header>
-  </header>
 
   <main>
     <section>
@@ -140,72 +63,41 @@
     </section>
   </main>
 
- 
-
   <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-5F4Q111FPX"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-5F4Q111FPX');
-  </script>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1922092235705770"
-     crossorigin="anonymous"></script>
+  <!-- ... Código JavaScript omitido ... -->
+  
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1922092235705770" crossorigin="anonymous"></script>
   
   <script>
     // Exemplo de JavaScript para adicionar posts dinamicamente
-    const main = document.querySelector('main');
-
-    // Função para adicionar um novo post
-    function adicionarPost(titulo, conteudo) {
-      const article = document.createElement('article');
-      article.classList.add('post');
-
-      const tituloElement = document.createElement('h2');
-      tituloElement.textContent = titulo;
-
-      const conteudoElement = document.createElement('p');
-      conteudoElement.textContent = conteudo;
-
-      article.appendChild(tituloElement);
-      article.appendChild(conteudoElement);
-
-      main.querySelector('section').appendChild(article);
-    }
-
-    // Chamada da função para adicionar novos posts
-    adicionarPost('Título do Artigo 3', 'Conteúdo do artigo 3...');
-    adicionarPost('Título do Artigo 4', 'Conteúdo do artigo 4...');
+    // ... Código JavaScript omitido ...
   </script>
   
-   <footer class="footer">
-  <div class="footer-container">
-    <nav class="footer-nav">
-      <ul class="footer-nav-list">
-        <li class="footer-nav-item">
-          <a href="index.html" class="footer-nav-link">Home</a>
-        </li>
-        <li class="footer-nav-item">
-          <a href="about.html" class="footer-nav-link"> About</a>
-        </li>
-        <li class="footer-nav-item">
-          <a href="contact.html" class="footer-nav-link">Contact</a>
-        </li>
-        <li class="footer-nav-item">
-          <a href="sitemap.xml" class="footer-nav-link">Sitemap</a>
-        </li>
-      </ul><div style="display:inline-block;width:219px;">
-    <div style="position: relative; padding-top: 50%;"><script type="text/javascript" src="//ra.revolvermaps.com/0/0/7.js?i=0nml18axywr&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;br=20&amp;sx=0" async="async"></script>
-  </div>
-    
-    </nav>
-    <p class="footer-text">&copy; 2023 Nick Dwtyay Ltd. All rights reserved.</p>
-  </div>
+  <footer class="footer">
+    <div class="footer-container">
+      <nav class="footer-nav">
+        <ul class="footer-nav-list">
+          <li class="footer-nav-item">
+            <a href="index.html" class="footer-nav-link">Home</a>
+          </li>
+          <li class="footer-nav-item">
+            <a href="about.html" class="footer-nav-link">About</a>
+          </li>
+          <li class="footer-nav-item">
+            <a href="contact.html" class="footer-nav-link">Contact</a>
+          </li>
+          <li class="footer-nav-item">
+            <a href="sitemap.xml" class="footer-nav-link">Sitemap</a>
+          </li>
+        </ul>
+      </nav>
+      <div style="display:inline-block;width:219px;">
+        <div style="position: relative; padding-top: 50%;">
+          <script type="text/javascript" src="//ra.revolvermaps.com/0/0/7.js?i=0nml18axywr&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;br=20&amp;sx=0" async="async"></script>
+        </div>
+      </div>
+      <p class="footer-text">&copy; 2023 Nick Dwtyay Ltd. Todos os direitos reservados.</p>
+    </div>
   </footer>
-  
-  
 </body>
 </html>
-
