@@ -49,6 +49,6 @@ This license will be governed by the laws of Israel. Any dispute arising from th
 
 When using the software, the licensee indicates that he read and agrees with the terms and conditions of this license.
 
-  Nick DwtyAy Ltd
+  Nick Dwtyay,Ltd.
   Weizmann St 9, Tel Aviv-Yafo, 677517, Israel
   2023
