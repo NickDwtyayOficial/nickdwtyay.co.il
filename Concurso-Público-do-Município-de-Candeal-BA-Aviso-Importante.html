@@ -59,11 +59,59 @@
 <p>Agradecemos a todos pelo interesse em manter um ambiente de discussão respeitosa e pela busca contínua por justiça e igualdade em todas as esferas da sociedade.</p>
 
         <p><strong>Links para os documentos:</strong></p>
-        <ul>
-            <li><a href="https://drive.google.com/file/d/199Ro-t0-sUCPmfGr6NzvGft_NGJynU8p/view?usp=drive_link">Documento 1</a></li>
-            <li><a href="https://drive.google.com/file/d/1-VivWcaIMmTDZQSVSc7QBt-g_ZP-oBxA/view?usp=drive_link">Documento 2</a></li>
-            <!-- Add more links as needed -->
-        </ul>
+  <script>
+        import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
+public class DocumentDownloader {
+
+    public static void main(String[] args) {
+        String[] documentUrls = {
+            "https://drive.google.com/file/d/199Ro-t0-sUCPmfGr6NzvGft_NGJynU8p/view?usp=drive_link",
+            "https://drive.google.com/file/d/1-VivWcaIMmTDZQSVSc7QBt-g_ZP-oBxA/view?usp=drive_link",
+             "https://drive.google.com/file/d/199Ro-t0-sUCPmfGr6NzvGft_NGJynU8p/view?usp=drive_link", 
+            "https://drive.google.com/file/d/1-VivWcaIMmTDZQSVSc7QBt-g_ZP-oBxA/view?usp=drive_link",
+            "https://drive.google.com/file/d/18iWaMLIu3TIJU4fzh6cqGxp9EM55Kf1f/view?usp=drive_link",
+            "https://drive.google.com/file/d/1UOSFdcp10bOtPzA6ju-79yB4zvi9qydt/view?usp=drive_link",
+            "https://drive.google.com/file/d/1PKDuiNoVNHzIJtfADoFuEPKdK747xfXF/view?usp=drive_link",
+            "https://drive.google.com/file/d/1B_xC3ENChgfG5tTnYhxSK0S2HuqyDJO-/view?usp=drive_link",
+            "https://drive.google.com/file/d/1ryxLdcYpISOogk5iF94pw-U_WKD0VP0v/view?usp=drive_link", 
+            "https://drive.google.com/file/d/1y4ajYHU9m2uJYFofk6-Pb12xBRzHVD1c/view?usp=drive_link",
+            "https://drive.google.com/file/d/1unus-9DcBp8NT5kVbkOUSuaNPIikUmuW/view?usp=drive_link", 
+            "https://drive.google.com/file/d/1LytQXtjal_VQxH_5sZkogWf9m0EYb7si/view?usp=drive_link",
+            "https://drive.google.com/file/d/1zl6Z-VUAKyxq_tGoh1FwRAoqsJV_OvP3/view?usp=drive_link", 
+            "https://drive.google.com/file/d/1_LhxWImPQrBYop1aFxHVpgIRrIxxucmE/view?usp=drive_link",
+            "https://drive.google.com/file/d/18MLAe7VLc8xA_t184GTgBYq8aXr3KyE1/view?usp=drive_link", 
+            "https://drive.google.com/file/d/125jgPvCD2e5i7unyv4-iiYW-LtIWovx0/view?usp=drive_link", 
+            "https://drive.google.com/file/d/1yJ5dDKnelD4sjqFl49hzDiXs-OwwfC6p/view?usp=drive_link", 
+            "https://drive.google.com/file/d/1jqbHznw2_F-ngo9woNF8JpN20KD_SXio/view?usp=drive_link", 
+            "https://drive.google.com/file/d/1d31xgLihbYynkbzwKJoIgtbADhyXEYtK/view?usp=drive_link",  
+        };
+
+        try {
+            CloseableHttpClient httpClient = HttpClients.createDefault();
+
+            for (String url : documentUrls) {
+                HttpGet httpGet = new HttpGet(url);
+                CloseableHttpResponse response = httpClient.execute(httpGet);
+
+                String content = EntityUtils.toString(response.getEntity());
+                // Aqui você pode fazer o parse do conteúdo baixado, se necessário
+
+                response.close();
+            }
+
+            httpClient.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+  </script>
+    
     </div>
 </body>
 </html>
