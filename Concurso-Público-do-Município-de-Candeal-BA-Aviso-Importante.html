@@ -59,7 +59,47 @@
 <p>Agradecemos a todos pelo interesse em manter um ambiente de discussão respeitosa e pela busca contínua por justiça e igualdade em todas as esferas da sociedade.</p>
 
         <p><strong>Links para os documentos:</strong></p>
-  <script>
+  <h1>Comentários</h1>
+
+    <!-- Área de comentários -->
+    <div id="comentarios">
+        <!-- Aqui os comentários serão exibidos -->
+    </div>
+
+    <!-- Formulário para adicionar comentários -->
+    <h2>Adicionar Comentário</h2>
+    <form id="formComentario">
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" required><br>
+        <label for="comentario">Comentário:</label><br>
+        <textarea id="comentario" required></textarea><br>
+        <button type="submit">Publicar</button>
+    </form>
+
+    <script>
+        // Função para adicionar um comentário
+        function adicionarComentario(nome, comentario) {
+            var divComentario = document.createElement("div");
+            divComentario.innerHTML = "<strong>" + nome + "</strong>: " + comentario +
+                                      " <button onclick='excluirComentario(this)'>Excluir</button>";
+            document.getElementById("comentarios").appendChild(divComentario);
+        }
+
+        // Função para excluir um comentário
+        function excluirComentario(botao) {
+            botao.parentElement.remove();
+        }
+
+        // Ao enviar o formulário, adiciona o comentário
+        document.getElementById("formComentario").addEventListener("submit", function(event) {
+            event.preventDefault();
+            var nome = document.getElementById("nome").value;
+            var comentario = document.getElementById("comentario").value;
+            adicionarComentario(nome, comentario);
+            document.getElementById("formComentario").reset();
+        });
+    </script>
+        <script>
         import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
