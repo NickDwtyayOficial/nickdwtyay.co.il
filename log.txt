@@ -1,0 +1,20 @@
+<script>
+    var text = "Texto contendo palavras-chave como C++ e Java";
+    var keyword1 = "C++";
+    var keyword2 = "Java";
+
+    if (text.includes(keyword1) || text.includes(keyword2)) {
+        var logText = "Palavras-chave encontradas: ";
+        if (text.includes(keyword1)) {
+            logText += keyword1 + ", ";
+        }
+        if (text.includes(keyword2)) {
+            logText += keyword2 + ", ";
+        }
+        logText += "em " + new Date().toLocaleString() + "\n";
+
+        // Registrar as informações no arquivo de log (log.txt)
+        var fs = require('fs');
+        fs.appendFileSync('log.txt', logText);
+    }
+</script>
