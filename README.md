@@ -30,7 +30,7 @@ List of project authors.
 
 Software Use License
 
-This document establishes the terms and conditions governing the use of Nick DwtyAy software ("software") developed by Nick Dwtyaay Ltd ("Licensor").
+This document establishes the terms and conditions governing the use of Nick Dwtyay software ("software") developed by Nick Dwtyay, Ltd. ("Licensor").
 
 Use license
 The licensee grants the end user ("licensed") a non -exclusive and non -transferable license to install and use the software for commercial or personal purposes, in accordance with the limitations set forth in this document.
