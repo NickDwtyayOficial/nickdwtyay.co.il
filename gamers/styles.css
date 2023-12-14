@@ -1,0 +1,36 @@
+body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f0f0; /* Cor de fundo do corpo da página */
+    font-family: Arial, sans-serif; /* Fonte do texto */
+}
+
+.maintenance {
+    background-color: #3498db; /* Cor azul de fundo */
+    border-radius: 10px; /* Cantos arredondados */
+    padding: 20px;
+    width: 400px; /* Largura do contêiner de manutenção */
+    text-align: center; /* Centralizar o texto */
+    color: #fff; /* Cor do texto (branco) */
+}
+
+h1 {
+    font-size: 28px; /* Tamanho do título */
+}
+
+p {
+    font-size: 16px; /* Tamanho do texto */
+}
+
+footer {
+    text-align: center;
+    margin-top: 20px;
+}
+
+footer p {
+    font-size: 14px;
+    color: #666;
+}
