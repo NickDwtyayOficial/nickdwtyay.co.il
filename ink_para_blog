@@ -1,1 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Link para o Blog</title>
+</head>
+<body>
+
+<h1>Meu Site</h1>
+
+<p>Confira o meu <a href="https://www.exemplo.com/blog">blog</a> para mais informações!</p>
+
+</body>
+</html>
 
