@@ -3,26 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Adiciona responsividade -->
-  <title>Página de Perfil</title>
+  <title>Perfil Nicássio Carvalho Guimarães </title>
   <style>
     body {
-      background-color: blue; /* Define a cor de fundo como azul */
-      height: 100vh; /* Define a altura do elemento body como 100% da altura da viewport */
-      width: 100vw; /* Define a largura do elemento body como 100% da largura da viewport */
-      display: flex; /* Adiciona flexbox para organizar o conteúdo */
+      background-color: #007BFF; /* Azul vibrante para o fundo */
+      height: 100vh; /* Altura do elemento body como 100% da altura da viewport */
+      width: 100vw; /* Largura do elemento body como 100% da largura da viewport */
+      display: flex; /* Flexbox para organizar o conteúdo */
       flex-direction: column; /* Coloca os elementos em coluna */
       margin: 0; /* Remove margens padrão */
+      font-family: Arial, sans-serif; /* Fonte padrão para o corpo */
     }
 
     header {
-      background-color: #fff; /* Cor de fundo do cabeçalho */
-      padding: 10px 0; /* Adiciona espaçamento interno */
+      background-color: #0056b3; /* Azul mais escuro para o cabeçalho */
+      color: #ffffff; /* Cor do texto no cabeçalho */
+      padding: 20px 0; /* Espaçamento interno no cabeçalho */
       text-align: center; /* Centraliza o texto no cabeçalho */
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra do cabeçalho */
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra do cabeçalho */
+    }
+
+    h1 {
+      margin: 0; /* Remove a margem padrão do título */
+      font-size: 2.5em; /* Aumenta o tamanho da fonte do título */
+      font-weight: bold; /* Deixa o título em negrito */
     }
 
     .nav {
-      margin: 10px 0; /* Adiciona margem acima e abaixo da navegação */
+      margin: 10px 0; /* Margem acima e abaixo da navegação */
     }
 
     .nav ul {
@@ -38,22 +46,23 @@
 
     .nav a {
       text-decoration: none; /* Remove o sublinhado dos links */
-      color: #333; /* Define a cor do texto */
-      padding: 5px; /* Adiciona espaçamento interno nos links */
+      color: #ffffff; /* Cor do texto dos links */
+      padding: 5px 10px; /* Adiciona espaçamento interno nos links */
       transition: background-color 0.3s ease; /* Transição suave de cor de fundo */
     }
 
     .nav a:hover {
-      background-color: #ddd; /* Muda a cor de fundo ao passar o mouse */
+      background-color: #003d80; /* Muda a cor de fundo ao passar o mouse */
+      border-radius: 5px; /* Arredonda os cantos dos links ao passar o mouse */
     }
 
     .perfil {
       width: 300px;
       text-align: center;
-      background-color: white; /* Adiciona um fundo branco para o perfil */
-      padding: 20px; /* Adiciona espaçamento interno */
+      background-color: white; /* Fundo branco para o perfil */
+      padding: 20px; /* Espaçamento interno */
       border-radius: 10px; /* Arredonda os cantos do perfil */
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adiciona uma sombra ao perfil */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra do perfil */
       margin: 20px auto; /* Centraliza o perfil na página */
       flex: 1; /* Faz o perfil ocupar o espaço disponível */
     }
