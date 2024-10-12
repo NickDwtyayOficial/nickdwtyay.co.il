@@ -3,16 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Adiciona responsividade -->
-  <title>Perfil</title>
+  <title>Página de Perfil</title>
   <style>
     body {
       background-color: blue; /* Define a cor de fundo como azul */
       height: 100vh; /* Define a altura do elemento body como 100% da altura da viewport */
       width: 100vw; /* Define a largura do elemento body como 100% da largura da viewport */
-      display: flex; /* Adiciona flexbox para centralizar o conteúdo */
-      align-items: center; /* Centraliza verticalmente */
-      justify-content: center; /* Centraliza horizontalmente */
+      display: flex; /* Adiciona flexbox para organizar o conteúdo */
+      flex-direction: column; /* Coloca os elementos em coluna */
       margin: 0; /* Remove margens padrão */
+    }
+
+    header {
+      background-color: #fff; /* Cor de fundo do cabeçalho */
+      padding: 10px 0; /* Adiciona espaçamento interno */
+      text-align: center; /* Centraliza o texto no cabeçalho */
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra do cabeçalho */
     }
 
     .perfil {
@@ -22,26 +28,75 @@
       padding: 20px; /* Adiciona espaçamento interno */
       border-radius: 10px; /* Arredonda os cantos do perfil */
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adiciona uma sombra ao perfil */
+      margin: 0 auto; /* Centraliza o perfil na página */
+      flex: 1; /* Faz o perfil ocupar o espaço disponível */
     }
 
     .foto {
       width: 200px;
       height: 200px;
-      border-radius: 50%;
-      object-fit: cover;
+      border-radius: 50%; /* Arredonda a imagem para ficar circular */
+      object-fit: cover; /* Faz a imagem cobrir todo o espaço disponível */
     }
 
     .formacao {
       font-style: italic;
-      color: gray;
+      color: gray; /* Cor da formação */
+    }
+
+    footer {
+      background-color: #800080; /* Cor de fundo do rodapé */
+      color: #fff; /* Cor do texto no rodapé */
+      padding: 20px; /* Adiciona espaçamento interno */
+      text-align: center; /* Centraliza o texto no rodapé */
+    }
+
+    footer a {
+      color: #fff; /* Cor dos links no rodapé */
+      text-decoration: none; /* Remove sublinhado dos links */
+    }
+
+    footer a:hover {
+      text-decoration: underline; /* Sublinha links ao passar o mouse */
     }
   </style>
 </head>
 <body>
-  <div class="perfil">
+
+<header>
+    <h1>Perfil de Nicássio Guimarães</h1> <!-- Título do cabeçalho -->
+</header>
+
+<div class="perfil">
     <img src="https://trumpwhitehouse.archives.gov/wp-content/uploads/2017/11/President-Trump-Official-Portrait-200x200.jpg" alt="Foto do perfil" class="foto">
-    <h1>Nicássio Guimarães</h1>
+    <h2>Nicássio Guimarães</h2>
     <p class="formacao">Formação: Engenharia de Software</p>
-  </div>
+</div>
+
+<footer class="footer">
+    <div class="footer-container">
+        <nav class="footer-nav">
+            <ul class="footer-nav-list">
+                <li class="footer-nav-item">
+                    <a href="index.html" class="footer-nav-link">Home</a>
+                </li>
+                <li class="footer-nav-item">
+                    <a href="about.html" class="footer-nav-link">About</a>
+                </li>
+                <li class="footer-nav-item">
+                    <a href="contact.html" class="footer-nav-link">Contact</a>
+                </li>
+                <li class="footer-nav-item">
+                    <a href="sitemap.xml" class="footer-nav-link">Sitemap</a>
+                </li>
+            </ul>
+        </nav>
+        <p>&copy; 2023 Nick Dwtyay Ltd. Todos os direitos reservados. | 
+            <a href="https://docs.google.com/document/d/1U1qQlmwTde7c2S3Py1TJox94S8MyROtBlqiOufEg7Yc/edit?usp=sharing" target="_blank">Política de Privacidade</a> | 
+            <a href="https://docs.google.com/document/d/1vWODmQbRya3yKHeSBodLEgbbuc5xgRzksYEcWf426bo/edit?usp=sharing" target="_blank">Termos de Serviço</a>
+        </p>
+    </div>
+</footer>
+
 </body>
 </html>
