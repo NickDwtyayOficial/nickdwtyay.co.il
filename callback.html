@@ -1,21 +1,23 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-BR">
 <head>
-    <title>Autenticação Google</title>
+  <meta charset="UTF-8">
+  <title>Processando Login</title>
 </head>
 <body>
-    <h2>Autorize o App</h2>
-    <button onclick="autorizar()">Autorizar com Google</button>
-    <script>
-        function autorizar() {
-            const clientId = 'Cliente OAuth Malchut'; // Substitua pelo ID do Cliente
-            const redirectUri = 'https://nickdwtyay.com.br/callback';
-            const scope = 'https://www.googleapis.com/auth/documents';
+  <h1>Autenticação Concluída</h1>
+  <p>Processando o acesso...</p>
+  <script>
+    const params = new URLSearchParams(window.location.hash.substring(1));
+    const token = params.get("access_token");
 
-            const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}&access_type=offline`;
-
-            window.location.href = authUrl;
-        }
-    </script>
+    if (token) {
+      console.log("Token de acesso recebido:", token);
+      document.body.innerHTML += "<p>Autenticação bem-sucedida!</p>";
+    } else {
+      console.log("Falha ao autenticar.");
+      document.body.innerHTML += "<p>Erro de autenticação.</p>";
+    }
+  </script>
 </body>
 </html>
