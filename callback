@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <title>Autenticação Google</title>
+</head>
+<body>
+    <h2>Autorize o App</h2>
+    <button onclick="autorizar()">Autorizar com Google</button>
+    <script>
+        function autorizar() {
+            const clientId = 'SEU_CLIENT_ID'; // Substitua pelo ID do Cliente
+            const redirectUri = 'https://contabil-d.com.br/callback';
+            const scope = 'https://www.googleapis.com/auth/documents';
+
+            const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}&access_type=offline`;
+
+            window.location.href = authUrl;
+        }
+    </script>
+</body>
+</html>
