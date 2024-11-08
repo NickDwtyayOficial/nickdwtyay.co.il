@@ -1,23 +1,251 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt">
 <head>
-  <meta charset="UTF-8">
-  <title>Processando Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integração Google API e OpenAI</title>
+    <script src="https://apis.google.com/js/api.js"></script><style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .navbar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .content {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .card {
+            background-color: #f9f9f9;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            border-radius: 8px;
+        } 
+        
+    .modal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80%;
+        max-width: 600px;
+        background-color: white;
+        padding: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        border-radius: 8px;
+    }
+    .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+    </style>
+    
 </head>
 <body>
-  <h1>Autenticação Concluída</h1>
-  <p>Processando o acesso...</p>
-  <script>
-    const params = new URLSearchParams(window.location.hash.substring(1));
-    const token = params.get("access_token");
+    <div class="navbar">
+        <button onclick="authenticateUser()">Login com Google</button>
+        <button onclick="criarDocumentoGoogle()">Criar Documento</button>
+        <button onclick="listarArquivosDrive()">Listar Arquivos Drive</button>
+    </div>
+    <div class="content">
+        <div id="userDetails" class="card"></div>
+        <div id="documentsList" class="card"></div>
+    </div>
+    <div class="modal-overlay" onclick="fecharModal()"></div>
+<div id="modal" class="modal">
+    <h2>Detalhes do Documento</h2>
+    <p id="conteudoDocumento"></p>
+    <button onclick="fecharModal()">Fechar</button>
+</div>
 
-    if (token) {
-      console.log("Token de acesso recebido:", token);
-      document.body.innerHTML += "<p>Autenticação bem-sucedida!</p>";
-    } else {
-      console.log("Falha ao autenticar.");
-      document.body.innerHTML += "<p>Erro de autenticação.</p>";
+    
+    <script>
+    function abrirModal(conteudo) {
+        document.getElementById('conteudoDocumento').innerText = conteudo;
+        document.querySelector('.modal').style.display = 'block';
+        document.querySelector('.modal-overlay').style.display = 'block';
     }
-  </script>
+    
+    function fecharModal() {
+        document.querySelector('.modal').style.display = 'none';
+        document.querySelector('.modal-overlay').style.display = 'none';
+    }
+    
+    
+    // Exibindo mensagem de carregamento
+        function mostrarMensagemCarregamento(mensagem) {
+            const loadingMessage = document.createElement("p");
+            loadingMessage.id = "loadingMessage";
+            loadingMessage.textContent = mensagem;
+            document.body.appendChild(loadingMessage);
+        }
+        
+        // Removendo mensagem de carregamento
+        function removerMensagemCarregamento() {
+            const loadingMessage = document.getElementById("loadingMessage");
+            if (loadingMessage) {
+                loadingMessage.remove();
+            }
+        }
+        
+        // Configuração inicial e carregamento da API
+        function initializeClient() {
+            gapi.load('client:auth2', () => {
+                gapi.client.init({
+                    apiKey: 'AIzaSyDN-bEkR-ncDIUJ670QUciOc4u-HyKFUa0',  // Substitua pela sua API key
+                    clientId: '141467792185-sd98uk4h6gfibc3ipee7qrprj7968jcn.apps.googleusercontent.com',
+                    discoveryDocs: [
+                        'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest',
+                        'https://docs.googleapis.com/$discovery/rest?version=v1'
+                    ],
+                    scope: 'https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/documents'
+                }).then(() => {
+                    console.log("Cliente da API do Google inicializado");
+                    verificarStatusLogin();
+                });
+            });
+        }
+
+        // Função para verificar e gerenciar o status de login
+        function verificarStatusLogin() {
+            if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
+                console.log("Usuário está logado");
+            } else {
+                gapi.auth2.getAuthInstance().signIn();
+            }
+        }
+
+        // Autenticação e captura de dados do usuário
+        function authenticateUser() {
+            gapi.load("auth2", function() {
+                gapi.auth2.init({
+                    client_id: "141467792185-sd98uk4h6gfibc3ipee7qrprj7968jcn.apps.googleusercontent.com"
+                }).signIn().then(function(user) {
+                    const profile = user.getBasicProfile();
+                    console.log("Nome: " + profile.getName());
+                    console.log("E-mail: " + profile.getEmail());
+                    
+                    // Captura de informações adicionais
+                    fetchUserData(user.getAuthResponse().access_token);
+                });
+            });
+        }
+
+        // Função para buscar dados do usuário (nome, email, foto, etc.)
+        function fetchUserData(access_token) {
+            fetch('https://www.googleapis.com/oauth2/v1/userinfo?alt=json', {
+                headers: { 'Authorization': `Bearer ${access_token}` }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Dados do Usuário:", data);
+                // Enviar dados do usuário ao seu servidor
+                salvarDadosUsuario(data);
+            });
+        }
+
+        // Criação de documento no Google Docs
+        function criarDocumentoGoogle() {
+            gapi.client.docs.documents.create({
+                title: "Novo Documento"
+            }).then((response) => {
+                console.log("Documento criado com ID:", response.result.documentId);
+            });
+        }
+
+        // Listagem de arquivos no Google Drive
+        function listarArquivosDrive() {
+            gapi.client.drive.files.list({
+                pageSize: 10,
+                fields: "nextPageToken, files(id, name)"
+            }).then((response) => {
+                console.log("Arquivos:", response.result.files);
+            });
+        }
+
+        // Requisição à API OpenAI
+        function analiseTextoOpenAI(conteudoTexto) {
+            fetch('https://api.openai.com/v1/completions', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer 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`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    model: "text-davinci-003",
+                    prompt: "Revise o seguinte conteúdo: " + conteudoTexto,
+                    max_tokens: 200
+                })
+            })
+            .then(response => response.json())
+            .then(responseData => {
+                const updatedContent = responseData.choices[0].text;
+                console.log("Conteúdo Atualizado:", updatedContent);
+            });
+        }
+
+        // Atualização do documento com resposta da OpenAI
+        function atualizarDocumentoGoogle(documentId, updatedContent) {
+            fetch(`https://docs.googleapis.com/v1/documents/${documentId}:batchUpdate`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().access_token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    requests: [
+                        {
+                            insertText: {
+                                location: { index: 1 },
+                                text: updatedContent
+                            }
+                        }
+                    ]
+                })
+            }).then(() => {
+                console.log("Documento atualizado com o novo conteúdo.");
+            });
+        }
+
+        // Salvando dados do usuário no servidor
+        function salvarDadosUsuario(data) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                const { latitude, longitude } = position.coords;
+                fetch('https://www.nickdwtyay.com.br/saveUserData', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: data.email,
+                        name: data.name,
+                        picture: data.picture,
+                        browserInfo: navigator.userAgent,
+                        location: { latitude, longitude }
+                    })
+                }).then(() => {
+                    console.log("Dados do usuário salvos com sucesso.");
+                });
+            });
+        }
+
+        // Inicializa o cliente ao carregar a página
+        window.onload = function() {
+            initializeClient();
+        };
+    </script>
 </body>
 </html>
