@@ -8,7 +8,7 @@
     <button onclick="autorizar()">Autorizar com Google</button>
     <script>
         function autorizar() {
-            const clientId = 'SEU_CLIENT_ID'; // Substitua pelo ID do Cliente
+            const clientId = 'Cliente OAuth Malchut'; // Substitua pelo ID do Cliente
             const redirectUri = 'https://contabil-d.com.br/callback';
             const scope = 'https://www.googleapis.com/auth/documents';
 
