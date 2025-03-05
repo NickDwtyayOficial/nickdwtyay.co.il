@@ -1,46 +1,42 @@
 <?php
-require_once 'db_connect.php';
-session_start();
+include 'db_connect.php';
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $first_name = $_POST['first_name'];
-    $last_name = $_POST['last_name'];
-    $address = $_POST['address'];
-    $phone = $_POST['phone'];
-    $email = $_POST['email'];
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // Hash da senha
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $first_name = $_POST["first_name"] ?? "";
+    $last_name = $_POST["last_name"] ?? "";
+    $address = $_POST["address"] ?? "";
+    $phone = $_POST["phone"] ?? "";
+    $email = $_POST["email"] ?? "";
+    $password = $_POST["password"] ?? "";
 
-    // Verifica se o e-mail já existe
-    $check_email = db_query("SELECT * FROM users WHERE email=eq.$email");
-    if (!empty($check_email)) {
-        $error = "E-mail já registrado!";
-    } else {
-        // Insere o novo usuário
-        $data = [
-            'first_name' => $first_name,
-            'last_name' => $last_name,
-            'address' => $address,
-            'phone' => $phone,
-            'email' => $email,
-            'password' => $password
+    if (!empty($first_name) && !empty($last_name) && !empty($email) && !empty($password)) {
+        $params = [
+            "first_name" => $first_name,
+            "last_name" => $last_name,
+            "address" => $address,
+            "phone" => $phone,
+            "email" => $email,
+            "password" => password_hash($password, PASSWORD_DEFAULT),
+            "created_at" => date("c") // Formato ISO 8601
         ];
-        $result = db_query("", $data);
-        
-        if ($result) {
-            header("Location: index.php");
-            exit();
+        $result = db_query("users", $params);
+
+        if (isset($result["email"]) && $result["email"] == $email) {
+            header("Location: /");
+            exit;
         } else {
-            $error = "Erro ao criar conta!";
+            $error = "Erro ao criar conta: " . print_r($result, true);
         }
+    } else {
+        $error = "Preencha todos os campos obrigatórios!";
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <title>Criar Conta - Nick Dwtyay, Ltd.</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/api/style.css">
 </head>
 <body>
     <div class="container">
@@ -57,11 +53,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
             <div class="form-group">
                 <label>Endereço:</label>
-                <input type="text" name="address" required>
+                <input type="text" name="address">
             </div>
             <div class="form-group">
                 <label>Telefone:</label>
-                <input type="text" name="phone" required>
+                <input type="text" name="phone">
             </div>
             <div class="form-group">
                 <label>E-mail:</label>
@@ -72,10 +68,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <input type="password" name="password" required>
             </div>
             <div class="form-group">
-                <button type="submit">Criar Conta</button>
+                <button type="submit">Criar</button>
             </div>
         </form>
-        <p>Já tem conta? <a href="index.php">Faça login</a></p>
+        <p>Já tem conta? <a href="/">Login</a></p>
     </div>
 </body>
 </html>
