@@ -1,0 +1,8 @@
+{
+  "name": "nickdwtyay",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "install": "echo 'No dependencies needed' && exit 0"
+  }
+}
