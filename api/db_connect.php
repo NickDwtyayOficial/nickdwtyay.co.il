@@ -1,7 +1,7 @@
 <?php
 // Configuração do Supabase
-$supabase_url = 'SUA_URL_DO_SUPABASE'; // Ex.: https://seu-projeto.supabase.co
-$supabase_key = 'SUA_CHAVE_API_PUBLICA'; // Anon key do Supabase
+$supabase_url = 'https://zeqmcwtwhjzqhcvfsvli.supabase.co'; // Ex.: https://seu-projeto.supabase.co
+$supabase_key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InplcW1jd3R3aGp6cWhjdmZzdmxpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDExMjcxOTgsImV4cCI6MjA1NjcwMzE5OH0.p7Tchk4aVnSNmfrIMwQLdvwZRQvGTQUz0Du8W56MkXM'; // Anon key do Supabase
 
 // Função para conectar e executar queries
 function db_query($query, $params = []) {
