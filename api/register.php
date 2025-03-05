@@ -17,11 +17,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             "phone" => $phone,
             "email" => $email,
             "password" => password_hash($password, PASSWORD_DEFAULT),
-            "created_at" => date("c") // Formato ISO 8601
+            "created_at" => date("c")
         ];
         $result = db_query("users", $params);
 
-        if (isset($result["email"]) && $result["email"] == $email) {
+        // Debug: Mostra o resultado completo do Supabase
+        echo "Resposta do Supabase: <pre>" . print_r($result, true) . "</pre>";
+
+        if (is_array($result) && isset($result["email"]) && $result["email"] == $email) {
             header("Location: /");
             exit;
         } else {
