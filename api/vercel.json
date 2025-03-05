@@ -1,5 +1,11 @@
 {
   "version": 2,
+  "builds": [
+    {
+      "src": "api/*.php",
+      "use": "vercel-php@0.7.3"
+    }
+  ],
   "rewrites": [
     {
       "source": "/register.php",
@@ -17,10 +23,5 @@
       "source": "/(.*)",
       "destination": "/api/index.php"
     }
-  ],
-  "functions": {
-    "api/*.php": {
-      "runtime": "vercel-php@0.7.3"
-    }
-  }
+  ]
 }
