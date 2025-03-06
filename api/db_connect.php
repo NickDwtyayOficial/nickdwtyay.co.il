@@ -1,7 +1,7 @@
 <?php
 function db_query($query, $params = [], $method = null) {
-    $supabase_url = getenv("SUPABASE_URL") ?: "https://seu-projeto.supabase.co";
-    $supabase_key = getenv("SUPABASE_KEY") ?: "sua-chave-anon";
+    $supabase_url = getenv("SUPABASE_URL") ?: "https://seu-projeto.supabase.co"; // Substitua pelo seu URL real
+    $supabase_key = getenv("SUPABASE_KEY") ?: "sua-chave-anon"; // Substitua pela sua chave anon real
     $url = $supabase_url . '/rest/v1/' . $query;
 
     $headers = [
@@ -11,22 +11,24 @@ function db_query($query, $params = [], $method = null) {
         "Prefer: return=representation"
     ];
 
-    $ch = curl_init($url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    $options = [
+        "http" => [
+            "method" => $method ?: (empty($params) ? "GET" : "POST"),
+            "header" => implode("\r\n", $headers),
+            "ignore_errors" => true
+        ]
+    ];
 
-    if ($method === "POST" || (!empty($params) && !$method)) {
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($params));
+    if (!empty($params)) {
+        $options["http"]["content"] = json_encode($params);
     }
 
-    $response = curl_exec($ch);
-    $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
+    $context = stream_context_create($options);
+    $response = file_get_contents($url, false, $context);
 
-    if ($response === false || $http_code >= 400) {
-        error_log("Erro na requisição ao Supabase: HTTP $http_code - " . $response);
-        return ["error" => "Falha na requisição ao Supabase", "http_code" => $http_code];
+    if ($response === false) {
+        error_log("Erro na requisição ao Supabase: " . print_r($http_response_header, true));
+        return ["error" => "Falha na requisição ao Supabase", "headers" => $http_response_header];
     }
 
     return json_decode($response, true);
