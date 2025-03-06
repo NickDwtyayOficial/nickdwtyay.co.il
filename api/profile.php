@@ -1,23 +1,34 @@
 <?php
-require_once 'db_connect.php';
+require_once __DIR__ . '/db_connect.php';
 session_start();
 
+error_log("Iniciando profile.php - Sessão: " . json_encode($_SESSION));
+
 if (!isset($_SESSION['user_id'])) {
+    error_log("Sessão não encontrada, redirecionando para /");
     header("Location: /");
     exit();
 }
 
 $user_id = $_SESSION['user_id'];
-$user = db_query("users?id=eq.$user_id&is_active=eq.true");
+error_log("Buscando usuário com ID: $user_id");
 
-if (!is_array($user) || empty($user) || $user[0]['id'] !== $user_id) {
+// Busca o usuário com filtro de is_active pra respeitar RLS
+$user = db_query("users?id=eq.$user_id&is_active=eq.true");
+error_log("Resultado da query: " . json_encode($user));
+
+// Se a query falhar ou o usuário não for encontrado, destrói a sessão e redireciona
+if (!is_array($user) || empty($user) || !isset($user[0]['id']) || $user[0]['id'] !== $user_id) {
+    error_log("Usuário não encontrado ou inválido, destruindo sessão");
     session_destroy();
     header("Location: /");
     exit();
 }
 
 $user_data = $user[0];
+error_log("Usuário carregado com sucesso: " . json_encode($user_data));
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
