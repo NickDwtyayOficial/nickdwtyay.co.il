@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             error_log("Resultado da inserção: " . json_encode($result));
 
             if (is_array($result) && !empty($result) && isset($result[0]['email'])) {
-                header("Location: /"); // Redireciona para a raiz (index.php)
+                header("Location: /");
                 exit();
             } else {
                 $error = "Erro ao criar conta!";
