@@ -20,19 +20,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } elseif (!empty($phone) && !preg_match('/^[0-9]{8,15}$/', $phone)) {
         $error = "Telefone deve ter entre 8 e 15 dígitos!";
     } else {
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+        // Log temporário para debug
+        error_log("Hash gerado para $email: $hashed_password");
+
         $params = [
             "first_name" => $first_name,
             "last_name" => $last_name,
             "address" => $address,
             "phone" => $phone,
             "email" => $email,
-            "password" => password_hash($password, PASSWORD_DEFAULT),
+            "password" => $hashed_password,
             "created_at" => date("c"),
             "updated_at" => date("c"),
             "is_active" => true,
             "role" => "user"
         ];
-        $result = db_query("users", $params);
+        $result = db_query("users", $params, "POST");
 
         if (is_array($result) && !empty($result) && isset($result[0]["email"]) && $result[0]["email"] === $email) {
             header("Location: /");
