@@ -8,9 +8,9 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $user_id = $_SESSION['user_id'];
-$user = db_query("users?id=eq.$user_id");
+$user = db_query("users?id=eq.$user_id&is_active=eq.true");
 
-if (!is_array($user) || empty($user)) {
+if (!is_array($user) || empty($user) || $user[0]['id'] !== $user_id) {
     session_destroy();
     header("Location: /");
     exit();
@@ -21,6 +21,8 @@ $user_data = $user[0];
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil - Nick Dwtyay, Ltd.</title>
     <link rel="stylesheet" href="/api/style.css">
 </head>
