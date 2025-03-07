@@ -174,7 +174,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <!-- Rodapé -->
     <footer class="footer">
-        NICK DWTYAY LTD<br><Analytics>import { Analytics } from "@vercel/analytics/react"<Analytics/>
+        NICK DWTYAY LTD<br>
         "Americas and Middle East Cybersecurity Software and Technology Solutions Development Company."<br>
         <a href="https://www.nickdwtyay.com.br/Terms.html">Terms</a> |
         <a href="https://www.nickdwtyay.com.br/Privacy_Policy.html">Privacy Policy</a> |
