@@ -236,7 +236,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         "Americas and Middle East Cybersecurity Software and Technology Solutions Development Company."<br>
         <a href="https://www.nickdwtyay.com.br/Terms.html">Terms</a> |
         <a href="https://www.nickdwtyay.com.br/Privacy_Policy.html">Privacy Policy</a> |
-        All Rights Reserved | © 2006 - 2022 NICK DWTYAY
+        All Rights Reserved | © 2006 - 2025 NICK DWTYAY
     </footer>
 </body>
 </html>
