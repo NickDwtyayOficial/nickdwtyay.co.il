@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <link rel="icon" href="dwtyay_favicon.gif" type="image/gif">
     <title>Sign In - Nick Dwtyay, Ltd.</title>
-    <link rel="stylesheet" href="/api/style.css">  <script>
+   <script>
         window.va = window.va || function (...args) { (window.vaq = window.vaq || []).push(args); };
     </script>
     <script src="/_vercel/insights/script.js" defer></script>
