@@ -4,13 +4,25 @@
     {
       "src": "api/*.php",
       "use": "vercel-php@0.7.3"
-    },
-    {
-      "src": "api/*.css",
-      "use": "@vercel/static"
     }
   ],
   "rewrites": [
+    {
+      "source": "/home.php",
+      "destination": "/api/home.php"
+    },
+    {
+      "source": "/videos.php",
+      "destination": "/api/videos.php"
+    },
+    {
+      "source": "/about.php",
+      "destination": "/api/about.php"
+    },
+    {
+      "source": "/contact.php",
+      "destination": "/api/contact.php"
+    },
     {
       "source": "/register.php",
       "destination": "/api/register.php"
