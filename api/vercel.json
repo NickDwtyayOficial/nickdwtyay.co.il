@@ -4,6 +4,10 @@
     {
       "src": "api/*.php",
       "use": "vercel-php@0.7.3"
+    },
+    {
+      "src": "api/*.css",
+      "use": "@vercel/static"
     }
   ],
   "rewrites": [
