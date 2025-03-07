@@ -69,7 +69,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Criar Conta - Nick Dwtyay, Ltd.</title>
-    <link rel="stylesheet" href="/api/style.css"><style>
+    <link rel="stylesheet" href="/api/style.css"> <script>
+        window.va = window.va || function (...args) { (window.vaq = window.vaq || []).push(args); };
+    </script>
+    <script src="/_vercel/insights/script.js" defer></script>
+    
+    <style>
  body {
  font-family: Arial, sans-serif;
  margin: 0;
