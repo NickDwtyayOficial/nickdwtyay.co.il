@@ -1,4 +1,4 @@
- <?php
+<?php
 require_once __DIR__ . '/db_connect.php';
 session_start();
 
@@ -7,24 +7,35 @@ error_log("Iniciando register.php");
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $first_name = trim($_POST['first_name'] ?? '');
     $last_name = trim($_POST['last_name'] ?? '');
+    $address = trim($_POST['address'] ?? '');
+    $phone = trim($_POST['phone'] ?? '');
     $email = strtolower(trim($_POST['email'] ?? ''));
     $password = $_POST['password'] ?? '';
 
-    if (empty($first_name) || empty($last_name) || empty($email) || empty($password)) {
+    // Validações
+    if (empty($first_name) || empty($last_name) || empty($address) || empty($phone) || empty($email) || empty($password)) {
         $error = "Preencha todos os campos!";
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = "E-mail inválido!";
     } elseif (strlen($password) < 8) {
         $error = "Senha deve ter pelo menos 8 caracteres!";
+    } elseif (!preg_match('/^[0-9]{8,15}$/', $phone)) {
+        $error = "Telefone deve ter entre 8 e 15 dígitos!";
     } else {
+        // Verifica se o e-mail já existe
         $check_email = db_query("users?email=eq.$email");
+        error_log("Resultado da verificação de email: " . json_encode($check_email));
+
         if (is_array($check_email) && !empty($check_email)) {
             $error = "E-mail já registrado!";
         } else {
+            // Gera o hash da senha
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
             $data = [
                 'first_name' => $first_name,
                 'last_name' => $last_name,
+                'address' => $address,
+                'phone' => $phone,
                 'email' => $email,
                 'password' => $hashed_password,
                 'created_at' => date('c'),
@@ -32,6 +43,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'is_active' => true,
                 'role' => 'user'
             ];
+
+            // Insere o usuário no Supabase
             $result = db_query("users", $data, "POST");
             error_log("Resultado da inserção: " . json_encode($result));
 
@@ -185,7 +198,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="container">
         <h2>Sign Up - Nick Dwtyay, Ltd.</h2>
         <?php if (isset($error)) echo "<p class='error'>$error</p>"; ?>
-       <form method="POST" novalidate>
+        <form method="POST" novalidate>
             <div class="form-group">
                 <label>Nome:</label>
                 <input type="text" name="first_name" value="<?php echo htmlspecialchars($first_name ?? ''); ?>" required>
@@ -223,7 +236,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         "Americas and Middle East Cybersecurity Software and Technology Solutions Development Company."<br>
         <a href="https://www.nickdwtyay.com.br/Terms.html">Terms</a> |
         <a href="https://www.nickdwtyay.com.br/Privacy_Policy.html">Privacy Policy</a> |
-        All Rights Reserved | © 2006 - 2025 NICK DWTYAY
+        All Rights Reserved | © 2006 - 2022 NICK DWTYAY
     </footer>
 </body>
 </html>
