@@ -52,5 +52,11 @@ if (!is_array($user) || empty($user) || !isset($user[0]['id']) || $user[0]['id']
             <a href="/logout.php">Sair</a>
         <?php endif; ?>
     </div>
-</body>
+<div><footer class="footer">
+    NICK DWTYAY, LTD.<br>
+    "Americas and Middle East Cybersecurity Software and Technology Solutions Development Company."<br>
+    <a href="/Terms.php">Terms</a> |
+    <a href="/Privacy_Policy.php">Privacy Policy</a> |
+    All Rights Reserved | © 2006 - 2025 Nick Dwtyay, Ltd.
+</footer></div></div></body>
 </html>
