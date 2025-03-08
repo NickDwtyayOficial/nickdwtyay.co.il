@@ -38,11 +38,11 @@ session_start();
         <p>Somos uma empresa dedicada a soluções de cibersegurança desde 2006.</p>
     </div>
     <footer class="footer">
-        NICK DWTYAY LTD<br>
-        "Americas and Middle East Cybersecurity Software and Technology Solutions Development Company."<br>
-        <a href="https://www.nickdwtyay.com.br/Terms.html">Terms</a> |
-        <a href="https://www.nickdwtyay.com.br/Privacy_Policy.html">Privacy Policy</a> |
-        All Rights Reserved | © 2006 - 2025 NICK DWTYAY
-    </footer>
+    NICK DWTYAY, LTD.<br>
+    "Americas and Middle East Cybersecurity Software and Technology Solutions Development Company."<br>
+    <a href="/Terms.php">Terms</a> |
+    <a href="/Privacy_Policy.php">Privacy Policy</a> |
+    All Rights Reserved | © 2006 - 2025 Nick Dwtyay, Ltd.
+</footer>
 </body>
 </html>
