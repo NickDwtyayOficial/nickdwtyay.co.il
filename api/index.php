@@ -83,11 +83,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <p>Não tem conta? <a href="/register.php">Crie uma</a></p>
     </div>
     <footer class="footer">
-        NICK DWTYAY, LTD.<br>
-        "Americas and Middle East Cybersecurity Software and Technology Solutions Development Company."<br>
-        <a href="https://www.nickdwtyay.com.br/Terms.html">Terms</a> |
-        <a href="https://www.nickdwtyay.com.br/Privacy_Policy.html">Privacy Policy</a> |
-        All Rights Reserved | © 2006 - 2025 Nick Dwtyay, Ltd.
-    </footer>
+    NICK DWTYAY, LTD.<br>
+    "Americas and Middle East Cybersecurity Software and Technology Solutions Development Company."<br>
+    <a href="/Terms.php">Terms</a> |
+    <a href="/Privacy_Policy.php">Privacy Policy</a> |
+    All Rights Reserved | © 2006 - 2025 Nick Dwtyay, Ltd.
+</footer>
 </body>
 </html>
