@@ -10,18 +10,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = "Digite um e-mail válido!";
     } else {
-        // Verifica se o e-mail existe
         $user = db_query("users?email=eq.$email&is_active=eq.true");
-        error_log("Resultado da busca por email: " . json_encode($user));
+        error_log("Busca por email: " . json_encode($user));
 
         if (is_array($user) && !empty($user)) {
             $user_id = $user[0]['id'];
-
-            // Gera um token único
-            $token = bin2hex(random_bytes(16)); // 32 caracteres hex
+            $token = bin2hex(random_bytes(16)); // Token de 32 caracteres
             $expires_at = date('c', strtotime('+1 hour')); // Expira em 1 hora
 
-            // Salva o token numa tabela de redefinição
             $reset_data = [
                 'user_id' => $user_id,
                 'token' => $token,
@@ -29,23 +25,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'created_at' => date('c')
             ];
             $result = db_query("password_resets", $reset_data, "POST");
-            error_log("Resultado da inserção do token: " . json_encode($result));
+            error_log("Inserção do token: " . json_encode($result));
 
             if (is_array($result) && !empty($result)) {
-                // Envia o e-mail (exemplo simples com mail())
                 $reset_link = "https://nickdwtyay.com.br/reset_password.php?token=$token";
                 $subject = "Recuperação de Senha - Nick Dwtyay, Ltd.";
                 $message = "Clique no link pra redefinir sua senha: $reset_link\nO link expira em 1 hora.";
                 $headers = "From: no-reply@nickdwtyay.com.br";
 
                 if (mail($email, $subject, $message, $headers)) {
-                    $success = "Um link de redefinição foi enviado pro seu e-mail!";
+                    $success = "Link de redefinição enviado pro seu e-mail!";
                 } else {
                     $error = "Erro ao enviar o e-mail. Tente novamente.";
                     error_log("Falha ao enviar e-mail para $email");
                 }
             } else {
-                $error = "Erro ao gerar o token de redefinição!";
+                $error = "Erro ao gerar o token!";
             }
         } else {
             $error = "E-mail não encontrado!";
@@ -59,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <link rel="icon" href="dwtyay_favicon.gif" type="image/gif">
     <title>Recuperar Senha - Nick Dwtyay, Ltd.</title>
-    <style>
+      <style>
         body { font-family: Arial, sans-serif; margin: 0; padding: 0; height: 100vh; overflow-x: hidden; }
         .background-image { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: url('https://codingdatatoday.co/wp-content/uploads/2024/06/Os-Principais-Tipos-de-Analise-de-Dados-e-Suas-Aplicacoes.webp'); background-size: cover; background-position: center; background-repeat: no-repeat; z-index: -1; filter: brightness(70%); }
         .top-nav { display: flex; justify-content: center; background-color: rgba(51, 51, 51, 0.9); padding: 10px 0; position: relative; z-index: 1; }
@@ -78,19 +73,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         .footer a { color: #fff; text-decoration: none; margin: 0 5px; }
         .footer a:hover { text-decoration: underline; }
     </style>
-    <script>
-        window.va = window.va || function (...args) { (window.vaq = window.vaq || []).push(args); };
-    </script>
-    <script src="/_vercel/insights/script.js" defer></script>
 </head>
 <body>
-    <div class="background-image"></div>
+   <div class="background-image"></div>
     <div class="top-nav">
         <a href="/home.php" class="nav-link">Home</a>
         <a href="/videos.php" class="nav-link">Videos</a>
         <a href="/about.php" class="nav-link">About</a>
         <a href="/contact.php" class="nav-link">Contact</a>
     </div>
+
     <div class="container">
         <h2>Recuperar Senha</h2>
         <?php if (isset($error)) echo "<p class='error'>$error</p>"; ?>
@@ -101,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <input type="email" name="email" value="<?php echo htmlspecialchars($email ?? ''); ?>" required>
             </div>
             <div class="form-group">
-                <button type="submit">Enviar Link de Redefinição</button>
+                <button type="submit">Enviar Link</button>
             </div>
         </form>
         <p><a href="/">Voltar ao Login</a></p>
@@ -109,9 +101,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <footer class="footer">
         NICK DWTYAY, LTD.<br>
         "Americas and Middle East Cybersecurity Software and Technology Solutions Development Company."<br>
-        <a href="https://www.nickdwtyay.com.br/Terms.html">Terms</a> |
-        <a href="https://www.nickdwtyay.com.br/Privacy_Policy.html">Privacy Policy</a> |
-        All Rights Reserved | © 2006 - 2025 Nick Dwtyay, Ltd.
+        <a href="/Terms.php">Terms</a> |
+        <a href="/Privacy_Policy.php">Privacy Policy</a> |
+        All Rights Reserved | © 2006 - 2022 Nick Dwtyay, Ltd.
     </footer>
+    <script>
+        window.va = window.va || function (...args) { (window.vaq = window.vaq || []).push(args); };
+    </script>
+    <script src="/_vercel/insights/script.js" defer></script>
 </body>
 </html>
+
