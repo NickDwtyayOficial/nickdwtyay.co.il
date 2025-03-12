@@ -1,12 +1,12 @@
 <?php
 require_once __DIR__ . '/vendor/autoload.php'; // Carrega o Composer
-require_once __DIR__ . '/db_connect.php';
+require_once __DIR__ . '/db_connect.php'; // Inclui a função db_query
 
 use Dotenv\Dotenv;
 
-// Carrega o .env apenas localmente
-if (file_exists(__DIR__ . '/../.env')) {
-    $dotenv = Dotenv::createImmutable(__DIR__ . '/..');
+// Carrega o .env apenas localmente (no Vercel, as variáveis já estarão disponíveis)
+if (file_exists(__DIR__ . '/.env')) {
+    $dotenv = Dotenv::createImmutable(__DIR__);
     $dotenv->load();
 }
 
