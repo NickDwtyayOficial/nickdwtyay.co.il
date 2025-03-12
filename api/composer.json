@@ -1,8 +1,13 @@
-
 {
-    "name": "nickdwtyay/v3/api",
-    "description": "API for nickdwtyay.co.il",
+    "name": "nickdwtyay/api",
+    "description": "API do projeto Nick Dwtyay",
     "require": {
+        "php": "^7.2.5 || ^8.0",
         "vlucas/phpdotenv": "^5.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "NickDwtyay\\Api\\": "src/"
+        }
     }
 }
