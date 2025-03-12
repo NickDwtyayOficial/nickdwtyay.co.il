@@ -4,8 +4,8 @@ require_once __DIR__ . '/vendor/autoload.php'; // Carrega o Composer
 use Dotenv\Dotenv;
 
 // Carrega o .env apenas localmente (no Vercel, as variáveis já estarão disponíveis)
-if (file_exists(__DIR__ . '/../.env')) {
-    $dotenv = Dotenv::createImmutable(__DIR__ . '/..');
+if (file_exists(__DIR__ . '/.env')) {
+    $dotenv = Dotenv::createImmutable(__DIR__);
     $dotenv->load();
 }
 
