@@ -86,15 +86,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <input type="email" name="email" value="<?php echo htmlspecialchars($email ?? ''); ?>" required>
             </div>
             <div class="form-group">
-                <label>Senha:</label>
+                <label>Password:</label>
                 <input type="password" name="password" required>
             </div>
             <div class="form-group">
                 <button type="submit">Sign In</button>
             </div>
         </form>
-        <p><a href="/recover_password.php">Esqueceu a senha?</a></p>
-        <p>Não tem conta? <a href="/register.php">Crie uma</a></p>
+        <p><a href="/recover_password.php">Forgot your password?</a></p>
+        <p>Don't have an account? <a href="/register.php">Create account</a></p>
     </div>
     <footer class="footer">
     NICK DWTYAY, LTD.<br>
