@@ -2,27 +2,27 @@
   "version": 2,
   "builds": [
     {
-      "src": "v3/api/*.php",
+      "src": "api/*.php",
       "use": "@vercel/php",
       "config": {
         "commands": [
-          "cd v3/api && composer install --no-dev --optimize-autoloader"
+          "composer install --no-dev --optimize-autoloader"
         ]
       }
     }
   ],
   "rewrites": [
-    {"source": "/home.php", "destination": "/v3/api/home.php"},
-    {"source": "/videos.php", "destination": "/v3/api/videos.php"},
-    {"source": "/about.php", "destination": "/v3/api/about.php"},
-    {"source": "/contact.php", "destination": "/v3/api/contact.php"},
-    {"source": "/register.php", "destination": "/v3/api/register.php"},
-    {"source": "/profile.php", "destination": "/v3/api/profile.php"},
-    {"source": "/logout.php", "destination": "/v3/api/logout.php"},
-    {"source": "/recover_password.php", "destination": "/v3/api/recover_password.php"},
-    {"source": "/reset_password.php", "destination": "/v3/api/reset_password.php"},
-    {"source": "/Terms.php", "destination": "/v3/api/Terms.php"},
-    {"source": "/Privacy_Policy.php", "destination": "/v3/api/Privacy_Policy.php"},
-    {"source": "/(.*)", "destination": "/v3/api/404.php"}
+    {"source": "/home.php", "destination": "/api/home.php"},
+    {"source": "/videos.php", "destination": "/api/videos.php"},
+    {"source": "/about.php", "destination": "/api/about.php"},
+    {"source": "/contact.php", "destination": "/api/contact.php"},
+    {"source": "/register.php", "destination": "/api/register.php"},
+    {"source": "/profile.php", "destination": "/api/profile.php"},
+    {"source": "/logout.php", "destination": "/api/logout.php"},
+    {"source": "/recover_password.php", "destination": "/api/recover_password.php"},
+    {"source": "/reset_password.php", "destination": "/api/reset_password.php"},
+    {"source": "/Terms.php", "destination": "/api/Terms.php"},
+    {"source": "/Privacy_Policy.php", "destination": "/api/Privacy_Policy.php"},
+    {"source": "/(.*)", "destination": "/api/404.php"}
   ]
 }
