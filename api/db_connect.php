@@ -1,7 +1,7 @@
 <?php
 function db_query($query, $params = [], $method = null) {
-    $supabase_url = getenv("SUPABASE_URL") ?: "https://seu-projeto.supabase.co"; // Substitua pelo seu URL real
-    $supabase_key = getenv("SUPABASE_KEY") ?: "sua-chave-anon"; // Substitua pela sua chave anon real
+    $supabase_url = getenv("SUPABASE_URL") ?: "https://zeqmcwtwhjzqhcvfsvli.supabase.co"; // Substitua pelo seu URL real
+    $supabase_key = getenv("SUPABASE_KEY") ?: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InplcW1jd3R3aGp6cWhjdmZzdmxpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDExMjcxOTgsImV4cCI6MjA1NjcwMzE5OH0.p7Tchk4aVnSNmfrIMwQLdvwZRQvGTQUz0Du8W56MkXM"; // Substitua pela sua chave anon real
     $url = $supabase_url . '/rest/v1/' . $query;
 
     $headers = [
