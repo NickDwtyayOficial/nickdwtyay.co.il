@@ -1,0 +1,7 @@
+{
+    "name": "nickdwtyay/v3/api",
+    "description": "API for nickdwtyay.co.il",
+    "require": {
+        "vlucas/phpdotenv": "^5.6"
+    }
+}
