@@ -20,8 +20,10 @@ function db_query($query, $params = [], $method = null) {
         return ["error" => "Configuração do Supabase inválida"];
     }
 
-    $url = $supabase_url . '/rest/v1/' . $query;
+    // Monta a URL completa para a requisição
+    $url = rtrim($supabase_url, '/') . '/rest/v1/' . ltrim($query, '/');
 
+    // Configura os headers da requisição
     $headers = [
         "apikey: $supabase_key",
         "Authorization: Bearer $supabase_key",
@@ -29,6 +31,7 @@ function db_query($query, $params = [], $method = null) {
         "Prefer: return=representation"
     ];
 
+    // Configura as opções da requisição HTTP
     $options = [
         "http" => [
             "method" => $method ?: (empty($params) ? "GET" : "POST"),
@@ -37,18 +40,24 @@ function db_query($query, $params = [], $method = null) {
         ]
     ];
 
+    // Adiciona o corpo da requisição se houver parâmetros
     if (!empty($params)) {
         $options["http"]["content"] = json_encode($params);
     }
 
+    // Cria o contexto da requisição
     $context = stream_context_create($options);
+
+    // Faz a requisição ao Supabase
     $response = file_get_contents($url, false, $context);
 
+    // Verifica se a requisição foi bem-sucedida
     if ($response === false) {
         error_log("Erro na requisição ao Supabase: " . print_r($http_response_header, true));
         return ["error" => "Falha na requisição ao Supabase", "headers" => $http_response_header];
     }
 
+    // Retorna a resposta decodificada
     return json_decode($response, true);
 }
 ?>
