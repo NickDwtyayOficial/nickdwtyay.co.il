@@ -53,7 +53,7 @@
     },
     {
       "source": "/(.*)",
-      "destination": "/api/index.php"
+      "destination": "/api/404.php"
     }
   ]
 }
