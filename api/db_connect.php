@@ -1,7 +1,25 @@
 <?php
+require_once __DIR__ . '/../vendor/autoload.php'; // Carrega o Composer
+
+use Dotenv\Dotenv;
+
+// Carrega o .env apenas localmente (no Vercel, as variáveis já estarão disponíveis)
+if (file_exists(__DIR__ . '/../.env')) {
+    $dotenv = Dotenv::createImmutable(__DIR__ . '/..');
+    $dotenv->load();
+}
+
 function db_query($query, $params = [], $method = null) {
-    $supabase_url = getenv("SUPABASE_URL") ?: "54345"; // Substitua pelo seu URL real
-    $supabase_key = getenv("SUPABASE_KEY") ?: "flkgjflkgjfdg"; // Substitua pela sua chave anon real
+    // Obtém as variáveis de ambiente
+    $supabase_url = getenv('SUPABASE_URL');
+    $supabase_key = getenv('SUPABASE_PUBLIC_KEY'); // Alinhado com o .env que você criou
+
+    // Verifica se as variáveis estão definidas
+    if (!$supabase_url || !$supabase_key) {
+        error_log("Erro: SUPABASE_URL ou SUPABASE_PUBLIC_KEY não definidos.");
+        return ["error" => "Configuração do Supabase inválida"];
+    }
+
     $url = $supabase_url . '/rest/v1/' . $query;
 
     $headers = [
