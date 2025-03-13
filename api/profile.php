@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/db_connect.php';
 session_start();
+require_once __DIR__ . '/db_connect.php';
 
 // Ativar logs de erro para depuração
 ini_set('display_errors', 1);
