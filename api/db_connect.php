@@ -61,7 +61,11 @@ function db_query($query, $params = [], $method = null) {
         error_log("Erro na requisição ao Supabase: " . print_r($http_response_header, true));
         return ["error" => "Falha na requisição ao Supabase", "headers" => $http_response_header];
     }
-
+$response = file_get_contents($url, false, $context);
+if ($response === false) {
+    error_log("Erro na requisição ao Supabase: " . print_r($http_response_header, true));
+    return ["error" => "Falha na requisição ao Supabase", "headers" => $http_response_header];
+}
     // Retorna a resposta decodificada
     return json_decode($response, true);
 }
