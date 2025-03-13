@@ -5,101 +5,71 @@ use Dotenv\Dotenv;
 
 // Carrega o .env apenas localmente (no Vercel, as variáveis já estarão disponíveis)
 if (file_exists(__DIR__ . '/.env')) {
-    $dotenv = Dotenv::createImmutable(__DIR__);
-    $dotenv->load();
+$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv->load();
 }
+
+// Obtém as variáveis de ambiente uma vez, fora da função
 $supabase_url = getenv('SUPABASE_URL');
 $supabase_key = getenv('SUPABASE_PUBLIC_KEY');
 if (!$supabase_url || !$supabase_key) {
-    error_log("Erro: SUPABASE_URL ou SUPABASE_PUBLIC_KEY não definidos.");
-    return ["error" => "Configuração do Supabase inválida"];
+error_log("Erro: SUPABASE_URL ou SUPABASE_PUBLIC_KEY não definidos no início do script.");
+// Não retornamos aqui, pois estamos fora da função; apenas logamos
 }
+
 function db_query($query, $params = [], $method = null) {
-    // Obtém as variáveis de ambiente
-    $supabase_url = getenv('SUPABASE_URL');
-    $supabase_key = getenv('SUPABASE_PUBLIC_KEY'); // Alinhado com o .env que você criou
+// Usa as variáveis globais definidas acima
+global $supabase_url, $supabase_key;
 
-    // Verifica se as variáveis estão definidas
-    if (!$supabase_url || !$supabase_key) {
-        error_log("Erro: SUPABASE_URL ou SUPABASE_PUBLIC_KEY não definidos.");
-        return ["error" => "Configuração do Supabase inválida"];
-    }
+// Loga as variáveis para depuração
+error_log("Variáveis Supabase - URL: $supabase_url, Key: " . substr($supabase_key, 0, 10) . "...");
 
-    // Monta a URL completa para a requisição
-    $url = rtrim($supabase_url, '/') . '/rest/v1/' . ltrim($query, '/');
+// Verifica se as variáveis estão definidas
+if (!$supabase_url || !$supabase_key) {
+error_log("Erro: SUPABASE_URL ou SUPABASE_PUBLIC_KEY não definidos na função.");
+return ["error" => "Configuração do Supabase inválida"];
+}
 
-    // Configura os headers da requisição
-    $headers = [
-        "apikey: $supabase_key",
-        "Authorization: Bearer $supabase_key",
-        "Content-Type: application/json",
-        "Prefer: return=representation"
-    ];
+// Monta a URL completa
+$url = rtrim($supabase_url, '/') . '/rest/v1/' . ltrim($query, '/');
 
-    // Configura as opções da requisição HTTP
-    $options = [
-        "http" => [
-            "method" => $method ?: (empty($params) ? "GET" : "POST"),
-            "header" => implode("\r\n", $headers),
-            "ignore_errors" => true
-        ]
-    ];
+// Configura os headers
+$headers = [
+"apikey: $supabase_key",
+"Authorization: Bearer $supabase_key",
+"Content-Type: application/json",
+"Prefer: return=representation"
+];
 
-    // Adiciona o corpo da requisição se houver parâmetros
-    if (!empty($params)) {
-        $options["http"]["content"] = json_encode($params);
-    }
+// Configura as opções da requisição
+$options = [
+"http" => [
+"method" => $method ?: (empty($params) ? "GET" : "POST"),
+"header" => implode("\r\n", $headers),
+"ignore_errors" => true
+]
+];
 
-    // Cria o contexto da requisição
-    $context = stream_context_create($options);
+// Adiciona o corpo da requisição se houver parâmetros
+if (!empty($params)) {
+$options["http"]["content"] = json_encode($params);
+}
 
-    // Faz a requisição ao Supabase
-    $response = file_get_contents($url, false, $context);
+// Cria o contexto da requisição
+$context = stream_context_create($options);
 
-    // Verifica se a requisição foi bem-sucedida
-    if ($response === false) {
-        error_log("Erro na requisição ao Supabase: " . print_r($http_response_header, true));
-        return ["error" => "Falha na requisição ao Supabase", "headers" => $http_response_header];
-    }
+// Loga a tentativa de consulta
+error_log("Tentando consultar Supabase: URL=$url, Method=" . ($method ?: (empty($params) ? "GET" : "POST")));
+
+// Faz a requisição ao Supabase
 $response = file_get_contents($url, false, $context);
+
+// Verifica se houve falha
 if ($response === false) {
-    error_log("Erro na requisição ao Supabase: " . print_r($http_response_header, true));
-    return ["error" => "Falha na requisição ao Supabase", "headers" => $http_response_header];
+error_log("Erro na requisição ao Supabase - URL: $url, Headers: " . print_r($http_response_header, true));
+return ["error" => "Falha na requisição ao Supabase", "headers" => $http_response_header];
 }
-    // Retorna a resposta decodificada
-    return json_decode($response, true);
-}function db_query($query, $params = [], $method = null) {
-    $supabase_url = getenv('SUPABASE_URL');
-    $supabase_key = getenv('SUPABASE_PUBLIC_KEY');
-    error_log("Variáveis Supabase - URL: $supabase_url, Key: " . substr($supabase_key, 0, 10) . "...");
-    if (!$supabase_url || !$supabase_key) {
-        error_log("Erro: SUPABASE_URL ou SUPABASE_PUBLIC_KEY não definidos.");
-        return ["error" => "Configuração do Supabase inválida"];
-    }
-    $url = $supabase_url . '/rest/v1/' . $query;
-    $headers = [
-        "apikey: $supabase_key",
-        "Authorization: Bearer $supabase_key",
-        "Content-Type: application/json",
-        "Prefer: return=representation"
-    ];
-    $options = [
-        "http" => [
-            "method" => $method ?: (empty($params) ? "GET" : "POST"),
-            "header" => implode("\r\n", $headers),
-            "ignore_errors" => true
-        ]
-    ];
-    if (!empty($params)) {
-        $options["http"]["content"] = json_encode($params);
-    }
-    $context = stream_context_create($options);
-    error_log("Tentando consultar Supabase: URL=$url, Method=" . ($method ?: (empty($params) ? "GET" : "POST")));
-    $response = file_get_contents($url, false, $context);
-    if ($response === false) {
-        error_log("Erro na requisição ao Supabase - URL: $url, Headers: " . print_r($http_response_header, true));
-        return ["error" => "Falha na requisição ao Supabase", "headers" => $http_response_header];
-    }
-    return json_decode($response, true);
+
+// Retorna a resposta decodificada
+return json_decode($response, true);
 }
-?>  
