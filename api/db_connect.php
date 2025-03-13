@@ -8,7 +8,12 @@ if (file_exists(__DIR__ . '/.env')) {
     $dotenv = Dotenv::createImmutable(__DIR__);
     $dotenv->load();
 }
-
+$supabase_url = getenv('SUPABASE_URL');
+$supabase_key = getenv('SUPABASE_PUBLIC_KEY');
+if (!$supabase_url || !$supabase_key) {
+    error_log("Erro: SUPABASE_URL ou SUPABASE_PUBLIC_KEY não definidos.");
+    return ["error" => "Configuração do Supabase inválida"];
+}
 function db_query($query, $params = [], $method = null) {
     // Obtém as variáveis de ambiente
     $supabase_url = getenv('SUPABASE_URL');
