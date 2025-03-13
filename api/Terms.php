@@ -1,7 +1,6 @@
 <?php
 session_start(); // Inclui sessão pra consistência com outras páginas
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
