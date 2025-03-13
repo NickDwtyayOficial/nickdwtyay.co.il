@@ -1,4 +1,6 @@
-<?php
+<?php //Inicia a sessão
+session_start(); 
+
 require_once __DIR__ . '/vendor/autoload.php'; // Carrega o Composer
 require_once __DIR__ . '/db_connect.php'; // Inclui a função db_query
 
@@ -9,9 +11,6 @@ if (file_exists(__DIR__ . '/.env')) {
     $dotenv = Dotenv::createImmutable(__DIR__);
     $dotenv->load();
 }
-
-//Inicia a sessão
-session_start();
 
 if (isset($_SESSION['user_id'])) {
     header("Location: /profile.php");
