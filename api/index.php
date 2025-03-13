@@ -10,7 +10,7 @@ if (file_exists(__DIR__ . '/.env')) {
     $dotenv->load();
 }
 
-// Inicia a sessão
+//Inicia a sessão
 session_start();
 
 if (isset($_SESSION['user_id'])) {
