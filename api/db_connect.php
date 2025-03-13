@@ -27,6 +27,10 @@ error_log("Variáveis Supabase - URL: $supabase_url, Key: " . substr($supabase_k
 // Verifica se as variáveis estão definidas
 if (!$supabase_url || !$supabase_key) {
 error_log("Erro: SUPABASE_URL ou SUPABASE_PUBLIC_KEY não definidos na função.");
+
+  error_log("SUPABASE_URL: " . $supabase_url);
+error_log("SUPABASE_PUBLIC_KEY: " . substr($supabase_key, 0, 10) . "...");
+ 
 return ["error" => "Configuração do Supabase inválida"];
 }
 
