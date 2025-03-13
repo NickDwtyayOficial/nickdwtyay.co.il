@@ -2,7 +2,6 @@
 require_once __DIR__ . '/db_connect.php';
 session_start();
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
