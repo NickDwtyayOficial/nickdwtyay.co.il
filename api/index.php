@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Consulta ao Supabase
         $user = db_query("users?email=eq.$email&is_active=eq.true&select=id,password");
         if (isset($user['error'])) {
-            $error = "Erro ao consultar o banco de dados!";
+            $error = "אנחנו עוברים תחזוקה!";
             error_log("Erro no Supabase: " . $user['error']);
         } elseif (is_array($user) && !empty($user) && password_verify($password, $user[0]['password'])) {
             $_SESSION['user_id'] = $user[0]['id'];
