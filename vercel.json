@@ -1,27 +1,14 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "api/*.php",
-      "use": "vercel-php@0.7.3"
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/register.php",
-      "destination": "/api/register.php"
+    "version": 2,
+    "functions": {
+        "api/*.php": {
+            "runtime": "vercel-php@0.6.0"
+        }
     },
-    {
-      "source": "/profile.php",
-      "destination": "/api/profile.php"
-    },
-    {
-      "source": "/logout.php",
-      "destination": "/api/logout.php"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/api/index.php"
-    }
-  ]
+    "routes": [
+        {
+            "src": "/api/(.*)",
+            "dest": "/api/$1"
+        }
+    ]
 }
