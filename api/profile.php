@@ -1,40 +1,34 @@
 <?php
-session_start(); // Inicia a sessão
+session_start();
 require_once __DIR__ . '/db_connect.php';
 
-// Ativar logs de erro para depuração
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// Verificar cookie como fallback para sessão no Vercel
 if (isset($_COOKIE['user_id']) && !isset($_SESSION['user_id'])) {
     $_SESSION['user_id'] = $_COOKIE['user_id'];
-    error_log("Sessão restaurada a partir do cookie - user_id: " . $_SESSION['user_id']);
+    error_log("Sessão restaurada via cookie - user_id: " . $_SESSION['user_id']);
 }
 
-// Log da sessão para depuração
 error_log("Iniciando profile.php - Sessão: " . json_encode($_SESSION));
 
-// Verificar se a sessão do usuário está ativa e válida
-if (!isset($_SESSION['user_id']) || !is_numeric($_SESSION['user_id'])) {
-    error_log("Erro: Sessão não encontrada ou ID de usuário inválido. Redirecionando para login.");
-    header("Location: /login.php"); // Ajustado para /login.php como no original
+// Verifica se a sessão existe e não está vazia
+if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
+    error_log("Erro: Sessão não encontrada ou ID inválido. Redirecionando.");
+    header("Location: /");
     exit();
 }
 
-$user_id = (int) $_SESSION['user_id'];
+$user_id = $_SESSION['user_id']; // UUID como string
 error_log("Buscando usuário com ID: $user_id");
 
-// Buscar usuário no banco de dados
 $user = db_query("users?id=eq.$user_id&is_active=eq.true");
 error_log("Resultado da query: " . json_encode($user));
 
-// Verificar se a consulta retornou um usuário válido
 if (!$user || !is_array($user) || count($user) === 0 || !isset($user[0]['id']) || $user[0]['id'] !== $user_id) {
-    error_log("Erro: Usuário não encontrado ou sessão inválida. Destruindo sessão.");
+    error_log("Erro: Usuário não encontrado ou sessão inválida.");
     session_destroy();
-    // Remove o cookie se existir
     if (isset($_COOKIE['user_id'])) {
         setcookie('user_id', '', time() - 3600, '/', '', true, true);
     }
