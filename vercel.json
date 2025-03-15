@@ -1,22 +1,62 @@
 {
-    "version": 2,
-    "functions": {
-        "api/*.php": {
-            "runtime": "vercel-php@0.6.0"
-        }
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/*.php",
+      "use": "vercel-php@0.6.0",
+      "config": {
+        "installCommand": "composer install --no-dev --optimize-autoloader"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/home.php",
+      "dest": "/api/home.php"
     },
-    "routes": [
-        {
-            "src": "/api/(.*)",
-            "dest": "/api/$1"
-        },
-        {
-            "src": "/profile.php",
-            "dest": "/api/profile.php"
-        },
-        {
-            "src": "/login.php",
-            "dest": "/api/index.php"
-        }
-    ]
+    {
+      "src": "/videos.php",
+      "dest": "/api/videos.php"
+    },
+    {
+      "src": "/about.php",
+      "dest": "/api/about.php"
+    },
+    {
+      "src": "/contact.php",
+      "dest": "/api/contact.php"
+    },
+    {
+      "src": "/register.php",
+      "dest": "/api/register.php"
+    },
+    {
+      "src": "/profile.php",
+      "dest": "/api/profile.php"
+    },
+    {
+      "src": "/logout.php",
+      "dest": "/api/logout.php"
+    },
+    {
+      "src": "/recover_password.php",
+      "dest": "/api/recover_password.php"
+    },
+    {
+      "src": "/reset_password.php",
+      "dest": "/api/reset_password.php"
+    },
+    {
+      "src": "/Terms.php",
+      "dest": "/api/Terms.php"
+    },
+    {
+      "src": "/Privacy_Policy.php",
+      "dest": "/api/Privacy_Policy.php"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/api/index.php"
+    }
+  ]
 }
