@@ -1,0 +1,22 @@
+{
+    "version": 2,
+    "functions": {
+        "api/*.php": {
+            "runtime": "vercel-php@0.6.0"
+        }
+    },
+    "routes": [
+        {
+            "src": "/api/(.*)",
+            "dest": "/api/$1"
+        },
+        {
+            "src": "/profile.php",
+            "dest": "/api/profile.php"
+        },
+        {
+            "src": "/login.php",
+            "dest": "/api/index.php"
+        }
+    ]
+}
