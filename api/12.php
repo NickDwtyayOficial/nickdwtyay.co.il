@@ -46,6 +46,7 @@ $user_data = $user[0];
 error_log("Usuário carregado com sucesso: " . json_encode($user_data));
 ?>
 
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
