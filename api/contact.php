@@ -35,7 +35,7 @@ require_once __DIR__ . '/db_connect.php';
     </div>
     <div class="container">
         <h2>Contato</h2>
-        <p>Entre em contato conosco em: <a href="mailto:suporte@nickdwtyay.com.br">suporte@nickdwtyay.com.br</a></p>
+        <p>Entre em contato conosco em: <a href="mailto:contato@nickdwtyay.com.br">contato@nickdwtyay.com.br</a></p>
     </div>
     <footer class="footer">
     NICK DWTYAY, LTD.<br>
