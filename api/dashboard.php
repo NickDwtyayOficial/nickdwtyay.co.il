@@ -14,8 +14,22 @@ if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
 }
 
 $user_id = $_SESSION['user_id'];
+error_log("Dashboard acessado - user_id: $user_id");
+
+// Consulta ao Supabase
 $user = db_query("users?id=eq.$user_id&is_active=eq.true");
+error_log("Resposta do Supabase no dashboard: " . json_encode($user));
+
+if (isset($user['error'])) {
+    error_log("Erro ao consultar usuário: " . $user['error']);
+    session_destroy();
+    setcookie('user_id', '', time() - 3600, '/', '', true, true);
+    header("Location: /index.php?error=supabase_error");
+    exit();
+}
+
 if (!$user || count($user) === 0) {
+    error_log("Usuário não encontrado ou inativo para user_id: $user_id");
     session_destroy();
     setcookie('user_id', '', time() - 3600, '/', '', true, true);
     header("Location: /index.php?error=session_invalid");
@@ -23,6 +37,7 @@ if (!$user || count($user) === 0) {
 }
 
 $user_data = $user[0];
+error_log("Usuário carregado: " . json_encode($user_data));
 ?>
 
 <!DOCTYPE html>
