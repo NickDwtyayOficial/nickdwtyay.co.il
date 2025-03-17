@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once __DIR__ . '/db_connect.php'; // Seu arquivo com db_query
+require_once __DIR__ . '/db_connect.php'; 
 
 if (!isset($_SESSION['logado'])) {
     header("Location: login.php");
