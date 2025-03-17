@@ -35,6 +35,13 @@ function db_query($query, $params = [], $method = null) {
         "Content-Type: application/json",
         "Prefer: return=representation"
     ];
+
+    // Adicionar o user_id da sessão como cabeçalho, se existir
+    if (session_status() === PHP_SESSION_ACTIVE && isset($_SESSION['user_id'])) {
+        $headers[] = "user_id: " . $_SESSION['user_id'];
+        error_log("Adicionando user_id ao cabeçalho: " . $_SESSION['user_id']);
+    }
+
     $options = [
         "http" => [
             "method" => $method ?: (empty($params) ? "GET" : "POST"),
@@ -46,11 +53,4 @@ function db_query($query, $params = [], $method = null) {
         $options["http"]["content"] = json_encode($params);
     }
     $context = stream_context_create($options);
-    error_log("Tentando consultar Supabase: URL=$url, Method=" . ($method ?: (empty($params) ? "GET" : "POST")));
-    $response = file_get_contents($url, false, $context);
-    if ($response === false) {
-        error_log("Erro na requisição ao Supabase - URL: $url, Headers: " . print_r($http_response_header, true));
-        return ["error" => "Falha na requisição ao Supabase", "headers" => $http_response_header];
-    }
-    return json_decode($response, true);
-}
+    error_log("Tentando consultar Supabase: URL=$url, Method=" . ($
