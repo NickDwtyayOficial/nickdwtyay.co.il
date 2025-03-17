@@ -1,18 +1,15 @@
 <?php
 session_start();
-include 'db_connect.php';
+require_once __DIR__ . '/db_connect.php';
 
 if (!isset($_SESSION['logado'])) {
     header("Location: login.php");
     exit();
 }
 
+// Supondo que você tenha o ID do usuário na sessão ou no banco
 $email = $_SESSION['email'];
-$sql = "SELECT id FROM usuarios WHERE email = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("s", $email);
-$stmt->execute();
-$usuario = $stmt->get_result()->fetch_assoc();
+$usuario = db_query("usuarios?email=eq.$email")[0]; // Pega o usuário pelo e-mail
 $usuario_id = $usuario['id'];
 
 // Salvar novo post
@@ -21,19 +18,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $conteudo = filter_input(INPUT_POST, 'conteudo', FILTER_SANITIZE_STRING);
 
     if (!empty($conteudo)) {
-        $sql = "INSERT INTO posts (usuario_id, tipo, conteudo) VALUES (?, ?, ?)";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("iss", $usuario_id, $tipo, $conteudo);
-        $stmt->execute();
+        $params = [
+            "usuario_id" => $usuario_id,
+            "tipo" => $tipo,
+            "conteudo" => $conteudo
+        ];
+        db_query("posts", $params, "POST"); // Insere o post via REST
     }
 }
 
 // Buscar posts do usuário
-$sql = "SELECT * FROM posts WHERE usuario_id = ? ORDER BY data_criacao DESC";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $usuario_id);
-$stmt->execute();
-$posts = $stmt->get_result();
+$posts = db_query("posts?usuario_id=eq.$usuario_id&order=data_criacao.desc");
+
+if (isset($posts['error'])) {
+    die("Erro ao consultar posts: " . $posts['error']);
+}
 ?>
 
 <!DOCTYPE html>
@@ -56,7 +55,7 @@ $posts = $stmt->get_result();
         <a href="dashboard.php">Dashboard</a>
         <a href="loja.php">Loja</a>
         <a href="meus_posts.php">Meus Posts</a>
-        <a href="sair.php">Sair</a>
+        <a href="logout.php">Sair</a>
     </div>
     <div class="content">
         <h1>Meus Posts</h1>
@@ -71,7 +70,7 @@ $posts = $stmt->get_result();
         </form>
 
         <h2>Seus Posts</h2>
-        <?php while ($post = $posts->fetch_assoc()): ?>
+        <?php foreach ($posts as $post): ?>
             <div class="post">
                 <?php if ($post['tipo'] == 'texto'): ?>
                     <p><?php echo $post['conteudo']; ?></p>
@@ -82,7 +81,7 @@ $posts = $stmt->get_result();
                 <?php endif; ?>
                 <small>Postada em: <?php echo $post['data_criacao']; ?></small>
             </div>
-        <?php endwhile; ?>
+        <?php endforeach; ?>
     </div>
 </body>
 </html>
