@@ -1,7 +1,7 @@
 
 <?php
 session_start();
-include 'db_connect.php';
+require_once __DIR__ . "/db_connect.php';
 
 if (!isset($_SESSION['logado'])) {
     header("Location: login.php");
