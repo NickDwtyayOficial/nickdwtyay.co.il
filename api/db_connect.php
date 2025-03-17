@@ -42,9 +42,15 @@ function db_query($query, $params = [], $method = null) {
         error_log("Adicionando user_id ao cabeçalho: " . $_SESSION['user_id']);
     }
 
+    // Simplificar a definição do método
+    $http_method = $method;
+    if (!$http_method) {
+        $http_method = empty($params) ? "GET" : "POST";
+    }
+
     $options = [
         "http" => [
-            "method" => $method ?: (empty($params) ? "GET" : "POST"),
+            "method" => $http_method,
             "header" => implode("\r\n", $headers),
             "ignore_errors" => true
         ]
@@ -53,4 +59,14 @@ function db_query($query, $params = [], $method = null) {
         $options["http"]["content"] = json_encode($params);
     }
     $context = stream_context_create($options);
-    error_log("Tentando consultar Supabase: URL=$url, Method=" . ($
+    error_log("Tentando consultar Supabase: URL=$url, Method=$http_method");
+    $response = file_get_contents($url, false, $context);
+    if ($response === false) {
+        error_log("Erro na requisição ao Supabase - URL: $url, Headers: " . print_r($http_response_header, true));
+        return ["error" => "Falha na requisição ao Supabase", "headers" => $http_response_header];
+    }
+    $result = json_decode($response, true);
+    error_log("Resposta do Supabase: " . json_encode($result));
+    return $result;
+}
+?>
