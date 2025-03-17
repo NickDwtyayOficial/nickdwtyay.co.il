@@ -1,15 +1,18 @@
-
 <?php
 session_start();
-include 'db_connect.php';
+require_once __DIR__ . '/db_connect.php'; // Seu arquivo com db_query
 
 if (!isset($_SESSION['logado'])) {
     header("Location: login.php");
     exit();
 }
 
-$sql = "SELECT * FROM produtos LIMIT 4"; // Pega até 4 produtos
-$result = $conn->query($sql);
+// Consultar produtos no Supabase
+$result = db_query("produtos?limit=4"); // Pega até 4 produtos via REST
+
+if (isset($result['error'])) {
+    die("Erro ao consultar produtos: " . $result['error']);
+}
 ?>
 
 <!DOCTYPE html>
@@ -33,11 +36,11 @@ $result = $conn->query($sql);
         <a href="dashboard.php">Dashboard</a>
         <a href="loja.php">Loja</a>
         <a href="meus_posts.php">Meus Posts</a>
-        <a href="sair.php">Sair</a>
+        <a href="logout.php">Sair</a>
     </div>
     <div class="content">
         <h1>Loja Online</h1>
-        <?php while ($produto = $result->fetch_assoc()): ?>
+        <?php foreach ($result as $produto): ?>
             <div class="produto">
                 <img src="imagens/<?php echo $produto['imagem']; ?>" alt="<?php echo $produto['nome']; ?>">
                 <h2><?php echo $produto['nome']; ?></h2>
@@ -45,7 +48,7 @@ $result = $conn->query($sql);
                 <p>R$ <?php echo number_format($produto['preco'], 2, ',', '.'); ?></p>
                 <button>Comprar</button>
             </div>
-        <?php endwhile; ?>
+        <?php endforeach; ?>
     </div>
 </body>
 </html>
