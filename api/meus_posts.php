@@ -1,33 +1,30 @@
 <?php
 session_start();
-require_once __DIR__ . '/db_connect.php'; nhl
+require_once __DIR__ . '/db_connect.php';
 
 if (!isset($_SESSION['logado'])) {
     header("Location: login.php");
     exit();
 }
 
-// Supondo que você tenha o ID do usuário na sessão ou no banco
 $email = $_SESSION['email'];
-$usuario = db_query("usuarios?email=eq.$email")[0]; // Pega o usuário pelo e-mail
-$usuario_id = $usuario['id'];
+$usuario = db_query("users?email=eq.$email")[0]; // Mudado de "usuarios" para "users"
+$usuario_id = $usuario['id']; // Agora é um UUID
 
-// Salvar novo post
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $tipo = $_POST['tipo'];
     $conteudo = filter_input(INPUT_POST, 'conteudo', FILTER_SANITIZE_STRING);
 
     if (!empty($conteudo)) {
         $params = [
-            "usuario_id" => $usuario_id,
+            "usuario_id" => $usuario_id, // UUID
             "tipo" => $tipo,
             "conteudo" => $conteudo
         ];
-        db_query("posts", $params, "POST"); // Insere o post via REST
+        db_query("posts", $params, "POST");
     }
 }
 
-// Buscar posts do usuário
 $posts = db_query("posts?usuario_id=eq.$usuario_id&order=data_criacao.desc");
 
 if (isset($posts['error'])) {
