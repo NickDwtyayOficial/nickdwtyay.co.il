@@ -1,14 +1,13 @@
 <?php
 session_start();
-require_once __DIR__ . '/db_connect.php'; 
+require_once __DIR__ . '/db_connect.php';
 
 if (!isset($_SESSION['logado'])) {
     header("Location: login.php");
     exit();
 }
 
-// Consultar produtos no Supabase
-$result = db_query("produtos?limit=4"); // Pega até 4 produtos via REST
+$result = db_query("produtos?limit=4");
 
 if (isset($result['error'])) {
     die("Erro ao consultar produtos: " . $result['error']);
