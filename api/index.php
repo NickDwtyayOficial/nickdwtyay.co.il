@@ -15,7 +15,7 @@ if (file_exists(__DIR__ . '/.env')) {
 // Se o usuário já está logado, redireciona para profile.php
 if (isset($_SESSION['user_id'])) {
     error_log("Usuário já logado - user_id: " . $_SESSION['user_id']);
-    header("Location: /profile.php");
+    header("Location: /dashboard.php");
     exit();
 }
 
@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             session_write_close();
             
             error_log("Login bem-sucedido - Sessão iniciada com user_id: " . $_SESSION['user_id']);
-            header("Location: /profile.php");
+            header("Location: /dashboard.php");
             exit();
         } else {
             $error = "Credenciais inválidas!";
