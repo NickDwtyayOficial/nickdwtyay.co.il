@@ -55,16 +55,16 @@
       "dest": "/api/Privacy_Policy.php"
     },
     {
-      "src": "/(.*)",
+      "src": "/dashboard.php",
+      "dest": "/api/dashboard.php"
+    },
+    {
+      "src": "/index.php",
       "dest": "/api/index.php"
     },
-     "rewrites": [
     {
-      "source": "/dashboard.php",
-      "destination": "/api/dashboard.php"
+      "src": "/(.*)",
+      "dest": "/api/index.php"
     }
   ]
-    
-  ]
-  
 }
