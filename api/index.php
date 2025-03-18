@@ -15,10 +15,9 @@ if (file_exists(__DIR__ . '/.env')) {
 // Se o usuário já está logado, redireciona para profile.php
 if (isset($_SESSION['user_id'])) {
     error_log("Usuário já logado - user_id: " . $_SESSION['user_id']);
-    header("Location: /dashboard.php");
+    header("Location: /api/dashboard.php"); // Ajuste aqui
     exit();
 }
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = strtolower(trim($_POST['email'] ?? ''));
     $password = $_POST['password'] ?? '';
