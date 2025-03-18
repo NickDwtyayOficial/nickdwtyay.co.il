@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             session_write_close();
             
             error_log("Login bem-sucedido - Sessão iniciada com user_id: " . $_SESSION['user_id']);
-            header("Location: /dashboard.php");
+            header("Location: /api/dashboard.php");
             exit();
         } else {
             $error = "Credenciais inválidas!";
