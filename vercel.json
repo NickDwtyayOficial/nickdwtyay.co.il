@@ -57,6 +57,14 @@
     {
       "src": "/(.*)",
       "dest": "/api/index.php"
+    },
+     "rewrites": [
+    {
+      "source": "/dashboard.php",
+      "destination": "/api/dashboard.php"
     }
   ]
+    
+  ]
+  
 }
