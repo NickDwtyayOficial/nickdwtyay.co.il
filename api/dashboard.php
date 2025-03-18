@@ -2,6 +2,8 @@
 session_start();
 require_once __DIR__ . '/db_connect.php';
 
+error_log("Iniciando /api/dashboard.php - Versão corrigida: 18/03/2025");
+
 if (isset($_COOKIE['user_id']) && !isset($_SESSION['user_id'])) {
     $_SESSION['user_id'] = $_COOKIE['user_id'];
     error_log("Sessão restaurada via cookie - user_id: " . $_SESSION['user_id']);
@@ -9,7 +11,7 @@ if (isset($_COOKIE['user_id']) && !isset($_SESSION['user_id'])) {
 
 if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
     error_log("Sessão não encontrada. Redirecionando para login.");
-    header("Location: /index.php");
+    header("Location: /api/index.php");
     exit();
 }
 
@@ -24,7 +26,7 @@ if (isset($user['error'])) {
     error_log("Erro ao consultar usuário: " . $user['error']);
     session_destroy();
     setcookie('user_id', '', time() - 3600, '/', '', true, true);
-    header("Location: /index.php?error=supabase_error");
+    header("Location: /api/index.php?error=supabase_error");
     exit();
 }
 
@@ -32,7 +34,7 @@ if (!$user || count($user) === 0) {
     error_log("Usuário não encontrado ou inativo para user_id: $user_id");
     session_destroy();
     setcookie('user_id', '', time() - 3600, '/', '', true, true);
-    header("Location: /index.php?error=session_invalid");
+    header("Location: /api/index.php?error=session_invalid");
     exit();
 }
 
@@ -60,10 +62,10 @@ error_log("Usuário carregado: " . json_encode($user_data));
 <body>
     <div class="sidebar">
         <h3>Bem-vindo, <?php echo htmlspecialchars($user_data['first_name']); ?></h3>
-        <a href="/dashboard.php">Dashboard</a>
+        <a href="/api/dashboard.php">Dashboard</a>
         <a href="/loja.php">Loja</a>
         <a href="/meus_posts.php">Meus Posts</a>
-        <a href="/profile.php">Perfil</a>
+        <a href="/api/profile.php">Perfil</a>
         <a href="/logout.php">Sair</a>
     </div>
     <div class="content">
