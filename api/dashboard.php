@@ -2,7 +2,7 @@
 session_start();
 require_once __DIR__ . '/db_connect.php';
 
-error_log("Iniciando /api/dashboard.php - Versão corrigida: 18/03/2025 - Deploy Fix 23:37");
+error_log("Iniciando /api/dashboard.php - Versão corrigida: 18/03/2025 - Deploy Fix 23:44 FINAL");
 
 if (isset($_COOKIE['user_id']) && !isset($_SESSION['user_id'])) {
     $_SESSION['user_id'] = $_COOKIE['user_id'];
