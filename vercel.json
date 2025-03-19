@@ -22,6 +22,6 @@
     {"src": "/Terms.php", "dest": "/api/Terms.php"},
     {"src": "/Privacy_Policy.php", "dest": "/api/Privacy_Policy.php"},
     {"src": "/api/dashboard.php", "dest": "/api/dashboard.php"}, // Garantir que tá antes do catch-all
-    {"src": "/(.*)", "dest": "/api/index.php"} // Catch-all deve ser o último
+    {"src": "/(.*)", "dest": "/api/index.php"} // Catch-all deve ser o últim
   ]
 }
