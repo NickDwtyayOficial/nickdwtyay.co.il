@@ -34,7 +34,6 @@ if (!$user || !is_array($user) || count($user) === 0 || !isset($user[0]['id']) |
     header("Location: /login.php?error=session_invalid");
     exit();
 }
-
 $user_data = $user[0];
 error_log("Usuário carregado com sucesso: " . json_encode($user_data));
 ?>
