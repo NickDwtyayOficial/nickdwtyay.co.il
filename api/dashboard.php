@@ -47,6 +47,62 @@ error_log("Usuário carregado com sucesso: " . json_encode($user_data));
     <h1>Bem-vindo ao Dashboard!</h1>
     <p>ID do usuário: <?php echo htmlspecialchars($user_data['id']); ?></p>
     <p>Nome: <?php echo htmlspecialchars($user_data['first_name'] . ' ' . $user_data['last_name']); ?></p>
+    <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+        nav { background: #333; color: white; padding: 10px; }
+        nav ul { list-style: none; margin: 0; padding: 0; display: flex; }
+        nav ul li { margin-right: 20px; }
+        nav ul li a { color: white; text-decoration: none; }
+        .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; }
+        .products { display: flex; flex-wrap: wrap; gap: 20px; }
+        .product { border: 1px solid #ddd; padding: 10px; width: 200px; text-align: center; }
+        .product img { max-width: 100%; height: auto; }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/api/dashboard.php">Loja</a></li>
+            <li><a href="/api/profile.php">Meu Perfil</a></li>
+            <li><a href="/api/post.php">Postar</a></li>
+            <li><a href="/logout.php">Sair</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <h1>Bem-vindo à Loja, <?php echo htmlspecialchars($user_data['first_name']); ?>!</h1>
+        <div class="products">
+            <div class="product">
+                <img src="https://via.placeholder.com/150" alt="Produto 1">
+                <h3>Camiseta Básica</h3>
+                <p>R$ 29,90</p>
+                <button>Comprar</button>
+            </div>
+            <div class="product">
+                <img src="https://via.placeholder.com/150" alt="Produto 2">
+                <h3>Calça Jeans</h3>
+                <p>R$ 79,90</p>
+                <button>Comprar</button>
+            </div>
+            <div class="product">
+                <img src="https://via.placeholder.com/150" alt="Produto 3">
+                <h3>Tênis Casual</h3>
+                <p>R$ 129,90</p>
+                <button>Comprar</button>
+            </div>
+            <div class="product">
+                <img src="https://via.placeholder.com/150" alt="Produto 4">
+                <h3>Mochila Simples</h3>
+                <p>R$ 49,90</p>
+                <button>Comprar</button>
+            </div>
+        </div>
+    </div>
+
     <a href="/logout.php">Sair</a>
 </body>
 </html>
