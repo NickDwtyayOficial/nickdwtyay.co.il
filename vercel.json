@@ -10,61 +10,18 @@
     }
   ],
   "routes": [
-    {
-      "src": "/home.php",
-      "dest": "/api/home.php"
-    },
-    {
-      "src": "/videos.php",
-      "dest": "/api/videos.php"
-    },
-    {
-      "src": "/about.php",
-      "dest": "/api/about.php"
-    },
-    {
-      "src": "/contact.php",
-      "dest": "/api/contact.php"
-    },
-    {
-      "src": "/register.php",
-      "dest": "/api/register.php"
-    },
-    {
-      "src": "/profile.php",
-      "dest": "/api/profile.php"
-    },
-    {
-      "src": "/logout.php",
-      "dest": "/api/logout.php"
-    },
-    {
-      "src": "/recover_password.php",
-      "dest": "/api/recover_password.php"
-    },
-    {
-      "src": "/reset_password.php",
-      "dest": "/api/reset_password.php"
-    },
-    {
-      "src": "/Terms.php",
-      "dest": "/api/Terms.php"
-    },
-    {
-      "src": "/Privacy_Policy.php",
-      "dest": "/api/Privacy_Policy.php"
-    },
-    {
-      "src": "/dashboard.php",
-      "dest": "/api/dashboard.php"
-    },
-    {
-      "src": "/index.php",
-      "dest": "/api/index.php"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/api/index.php"
-    }
+    {"src": "/home.php", "dest": "/api/home.php"},
+    {"src": "/videos.php", "dest": "/api/videos.php"},
+    {"src": "/about.php", "dest": "/api/about.php"},
+    {"src": "/contact.php", "dest": "/api/contact.php"},
+    {"src": "/register.php", "dest": "/api/register.php"},
+    {"src": "/profile.php", "dest": "/api/profile.php"},
+    {"src": "/logout.php", "dest": "/api/logout.php"},
+    {"src": "/recover_password.php", "dest": "/api/recover_password.php"},
+    {"src": "/reset_password.php", "dest": "/api/reset_password.php"},
+    {"src": "/Terms.php", "dest": "/api/Terms.php"},
+    {"src": "/Privacy_Policy.php", "dest": "/api/Privacy_Policy.php"},
+    {"src": "/api/dashboard.php", "dest": "/api/dashboard.php"}, // Garantir que tá antes do catch-all
+    {"src": "/(.*)", "dest": "/api/index.php"} // Catch-all deve ser o último
   ]
 }
