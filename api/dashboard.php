@@ -68,7 +68,7 @@ error_log("Usuário carregado com sucesso: " . json_encode($user_data));
     <nav>
         <ul><li><a href="/api/home.php">Home</a></li>
             <li><a href="/api/dashboard.php">Loja</a></li>
-            <li><a href="/api/post.php">Postar</a></li>
+            <li><a href="/api/post.php">Posts</a></li>
             <li><a href="/api/profile.php">Meu Perfil</a></li>
             <li><a href="/logout.php">Sair</a></li>
         </ul>
@@ -104,5 +104,12 @@ error_log("Usuário carregado com sucesso: " . json_encode($user_data));
     </div>
 
     <a href="/logout.php">Sair</a>
+<footer class="footer">
+        NICK DWTYAY, LTD.<br>
+        "Americas and Middle East Cybersecurity Software and Technology Solutions Development Company."<br>
+        <a href="/Terms.php">Terms</a> |
+        <a href="/Privacy_Policy.php">Privacy Policy</a> |
+        All Rights Reserved | © 2006 - 2025 Nick Dwtyay, Ltd.
+    </footer>
 </body>
 </html>
