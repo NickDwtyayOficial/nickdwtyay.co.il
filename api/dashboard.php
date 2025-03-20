@@ -66,10 +66,10 @@ error_log("Usuário carregado com sucesso: " . json_encode($user_data));
 </head>
 <body>
     <nav>
-        <ul>
+        <ul><li><a href="/api/home.php">Home</a></li>
             <li><a href="/api/dashboard.php">Loja</a></li>
-            <li><a href="/api/profile.php">Meu Perfil</a></li>
             <li><a href="/api/post.php">Postar</a></li>
+            <li><a href="/api/profile.php">Meu Perfil</a></li>
             <li><a href="/logout.php">Sair</a></li>
         </ul>
     </nav>
