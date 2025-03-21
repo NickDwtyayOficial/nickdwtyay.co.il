@@ -62,11 +62,31 @@ error_log("Usuário carregado com sucesso: " . json_encode($user_data));
         .products { display: flex; flex-wrap: wrap; gap: 20px; }
         .product { border: 1px solid #ddd; padding: 10px; width: 200px; text-align: center; }
         .product img { max-width: 100%; height: auto; }
+ }
+        .top-nav { display: flex; justify-content: center; background-color: rgba(51, 51, 51, 0.9); padding: 10px 0; position: relative; z-index: 1; }
+        .nav-link { padding: 10px 20px; color: #fff; text-decoration: none; transition: background-color 0.3s ease; }
+        .nav-link:hover { background-color: #555; }
+        .container { max-width: 400px; margin: 50px auto; background-color: rgba(255, 255, 255, 0.95); border: 1px solid #ccc; padding: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); position: relative; z-index: 1; }
+        h2 { text-align: center; color: #333; }
+        .form-group { margin-bottom: 20px; width: 100%; }
+        .form-group label { display: block; font-weight: bold; margin-bottom: 5px; }
+        .form-group input { width: 100%; padding: 10px; font-size: 16px; border-radius: 5px; border: 1px solid #ccc; box-sizing: border-box; }
+        .form-group button { width: 100%; padding: 10px; font-size: 16px; background-color: #4caf50; color: #fff; border: none; border-radius: 5px; cursor: pointer; }
+        .form-group button:hover { background-color: #45a049; }
+        .error { color: red; text-align: center; }
+
+
+
+        
+        .footer { background-color: rgba(51, 51, 51, 0.9); padding: 20px; text-align: center; font-size: 14px; color: #fff; width: 100%; position: relative; bottom: 0; z-index: 1; }
+        .footer a { color: #fff; text-decoration: none; margin: 0 5px; }
+        .footer a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
     <nav>
         <ul><li><a href="/api/home.php">Home</a></li>
+
             <li><a href="/api/dashboard.php">Loja</a></li>
             <li><a href="/api/post.php">Posts</a></li>
             <li><a href="/api/profile.php">Meu Perfil</a></li>
