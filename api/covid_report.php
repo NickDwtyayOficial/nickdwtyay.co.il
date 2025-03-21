@@ -20,7 +20,7 @@ if (!$user || !is_array($user) || count($user) === 0) {
 }
 
 $user_data = $user[0];
-$pdf_path = '/covid_report.pdf'; // Caminho relativo na raiz
+$pdf_path = '/api/covid_report.pdf'; // Caminho relativo na raiz
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
