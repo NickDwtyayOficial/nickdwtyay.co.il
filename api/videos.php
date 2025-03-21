@@ -5,7 +5,7 @@ require_once __DIR__ . '/db_connect.php';
 ?>
 
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
     <link rel="icon" href="dwtyay_favicon.gif" type="image/gif">
     <title>Videos - Nick Dwtyay, Ltd.</title>
@@ -29,7 +29,6 @@ require_once __DIR__ . '/db_connect.php';
 <body>
     <div class="background-image"></div>
     <div class="top-nav">
-        <a href="/home.php" class="nav-link">Home</a>
         <a href="/videos.php" class="nav-link">Videos</a>
         <a href="/about.php" class="nav-link">About</a>
         <a href="/contact.php" class="nav-link">Contact</a>
