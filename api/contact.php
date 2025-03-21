@@ -6,7 +6,7 @@ require_once __DIR__ . '/db_connect.php';
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <link rel="icon" href="dwtyay_favicon.gif" type="image/gif">
+    <link rel="icon" href="/api/dwtyay_favicon.gif" type="image/gif">
     <title>Contact - Nick Dwtyay, Ltd.</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 0; padding: 0; height: 100vh; overflow-x: hidden; }
