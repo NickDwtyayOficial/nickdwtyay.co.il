@@ -30,6 +30,7 @@ session_start();
         <a href="/videos.php" class="nav-link">Videos</a>
         <a href="/about.php" class="nav-link">About</a>
         <a href="/contact.php" class="nav-link">Contact</a>
+        <a href="/" class="nav-link">Login</a>
     </div>
     <div class="container">
         <h2>Sobre Nós</h2>
