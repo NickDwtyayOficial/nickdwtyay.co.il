@@ -4,7 +4,7 @@ require_once __DIR__ . '/db_connect.php';
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-error_reportin(E_ALL);
+error_reporting(E_ALL); // Corrigido de "error_reportin" pra "error_reporting"
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,25 +12,6 @@ error_reportin(E_ALL);
     <link rel="icon" href="dwtyay_favicon.gif" type="image/gif">
     <title>Videos - Nick Dwtyay, Ltd.</title>
     <style>
-         .top-nav { display: flex; justify-content: center; background-color: rgba(51, 51, 51, 0.9); padding: 10px 0; position: relative; z-index: 1; }
-
- 
-
-        .nav-link { padding: 10px 20px; color: #fff; text-decoration: none; transition: background-color 0.3s ease; }
- 
-
-        .nav-link:hover { background-color: #555; }
- 
-
-        .container { max-width: 800px; margin: 50px auto; background-color: rgba(255, 255, 255, 0.95); border: 1px solid #ccc; padding: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); position: relative; z-index: 1; }
-        .footer { background-color: rgba(51, 51, 51, 0.9); padding: 20px; text-align: center; font-size: 14px; color: #fff; width: 100%; position: relative; bottom: 0; z-index: 1; }
-
- 
-
-        .footer a { color: #fff; text-decoration: none; margin: 0 5px; }
- 
-
-        .footer a:hover { text-decoration: underline; }  
         body {
             font-family: Arial, sans-serif;
             margin: 0;
