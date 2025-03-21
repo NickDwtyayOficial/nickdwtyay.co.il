@@ -91,7 +91,7 @@ session_start(); // Inclui sessão pra consistência com outras páginas
 <body>
     <div class="background-image"></div>
     <div class="top-nav">
-        <a href="/home.php" class="nav-link">Home</a>
+        <a href="/" class="nav-link">Home</a>
         <a href="/videos.php" class="nav-link">Videos</a>
         <a href="/about.php" class="nav-link">About</a>
         <a href="/contact.php" class="nav-link">Contact</a>
