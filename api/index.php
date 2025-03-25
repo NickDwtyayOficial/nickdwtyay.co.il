@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <html lang="pt-BR">
 <head>
     <link rel="icon" href="dwtyay_favicon.gif" type="image/gif">
-    <title>Sign In - Nick Dwtyay, Ltd.</title><link rel="stylesheet" href="styles.css">
+    <title>Sign In - Nick Dwtyay, Ltd.</title><link rel="stylesheet" href="/api/styles.css">
     <script>
         window.va = window.va || function (...args) { (window.vaq = window.vaq || []).push(args); };
     </script>
