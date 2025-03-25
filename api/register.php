@@ -201,19 +201,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <?php if (isset($error)) echo "<p class='error'>$error</p>"; ?>
         <form method="POST" novalidate>
             <div class="form-group">
-                <label>Nome:</label>
+                <label>Name:</label>
                 <input type="text" name="first_name" value="<?php echo htmlspecialchars($first_name ?? ''); ?>" required>
             </div>
             <div class="form-group">
-                <label>Sobrenome:</label>
+                <label>Last name:</label>
                 <input type="text" name="last_name" value="<?php echo htmlspecialchars($last_name ?? ''); ?>" required>
             </div>
             <div class="form-group">
-                <label>Endereço:</label>
+                <label>Address:</label>
                 <input type="text" name="address" value="<?php echo htmlspecialchars($address ?? ''); ?>" required>
             </div>
             <div class="form-group">
-                <label>Telefone:</label>
+                <label>Telephone:</label>
                 <input type="text" name="phone" value="<?php echo htmlspecialchars($phone ?? ''); ?>" required>
             </div>
             <div class="form-group">
@@ -221,14 +221,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <input type="email" name="email" value="<?php echo htmlspecialchars($email ?? ''); ?>" required>
             </div>
             <div class="form-group">
-                <label>Senha:</label>
+                <label>Password:</label>
                 <input type="password" name="password" required>
             </div>
             <div class="form-group">
-                <button type="submit">Criar Conta</button>
+                <button type="submit">Create Account</button>
             </div>
         </form>
-        <p>Já tem conta? <a href="/">Sign In</a></p>
+        <p>Already have an account? <a href="/">Sign In</a></p>
     </div>
 
     <!-- Rodapé -->
