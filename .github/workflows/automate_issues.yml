@@ -8,11 +8,11 @@ on:
 jobs:
   automate:
     runs-on: ubuntu-latest
-    timeout-minutes: 15  # Aumente o tempo de execução, se necessário
+    timeout-minutes: 30  # Aumentado para 30 minutos
 
     steps:
     - name: Check out repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Set up Python
       uses: actions/setup-python@v2
@@ -23,6 +23,13 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+
+    - name: Debug logs
+      run: |
+        echo "GitHub Token: ${{ secrets.GITHUB_TOKEN }}"
+        echo "Python version: $(python --version)"
+        echo "Current directory: $(pwd)"
+        echo "Listing files in the repo: $(ls -l)"
 
     - name: Run script
       run: |
