@@ -1,27 +1,29 @@
 name: Automate Issues
+
 on:
-  schedule:
-    - cron: "0 0 * * *"  # Executa todos os dias à meia-noite
   push:
     branches:
       - main
 
 jobs:
-  run_script:
+  automate:
     runs-on: ubuntu-latest
+    timeout-minutes: 15  # Aumente o tempo de execução, se necessário
+
     steps:
-      - name: Baixar código
-        uses: actions/checkout@v3
+    - name: Check out repository
+      uses: actions/checkout@v2
 
-      - name: Configurar Python
-        uses: actions/setup-python@v3
-        with:
-          python-version: '3.9'
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
 
-      - name: Instalar dependências
-        run: pip install PyGithub
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
 
-      - name: Executar script de Issues
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: python github_manager.py
+    - name: Run script
+      run: |
+        python your_script.py
