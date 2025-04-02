@@ -11,14 +11,10 @@ if (file_exists(__DIR__ . '/.env')) {
 // Captura o IP do visitante
 $visitor_ip = $_SERVER['REMOTE_ADDR'];
 
-// Faz a requisição ao ipinfo.io
+// Faz a requisição ao ipinfo.io usando file_get_contents
 $ipinfo_token = getenv('IPINFO_TOKEN');
 $ipinfo_url = "https://ipinfo.io/{$visitor_ip}?token={$ipinfo_token}";
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, $ipinfo_url);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-$ipinfo_data = curl_exec($ch);
-curl_close($ch);
+$ipinfo_data = @file_get_contents($ipinfo_url); // Substitui curl
 $ipinfo_json = $ipinfo_data ? json_decode($ipinfo_data, true) : [];
 
 // Faz a requisição à API IPQualityScore
