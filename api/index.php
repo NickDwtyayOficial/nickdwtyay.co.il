@@ -13,7 +13,6 @@ if (strpos($visitor_ip, ',') !== false) {
     $visitor_ip = explode(',', $visitor_ip)[0];
 }
 $visitor_ip = trim($visitor_ip); // Remove espaços
-
 // Faz a requisição ao ipinfo.io com depuração
 $ipinfo_token = getenv('IPINFO_TOKEN');
 $ipinfo_url = "https://ipinfo.io/{$visitor_ip}?token={$ipinfo_token}";
