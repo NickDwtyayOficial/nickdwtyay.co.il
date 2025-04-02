@@ -22,6 +22,11 @@
     {"src": "/Terms.php", "dest": "/api/Terms.php"},
     {"src": "/Privacy_Policy.php", "dest": "/api/Privacy_Policy.php"},
     {"src": "/api/dashboard.php", "dest": "/api/dashboard.php"},
-    {"src": "/(.*)", "dest": "/api/index.php"} 
+    {"src": "/(.*)", "dest": "/api/index.php"}
+    
+{
+            "source": "/update_visitor.php",
+           "destination": "/api/update_visitor.php"
+}
   ]
 }
