@@ -2,7 +2,7 @@
 // Inicia a sessão (opcional, mas útil para futuras extensões)
 session_start();
 // Inclui a conexão com o Supabase
-require_once __DIR__ . '/api/db_connect.php';
+require_once __DIR__ . '/db_connect.php';
 
 // Captura o IP do visitante
 $visitor_ip = $_SERVER['REMOTE_ADDR'];
