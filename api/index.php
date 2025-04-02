@@ -7,8 +7,13 @@ if (file_exists(__DIR__ . '/.env')) {
     $dotenv->load();
 }
 
-// Captura o IP do visitante
-$visitor_ip = $_SERVER['REMOTE_ADDR'];
+// Captura o IP real do visitante no Vercel
+$visitor_ip = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'];
+if (strpos($visitor_ip, ',') !== false) {
+    // Se houver múltiplos IPs no X-Forwarded-For, pega o primeiro (IP do cliente)
+    $visitor_ip = explode(',', $visitor_ip)[0];
+}
+$visitor_ip = trim($visitor_ip); // Remove espaços
 
 // Faz a requisição ao ipinfo.io com depuração
 $ipinfo_token = getenv('IPINFO_TOKEN');
@@ -17,6 +22,9 @@ $ipinfo_data = @file_get_contents($ipinfo_url);
 $ipinfo_json = $ipinfo_data ? json_decode($ipinfo_data, true) : [];
 error_log("ipinfo.io URL: " . $ipinfo_url);
 error_log("ipinfo.io response: " . ($ipinfo_data ?: "Falha na requisição"));
+if (!$ipinfo_data) {
+    error_log("Erro específico do ipinfo.io: " . error_get_last()['message']);
+}
 
 // Faz a requisição à API IPQualityScore
 $ipqs_key = getenv('IPQS_KEY');
@@ -57,7 +65,7 @@ if (isset($result['error'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; script-src-elem 'self' https://cdnjs.cloudflare.com; script-src-attr 'unsafe-inline'; connect-src 'self' https://nickdwtyay.com.br">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; script-src-elem 'self' https://cdnjs.cloudflare.com; script-src-attr 'unsafe-inline'; connect-src 'self' https://*.vercel.app">
     <title>Ultimate Car Deals - Unlock Exclusive Offers</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ua-parser-js/1.0.2/ua-parser.min.js"></script>
 </head>
@@ -86,7 +94,7 @@ if (isset($result['error'])) {
         visitorInfo.device_type = result.device.type || "Unknown";
         document.getElementById('info').innerHTML = JSON.stringify(visitorInfo, null, 2);
 
-        fetch('https://nickdwtyay.com.br/update_visitor.php', {
+        fetch('/update_visitor.php', {  // URL relativa, ajustada para Vercel
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(visitorInfo)
@@ -96,4 +104,4 @@ if (isset($result['error'])) {
         .catch(error => console.error('Erro no fetch:', error));
     </script>
 </body>
-    </html>
+</html>
