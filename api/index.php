@@ -61,9 +61,12 @@ if (isset($result['error'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; script-src-elem 'self' https://cdnjs.cloudflare.com; script-src-attr 'unsafe-inline'; connect-src 'self' https://*.vercel.app; style-src 'self' 'unsafe-inline'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com https://static.cloudflareinsights.com; script-src-elem 'self' https://cdnjs.cloudflare.com https://static.cloudflareinsights.com 'unsafe-inline'; script-src-attr 'unsafe-inline'; connect-src 'self' https://*.vercel.app https://cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' https://source.unsplash.com">
     <title>Ultimate Car Deals - Unlock Exclusive Offers</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ua-parser-js/1.0.2/ua-parser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ua-parser-js/1.0.37/ua-parser.min.js"></script>
+    <!-- Cloudflare Web Analytics -->
+    <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "9a37f91b6c4243a783cdee8acb88eb99"}'></script>
+    <!-- End Cloudflare Web Analytics -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -160,4 +163,4 @@ if (isset($result['error'])) {
         .catch(error => console.error('Erro no fetch:', error));
     </script>
 </body>
-</html>
+    </html>
