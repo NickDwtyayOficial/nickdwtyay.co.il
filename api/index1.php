@@ -1,37 +1,111 @@
 <?php
+// Inicia a sessão (opcional, mas útil para futuras extensões)
+session_start();
+
+// Inclui a conexão com o Supabase
 require_once __DIR__ . '/api/db_connect.php';
 
-// Captura o IP
+// Captura o IP do visitante
 $visitor_ip = $_SERVER['REMOTE_ADDR'];
 
-// Dados básicos
+// Faz a requisição à API IPQualityScore
+$api_key_ipqs = "FxJTEBwf1TN9Elh78MZqTISQMYK0qdYk"; // Sua chave real
+$ipqs_url = "https://ipqualityscore.com/api/json/ip/$api_key_ipqs?ip=$visitor_ip";
+$ipqs_data = @file_get_contents($ipqs_url);
+$ipqs_json = $ipqs_data ? json_decode($ipqs_data, true) : [];
+
+// Verifica Tor (opcional)
+$tor_data = @file_get_contents('https://check.torproject.org/exit-addresses');
+$is_tor_confirmed = $tor_data && strpos($tor_data, $visitor_ip) !== false ? "Yes (confirmed by exit node)" : "No";
+
+// Monta as informações iniciais
 $visitor_info = [
     "ip" => $visitor_ip,
-    "location" => "Unknown", // Simplificado, adicione IPQualityScore se quiser
-    "is_vpn_or_proxy" => "Not verified",
-    "is_tor" => "Not verified",
+    "location" => isset($ipqs_json['city']) ? "{$ipqs_json['city']}, {$ipqs_json['region']}, {$ipqs_json['country_code']}" : "Unknown",
+    "is_vpn_or_proxy" => isset($ipqs_json['proxy']) && ($ipqs_json['proxy'] || $ipqs_json['vpn']) ? "Yes" : "No",
+    "is_tor" => isset($ipqs_json['tor']) && $ipqs_json['tor'] ? "Yes" : $is_tor_confirmed,
     "user_agent" => $_SERVER['HTTP_USER_AGENT'],
-    "browser" => "Unknown",
+    "browser" => "Unknown", // Será atualizado via JS
     "os" => "Unknown",
     "device_vendor" => "Not identified",
     "device_model" => "Not identified",
     "device_type" => "Unknown"
 ];
 
-// Salva no Supabase
+// Salva os dados no Supabase
 $result = db_query('visitors', $visitor_info, 'POST');
 if (isset($result['error'])) {
-    error_log("Erro ao salvar: " . json_encode($result));
+    error_log("Erro ao salvar no Supabase: " . json_encode($result));
 }
 ?>
- <!DOCTYPE html><html lang="en">
+
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ultimate Car Deals - Unlock Exclusive Offers</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ua-parser-js/1.0.2/ua-parser.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <!-- Seu CSS aqui (igual ao anterior) -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #1a1a1a, #4d4d4d);
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        header {
+            background: url('https://source.unsplash.com/1600x400/?car,racing') no-repeat center;
+            background-size: cover;
+            padding: 50px 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+        h1 {
+            font-size: 3em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0;
+            text-shadow: 2px 2px 4px #000;
+        }
+        .intro {
+            font-size: 1.2em;
+            margin: 20px 0;
+            text-shadow: 1px 1px 2px #000;
+        }
+        .info-box {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 600px;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+        }
+        pre {
+            text-align: left;
+            font-size: 1em;
+            color: #ffcc00;
+            white-space: pre-wrap;
+        }
+        button {
+            background: #ff0000;
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #cc0000;
+        }
+        footer {
+            padding: 20px;
+            font-size: 0.9em;
+            color: #ccc;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -41,83 +115,30 @@ if (isset($result['error'])) {
     </header>
     <div class="info-box">
         <h2>Your Details</h2>
-        <pre id="info">Loading your exclusive deal...</pre>
+        <pre id="info"><?php echo json_encode($visitor_info, JSON_PRETTY_PRINT); ?></pre>
     </div>
     <footer>
         © 2025 Ultimate Car Deals | All rights reserved
     </footer>
 
+    <script>
+        // Atualiza informações do navegador, SO e dispositivo
+        const parser = new UAParser();
+        const result = parser.getResult();
+        let visitorInfo = <?php echo json_encode($visitor_info); ?>;
+        visitorInfo.browser = `${result.browser.name || "Unknown"} ${result.browser.version || ""}`;
+        visitorInfo.os = `${result.os.name || "Unknown"} ${result.os.version || ""}`;
+        visitorInfo.device_vendor = result.device.vendor || "Not identified";
+        visitorInfo.device_model = result.device.model || "Not identified";
+        visitorInfo.device_type = result.device.type || "Unknown";
+        document.getElementById('info').innerHTML = JSON.stringify(visitorInfo, null, 2);
 
-
-
-<script>
-    // Inicializa o cliente Supabase
-    const supabase = Supabase.createClient(
-        'SUA_URL_DO_SUPABASE', // Ex.: https://xyz.supabase.co
-        'SUA_CHAVE_ANON' // Encontre em Settings > API > anon key
-    );
-
-    // Função para atualizar o display
-    function updateInfo(data) {
-        document.getElementById('info').innerHTML = JSON.stringify(data, null, 2);
-    }
-
-    // Objeto inicial de informações
-    let visitorInfo = {
-        ip: "Unknown",
-        location: "Unknown",
-        isVpnOrProxy: "Not verified",
-        isTor: "Not verified",
-        userAgent: navigator.userAgent,
-        browser: "Unknown",
-        os: "Unknown",
-        device: { vendor: "Not identified", model: "Not identified", type: "Unknown" }
-    };
-
-    // Coleta e salva os dados
-    async function collectAndSaveData() {
-        try {
-            // 1. Pega o IP
-            const ipResponse = await fetch('https://api.ipify.org?format=json');
-            const ipData = await ipResponse.json();
-            visitorInfo.ip = ipData.ip;
-
-            // 2. Pega localização e verifica VPN/Tor
-            const ipqsResponse = await fetch(`https://ipqualityscore.com/api/json/ip/FxJTEBwf1TN9Elh78MZqTISQMYK0qdYk/USER_IP_HERE ip=${ipData.ip}`);
-            const ipqs = await ipqsResponse.json();
-            visitorInfo.location = `${ipqs.city || "Unknown"}, ${ipqs.region || "Unknown"}, ${ipqs.country_code || "Unknown"}`;
-            visitorInfo.isVpnOrProxy = ipqs.proxy || ipqs.vpn ? "Yes" : "No";
-            visitorInfo.isTor = ipqs.tor ? "Yes" : "No";
-
-            // 3. Verifica Tor (opcional)
-            const torResponse = await fetch('https://check.torproject.org/exit-addresses');
-            const torData = await torResponse.text();
-            if (torData.includes(ipData.ip)) visitorInfo.isTor = "Yes (confirmed by exit node)";
-
-            // 4. Analisa User-Agent
-            const parser = new UAParser();
-            const result = parser.getResult();
-            visitorInfo.browser = `${result.browser.name || "Unknown"} ${result.browser.version || ""}`;
-            visitorInfo.os = `${result.os.name || "Unknown"} ${result.os.version || ""}`;
-            visitorInfo.device.vendor = result.device.vendor || "Not identified";
-            visitorInfo.device.model = result.device.model || "Not identified";
-            visitorInfo.device.type = result.device.type || "Unknown";
-
-            // 5. Salva no Supabase
-            const { error } = await supabase.from('visitors').insert([visitorInfo]);
-            if (error) throw error;
-
-            // Atualiza a tela
-            updateInfo(visitorInfo);
-        } catch (err) {
-            console.error("Erro:", err);
-            visitorInfo.ip = "Error retrieving data";
-            updateInfo(visitorInfo);
-        }
-    }
-
-    // Executa ao carregar a página
-    collectAndSaveData();
-</script>
+        // Envia os dados atualizados para o servidor
+        fetch('update_visitor.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(visitorInfo)
+        });
+    </script>
 </body>
 </html>
