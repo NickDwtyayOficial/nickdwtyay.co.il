@@ -6,7 +6,6 @@ if (file_exists(__DIR__ . '/.env')) {
     $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
     $dotenv->load();
 }
-
 // Captura o IP real do visitante no Vercel
 $visitor_ip = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'];
 if (strpos($visitor_ip, ',') !== false) {
