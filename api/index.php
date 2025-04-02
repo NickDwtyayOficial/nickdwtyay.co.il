@@ -2,7 +2,6 @@
 session_start();
 require_once __DIR__ . '/db_connect.php';
 
-// Carrega o .env explicitamente
 if (file_exists(__DIR__ . '/.env')) {
     $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
     $dotenv->load();
@@ -11,11 +10,12 @@ if (file_exists(__DIR__ . '/.env')) {
 // Captura o IP do visitante
 $visitor_ip = $_SERVER['REMOTE_ADDR'];
 
-// Faz a requisição ao ipinfo.io usando file_get_contents
+// Faz a requisição ao ipinfo.io com depuração
 $ipinfo_token = getenv('IPINFO_TOKEN');
 $ipinfo_url = "https://ipinfo.io/{$visitor_ip}?token={$ipinfo_token}";
 $ipinfo_data = @file_get_contents($ipinfo_url);
 $ipinfo_json = $ipinfo_data ? json_decode($ipinfo_data, true) : [];
+error_log("ipinfo.io URL: " . $ipinfo_url);
 error_log("ipinfo.io response: " . ($ipinfo_data ?: "Falha na requisição"));
 
 // Faz a requisição à API IPQualityScore
@@ -42,7 +42,7 @@ $visitor_info = [
     "device_type" => "Unknown"
 ];
 
-// Salva os dados no Supabase com depuração
+// Salva os dados no Supabase
 $result = db_query('visitors', $visitor_info, 'POST');
 echo "<pre>Supabase Result: ";
 var_dump($result);
@@ -90,7 +90,10 @@ if (isset($result['error'])) {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(visitorInfo)
-        }).catch(error => console.error('Erro no fetch:', error));
+        })
+        .then(response => response.json())
+        .then(data => console.log('Update Result:', data))
+        .catch(error => console.error('Erro no fetch:', error));
     </script>
 </body>
-</html>
+    </html>
