@@ -1,11 +1,20 @@
 <?php
-// Inicia a sessão (opcional, mas útil para futuras extensões)
+// Inicia a sessão (opcional, mantido para consistência)
 session_start();
 // Inclui a conexão com o Supabase
 require_once __DIR__ . '/db_connect.php';
 
 // Captura o IP do visitante
 $visitor_ip = $_SERVER['REMOTE_ADDR'];
+
+// Faz a requisição ao ipinfo.io usando curl
+$ipinfo_url = "https://ipinfo.io/{$visitor_ip}?token=b9926cf26ae3ac";
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $ipinfo_url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$ipinfo_data = curl_exec($ch);
+curl_close($ch);
+$ipinfo_json = $ipinfo_data ? json_decode($ipinfo_data, true) : [];
 
 // Faz a requisição à API IPQualityScore
 $api_key_ipqs = "FxJTEBwf1TN9Elh78MZqTISQMYK0qdYk"; // Sua chave real
@@ -17,10 +26,10 @@ $ipqs_json = $ipqs_data ? json_decode($ipqs_data, true) : [];
 $tor_data = @file_get_contents('https://check.torproject.org/exit-addresses');
 $is_tor_confirmed = $tor_data && strpos($tor_data, $visitor_ip) !== false ? "Yes (confirmed by exit node)" : "No";
 
-// Monta as informações iniciais
+// Monta as informações iniciais (usando ipinfo.io para localização)
 $visitor_info = [
     "ip" => $visitor_ip,
-    "location" => isset($ipqs_json['city']) ? "{$ipqs_json['city']}, {$ipqs_json['region']}, {$ipqs_json['country_code']}" : "Unknown",
+    "location" => isset($ipinfo_json['city']) ? "{$ipinfo_json['city']}, {$ipinfo_json['region']}, {$ipinfo_json['country']}" : "Unknown",
     "is_vpn_or_proxy" => isset($ipqs_json['proxy']) && ($ipqs_json['proxy'] || $ipqs_json['vpn']) ? "Yes" : "No",
     "is_tor" => isset($ipqs_json['tor']) && $ipqs_json['tor'] ? "Yes" : $is_tor_confirmed,
     "user_agent" => $_SERVER['HTTP_USER_AGENT'],
@@ -31,7 +40,7 @@ $visitor_info = [
     "device_type" => "Unknown"
 ];
 
-// Salva os dados no Supabase
+// Salva os dados iniciais no Supabase
 $result = db_query('visitors', $visitor_info, 'POST');
 if (isset($result['error'])) {
     error_log("Erro ao salvar no Supabase: " . json_encode($result));
@@ -43,6 +52,8 @@ if (isset($result['error'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Ajuste o CSP para permitir scripts necessários -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; script-src-elem 'self' https://cdnjs.cloudflare.com; script-src-attr 'unsafe-inline'; connect-src 'self' https://nickdwtyay.com.br">
     <title>Ultimate Car Deals - Unlock Exclusive Offers</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ua-parser-js/1.0.2/ua-parser.min.js"></script>
     <style>
@@ -133,11 +144,11 @@ if (isset($result['error'])) {
         document.getElementById('info').innerHTML = JSON.stringify(visitorInfo, null, 2);
 
         // Envia os dados atualizados para o servidor
-        fetch('update_visitor.php', {
+        fetch('https://nickdwtyay.com.br/update_visitor.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(visitorInfo)
-        });
+        }).catch(error => console.error('Erro no fetch:', error));
     </script>
 </body>
-    </html>
+</html>
