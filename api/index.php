@@ -1,7 +1,6 @@
 <?php
 // Inicia a sessão (opcional, mas útil para futuras extensões)
 session_start();
-
 // Inclui a conexão com o Supabase
 require_once __DIR__ . '/api/db_connect.php';
 
