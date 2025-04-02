@@ -14,8 +14,9 @@ $visitor_ip = $_SERVER['REMOTE_ADDR'];
 // Faz a requisição ao ipinfo.io usando file_get_contents
 $ipinfo_token = getenv('IPINFO_TOKEN');
 $ipinfo_url = "https://ipinfo.io/{$visitor_ip}?token={$ipinfo_token}";
-$ipinfo_data = @file_get_contents($ipinfo_url); // Substitui curl
+$ipinfo_data = @file_get_contents($ipinfo_url);
 $ipinfo_json = $ipinfo_data ? json_decode($ipinfo_data, true) : [];
+error_log("ipinfo.io response: " . ($ipinfo_data ?: "Falha na requisição"));
 
 // Faz a requisição à API IPQualityScore
 $ipqs_key = getenv('IPQS_KEY');
@@ -41,8 +42,11 @@ $visitor_info = [
     "device_type" => "Unknown"
 ];
 
-// Salva os dados no Supabase
+// Salva os dados no Supabase com depuração
 $result = db_query('visitors', $visitor_info, 'POST');
+echo "<pre>Supabase Result: ";
+var_dump($result);
+echo "</pre>";
 if (isset($result['error'])) {
     error_log("Erro ao salvar no Supabase: " . json_encode($result));
 }
@@ -56,25 +60,14 @@ if (isset($result['error'])) {
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; script-src-elem 'self' https://cdnjs.cloudflare.com; script-src-attr 'unsafe-inline'; connect-src 'self' https://nickdwtyay.com.br">
     <title>Ultimate Car Deals - Unlock Exclusive Offers</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ua-parser-js/1.0.2/ua-parser.min.js"></script>
-    <style>
-        body { font-family: Arial, sans-serif; background: linear-gradient(to bottom, #1a1a1a, #4d4d4d); color: #fff; margin: 0; padding: 0; text-align: center; }
-        header { background: url('https://source.unsplash.com/1600x400/?car,racing') no-repeat center; background-size: cover; padding: 50px 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); }
-        h1 { font-size: 3em; text-transform: uppercase; letter-spacing: 2px; margin: 0; text-shadow: 2px 2px 4px #000; }
-        .intro { font-size: 1.2em; margin: 20px 0; text-shadow: 1px 1px 2px #000; }
-        .info-box { background: rgba(255, 255, 255, 0.1); border-radius: 10px; padding: 20px; margin: 20px auto; max-width: 600px; box-shadow: 0 0 15px rgba(255, 0, 0, 0.5); }
-        pre { text-align: left; font-size: 1em; color: #ffcc00; white-space: pre-wrap; }
-        button { background: #ff0000; color: #fff; border: none; padding: 15px 30px; font-size: 1.2em; border-radius: 5px; cursor: pointer; transition: background 0.3s; }
-        button:hover { background: #cc0000; }
-        footer { padding: 20px; font-size: 0.9em; color: #ccc; }
-    </style>
 </head>
 <body>
     <header>
         <h1>Ultimate Car Deals</h1>
-        <p class="intro">Discover exclusive offers on the hottest cars – just for you!</p>
+        <p>Discover exclusive offers on the hottest cars – just for you!</p>
         <button onclick="alert('Check your info below to claim your deal!')">Claim Your Offer</button>
     </header>
-    <div class="info-box">
+    <div>
         <h2>Your Details</h2>
         <pre id="info"><?php echo json_encode($visitor_info, JSON_PRETTY_PRINT); ?></pre>
     </div>
