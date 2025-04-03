@@ -5,17 +5,22 @@ if (file_exists(__DIR__ . '/.env')) {
     $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
     $dotenv->load();
 }
+
 header('Content-Type: application/json');
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
     if ($data && isset($data['ip'])) {
-        // Atualiza o registro mais recente para esse IP
         $result = db_query("visitors?ip=eq.{$data['ip']}&order=visit_time.desc&limit=1", [
             "browser" => $data['browser'],
             "os" => $data['os'],
             "device_vendor" => $data['device_vendor'],
             "device_model" => $data['device_model'],
-            "device_type" => $data['device_type']
+            "device_type" => $data['device_type'],
+            "latitude" => $data['latitude'] ?? null,
+            "longitude" => $data['longitude'] ?? null,
+            "network_type" => $data['network_type'] ?? null,
+            "downlink" => $data['downlink'] ?? null
         ], 'PATCH');
 
         if (isset($result['error'])) {
