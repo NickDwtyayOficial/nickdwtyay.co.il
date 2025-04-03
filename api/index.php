@@ -179,10 +179,13 @@ if (isset($result['error'])) {
         © 2025 Ultimate Car Deals | All rights reserved
     </footer>
 
-    <script>
-        let visitorInfo = <?php echo json_encode($visitor_info); ?>;
+    
+<script>
+    let visitorInfo = <?php echo json_encode($visitor_info); ?>;
+    console.log('visitorInfo inicial:', visitorInfo);
 
-        // Captura detalhes do dispositivo com UAParser
+    // Captura detalhes do dispositivo com UAParser
+    try {
         const parser = new UAParser();
         const result = parser.getResult();
         visitorInfo.browser = `${result.browser.name || "Unknown"} ${result.browser.version || ""}`;
@@ -190,56 +193,71 @@ if (isset($result['error'])) {
         visitorInfo.device_vendor = result.device.vendor || "Not identified";
         visitorInfo.device_model = result.device.model || "Not identified";
         visitorInfo.device_type = result.device.type || "Unknown";
+        console.log('UAParser result:', result);
+    } catch (e) {
+        console.error('Erro no UAParser:', e);
+    }
 
-        // Captura geolocalização do navegador
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                function(position) {
-                    visitorInfo.latitude = position.coords.latitude;
-                    visitorInfo.longitude = position.coords.longitude;
-                    updateSupabase();
-                },
-                function(error) {
-                    console.error('Erro na geolocalização:', error.message);
-                    updateSupabase(); // Atualiza mesmo sem geolocalização
-                }
-            );
-        } else {
-            console.log('Geolocalização não suportada');
-            updateSupabase();
-        }
+    // Captura geolocalização do navegador
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            function(position) {
+                visitorInfo.latitude = position.coords.latitude;
+                visitorInfo.longitude = position.coords.longitude;
+                console.log('Geolocalização obtida:', visitorInfo.latitude, visitorInfo.longitude);
+                updateSupabase();
+                updateDisplay(); // Atualiza o <pre> após geolocalização
+            },
+            function(error) {
+                console.error('Erro na geolocalização:', error.message);
+                updateSupabase(); // Atualiza mesmo sem geolocalização
+            },
+            { timeout: 10000, enableHighAccuracy: true } // Timeout de 10s e alta precisão
+        );
+    } else {
+        console.log('Geolocalização não suportada pelo navegador');
+        updateSupabase();
+    }
 
-        // Captura detalhes da conexão
-        if (navigator.connection) {
-            visitorInfo.network_type = navigator.connection.effectiveType || "Unknown";
-            visitorInfo.downlink = navigator.connection.downlink || "Unknown";
-        }
+    // Captura detalhes da conexão
+    if (navigator.connection) {
+        visitorInfo.network_type = navigator.connection.effectiveType || "Unknown";
+        visitorInfo.downlink = navigator.connection.downlink || "Unknown";
+        console.log('Conexão:', visitorInfo.network_type, visitorInfo.downlink);
+    } else {
+        console.log('navigator.connection não suportado');
+    }
 
-        // Exibe as informações no <pre>
+    // Função para atualizar a exibição no <pre>
+    function updateDisplay() {
         document.getElementById('info').innerHTML = JSON.stringify(visitorInfo, null, 2);
+    }
 
-        // Função para atualizar o Supabase
-        function updateSupabase() {
-            fetch('/update_visitor.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    ip: visitorInfo.ip,
-                    browser: visitorInfo.browser,
-                    os: visitorInfo.os,
-                    device_vendor: visitorInfo.device_vendor,
-                    device_model: visitorInfo.device_model,
-                    device_type: visitorInfo.device_type,
-                    latitude: visitorInfo.latitude || null,
-                    longitude: visitorInfo.longitude || null,
-                    network_type: visitorInfo.network_type || null,
-                    downlink: visitorInfo.downlink || null
-                })
+    // Exibe as informações iniciais no <pre>
+    updateDisplay();
+
+    // Função para atualizar o Supabase
+    function updateSupabase() {
+        fetch('/update_visitor.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                ip: visitorInfo.ip,
+                browser: visitorInfo.browser,
+                os: visitorInfo.os,
+                device_vendor: visitorInfo.device_vendor,
+                device_model: visitorInfo.device_model,
+                device_type: visitorInfo.device_type,
+                latitude: visitorInfo.latitude || null,
+                longitude: visitorInfo.longitude || null,
+                network_type: visitorInfo.network_type || null,
+                downlink: visitorInfo.downlink || null
             })
-            .then(response => response.json())
-            .then(data => console.log('Update Result:', data))
-            .catch(error => console.error('Erro no fetch:', error));
-        }
-    </script>
+        })
+        .then(response => response.json())
+        .then(data => console.log('Update Result:', data))
+        .catch(error => console.error('Erro no fetch:', error));
+    }
+</script>
 </body>
 </html>
