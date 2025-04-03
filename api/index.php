@@ -7,9 +7,6 @@ if (file_exists(__DIR__ . '/.env')) {
     $dotenv->load();
 }
 
-// Define se está em ambiente de desenvolvimento (baseado em ENV)
-$is_dev = getenv('ENV') === 'development';
-
 // Captura o IP real do visitante no Vercel
 $visitor_ip = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'];
 if (strpos($visitor_ip, ',') !== false) {
@@ -17,43 +14,22 @@ if (strpos($visitor_ip, ',') !== false) {
 }
 $visitor_ip = trim($visitor_ip);
 
-// Faz a requisição ao ipinfo.io com cURL
+// Faz a requisição ao ipinfo.io com depuração
 $ipinfo_token = getenv('IPINFO_TOKEN');
 $ipinfo_url = "https://ipinfo.io/{$visitor_ip}?token={$ipinfo_token}";
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, $ipinfo_url);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-$ipinfo_data = curl_exec($ch);
-$curl_error = curl_error($ch);
-curl_close($ch);
-
+$ipinfo_data = @file_get_contents($ipinfo_url);
 $ipinfo_json = $ipinfo_data ? json_decode($ipinfo_data, true) : [];
 error_log("ipinfo.io URL: " . $ipinfo_url);
 error_log("ipinfo.io response: " . ($ipinfo_data ?: "Falha na requisição"));
 if (!$ipinfo_data) {
-    error_log("Erro cURL no ipinfo.io: " . $curl_error);
+    error_log("Erro específico do ipinfo.io: " . error_get_last()['message']);
 }
 
 // Faz a requisição à API IPQualityScore
 $ipqs_key = getenv('IPQS_KEY');
 $ipqs_url = "https://ipqualityscore.com/api/json/ip/{$ipqs_key}?ip={$visitor_ip}";
-$ipqs_ch = curl_init();
-curl_setopt($ipqs_ch, CURLOPT_URL, $ipqs_url);
-curl_setopt($ipqs_ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ipqs_ch, CURLOPT_FOLLOWLOCATION, true);
-curl_setopt($ipqs_ch, CURLOPT_TIMEOUT, 10);
-$ipqs_data = curl_exec($ipqs_ch);
-$ipqs_error = curl_error($ipqs_ch);
-curl_close($ipqs_ch);
-
+$ipqs_data = @file_get_contents($ipqs_url);
 $ipqs_json = $ipqs_data ? json_decode($ipqs_data, true) : [];
-error_log("IPQS URL: " . $ipqs_url);
-error_log("IPQS response: " . ($ipqs_data ?: "Falha na requisição"));
-if (!$ipqs_data) {
-    error_log("Erro cURL no IPQS: " . $ipqs_error);
-}
 
 // Verifica Tor
 $tor_data = @file_get_contents('https://check.torproject.org/exit-addresses');
@@ -73,7 +49,7 @@ $visitor_info = [
     "device_type" => "Unknown"
 ];
 
-// Salva os dados no Supabase
+// Salva os dados no Supabase (sem exibir o resultado)
 $result = db_query('visitors', $visitor_info, 'POST');
 if (isset($result['error'])) {
     error_log("Erro ao salvar no Supabase: " . json_encode($result));
@@ -85,36 +61,12 @@ if (isset($result['error'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com https://static.cloudflareinsights.com https://pagead2.googlesyndication.com https://www.googletagmanager.com; script-src-elem 'self' https://cdnjs.cloudflare.com https://static.cloudflareinsights.com https://pagead2.googlesyndication.com https://www.googletagmanager.com 'unsafe-inline'; script-src-attr 'unsafe-inline'; connect-src 'self' https://*.vercel.app https://cloudflareinsights.com https://ipinfo.io https://www.google-analytics.com https://stats.g.doubleclick.net; style-src 'self' 'unsafe-inline'; img-src 'self' https://source.unsplash.com">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com https://static.cloudflareinsights.com; script-src-elem 'self' https://cdnjs.cloudflare.com https://static.cloudflareinsights.com 'unsafe-inline'; script-src-attr 'unsafe-inline'; connect-src 'self' https://*.vercel.app https://cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' https://source.unsplash.com">
     <title>Ultimate Car Deals - Unlock Exclusive Offers</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ua-parser-js/1.0.37/ua-parser.min.js"></script>
-    
-    <?php if (!$is_dev): ?>
-        <!-- Google Ads -->
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1922092235705770" crossorigin="anonymous"></script>
-        
-        <!-- Cloudflare Web Analytics -->
-        <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "6d0cf27361a1479bb063deef0eab2482"}'></script>
-        
-        <!-- Google Tag (gtag.js) UA -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-75819753-1"></script>
-        <script>
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'UA-75819753-1');
-        </script>
-        
-        <!-- Google Tag (gtag.js) G -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-5F4Q111FPX"></script>
-        <script>
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-5F4Q111FPX');
-        </script>
-    <?php endif; ?>
-
+    <!-- Cloudflare Web Analytics -->
+    <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "9a37f91b6c4243a783cdee8acb88eb99"}'></script>
+    <!-- End Cloudflare Web Analytics -->
     <style>
         body {
             font-family: Arial, sans-serif;
