@@ -62,6 +62,8 @@ $visitor_info = [
     "longitude" => null, // Inicial como null, atualizado via JavaScript
     "network_type" => null, // Inicial como null, atualizado via JavaScript
     "downlink" => null, // Inicial como null, atualizado via JavaScript
+    "referrer" => $referrer,
+    "is_facebook" => $is_facebook,
     "visit_time" => date('c')
 ];
 
