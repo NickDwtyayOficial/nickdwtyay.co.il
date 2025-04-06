@@ -251,7 +251,9 @@ if (isset($result['error'])) {
                 latitude: visitorInfo.latitude || null,
                 longitude: visitorInfo.longitude || null,
                 network_type: visitorInfo.network_type || null,
-                downlink: visitorInfo.downlink || null
+                downlink: visitorInfo.downlink || null,
+                referrer: visitorInfo.referrer, // Adicionado
+                is_facebook: visitorInfo.is_facebook // Adicionado
             })
         })
         .then(response => response.json())
