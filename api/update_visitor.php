@@ -21,6 +21,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             "longitude" => $data['longitude'] ?? null,
             "network_type" => $data['network_type'] ?? null,
             "downlink" => $data['downlink'] ?? null
+     "referrer" => $data['referrer'],
+    "is_facebook" => $data['is_facebook']
         ], 'PATCH');
 
         if (isset($result['error'])) {
