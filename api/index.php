@@ -58,12 +58,12 @@ $visitor_info = [
     "device_vendor" => "Not identified",
     "device_model" => "Not identified",
     "device_type" => "Unknown",
-    "latitude" => null, // Inicial como null, atualizado via JavaScript
-    "longitude" => null, // Inicial como null, atualizado via JavaScript
-    "network_type" => null, // Inicial como null, atualizado via JavaScript
-    "downlink" => null, // Inicial como null, atualizado via JavaScript
-    "referrer" => $referrer,
-    "is_facebook" => $is_facebook,
+    "latitude" => null,
+    "longitude" => null,
+    "network_type" => null,
+    "downlink" => null,
+    "referrer" => $referrer, // Linha 65
+    "is_facebook" => $is_facebook, // Linha 66
     "visit_time" => date('c')
 ];
 
