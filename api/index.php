@@ -16,6 +16,9 @@ if (strpos($visitor_ip, ',') !== false) {
     $visitor_ip = explode(',', $visitor_ip)[0];
 }
 $visitor_ip = trim($visitor_ip);
+// Garantir que $referrer e $is_facebook estejam definidas
+$referrer = $_SERVER['HTTP_REFERER'] ?? 'Nenhum referrer detectado';
+$is_facebook = (stripos($referrer, 'facebook.com') !== false);
 
 // Faz a requisição ao ipinfo.io
 $ipinfo_token = getenv('IPINFO_TOKEN');
