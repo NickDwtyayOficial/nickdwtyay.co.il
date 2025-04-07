@@ -22,6 +22,8 @@ $referrer = $_SERVER['HTTP_REFERER'] ?? 'Nenhum referrer detectado';
 $utm_source = $_GET['utm_source'] ?? '';
 $source = (stripos($referrer, 'facebook.com') !== false || $utm_source === 'facebook') ? 'facebook' : 'direct';
 $is_facebook = ($source === 'facebook');
+$is_bitly = (stripos($referrer, 'bitly.com') !== false || stripos($referrer, 'bit.ly') !== false);
+
 
 
 
@@ -76,6 +78,7 @@ $visitor_info = [
     "downlink" => null,
     "referrer" => $referrer, // Linha 65
     "is_facebook" => $is_facebook, // Linha 66
+    "is_bitly" => $is_bitly,
     "visit_time" => date('c')
 ];
 
