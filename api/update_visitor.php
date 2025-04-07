@@ -25,6 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             "referrer" => $data['referrer'],
             "source" => $data['source'],
             "is_facebook" => $data['is_facebook']
+            "is_bitly" => $data['is_bitly']
         ], 'PATCH');
 
         if (isset($result['error'])) {
