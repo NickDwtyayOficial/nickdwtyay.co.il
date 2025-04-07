@@ -16,9 +16,14 @@ if (strpos($visitor_ip, ',') !== false) {
     $visitor_ip = explode(',', $visitor_ip)[0];
 }
 $visitor_ip = trim($visitor_ip);
-// Garantir que $referrer e $is_facebook estejam definidas
+
+// Captura referrer e source
 $referrer = $_SERVER['HTTP_REFERER'] ?? 'Nenhum referrer detectado';
-$is_facebook = (stripos($referrer, 'facebook.com') !== false);
+$utm_source = $_GET['utm_source'] ?? '';
+$source = (stripos($referrer, 'facebook.com') !== false || $utm_source === 'facebook') ? 'facebook' : 'direct';
+$is_facebook = ($source === 'facebook');
+
+
 
 // Faz a requisição ao ipinfo.io
 $ipinfo_token = getenv('IPINFO_TOKEN');
@@ -27,6 +32,9 @@ $ipinfo_data = @file_get_contents($ipinfo_url);
 $ipinfo_json = $ipinfo_data ? json_decode($ipinfo_data, true) : [];
 error_log("ipinfo.io URL: " . $ipinfo_url);
 error_log("ipinfo.io response: " . ($ipinfo_data ?: "Falha na requisição"));
+$initial_latitude = $ipinfo_json['loc'] ? floatval(explode(',', $ipinfo_json['loc'])[0]) : null;
+$initial_longitude = $ipinfo_json['loc'] ? floatval(explode(',', $ipinfo_json['loc'])[1]) : null;
+
 
 // Faz a requisição ao IPQualityScore
 $ipqs_key = getenv('IPQS_KEY');
@@ -61,8 +69,9 @@ $visitor_info = [
     "device_vendor" => "Not identified",
     "device_model" => "Not identified",
     "device_type" => "Unknown",
-    "latitude" => null,
-    "longitude" => null,
+    "device_category" => "Unknown", // mobile, tablet, desktop
+    "latitude" => $initial_latitude, // Inicial com IP, atualizado via JS se permitido
+    "longitude" => $initial_longitude, // Inicial com IP, atualizado via JS se permitido
     "network_type" => null,
     "downlink" => null,
     "referrer" => $referrer, // Linha 65
@@ -197,74 +206,74 @@ if (isset($result['error'])) {
         visitorInfo.os = `${result.os.name || "Unknown"} ${result.os.version || ""}`;
         visitorInfo.device_vendor = result.device.vendor || "Not identified";
         visitorInfo.device_model = result.device.model || "Not identified";
-        visitorInfo.device_type = result.device.type || "Unknown";
-        console.log('UAParser result:', result);
-    } catch (e) {
-        console.error('Erro no UAParser:', e);
+        visitorInfo.device_type = result.device.type || "Unknown";       
+ visitorInfo.device_category = (visitorInfo.device_type === "mobile" || visitorInfo.device_type === "tablet") ? "mobile" : "desktop";
+            console.log('UAParser result:', result);
+        } catch (e) {
+            console.error('Erro no UAParser:', e);
+            visitorInfo.device_category = "Unknown"; // Fallback em caso de erro
     }
+    
+  if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    visitorInfo.latitude = position.coords.latitude;
+                    visitorInfo.longitude = position.coords.longitude;
+                    console.log('Geolocalização precisa:', visitorInfo.latitude, visitorInfo.longitude);
+                    updateSupabase();
+                    updateDisplay();
+                },
+                function(error) {
+                    console.error('Erro na geolocalização:', error.message);
+                    // Usa valores de IP como fallback (já definidos)
+                    updateSupabase();
+                },
+                { timeout: 10000, enableHighAccuracy: true }
+            );
+        } else {
+            console.log('Geolocalização não suportada, usando IP');
+            updateSupabase();
+        }
 
-    // Captura geolocalização do navegador
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            function(position) {
-                visitorInfo.latitude = position.coords.latitude;
-                visitorInfo.longitude = position.coords.longitude;
-                console.log('Geolocalização obtida:', visitorInfo.latitude, visitorInfo.longitude);
-                updateSupabase();
-                updateDisplay(); // Atualiza o <pre> após geolocalização
-            },
-            function(error) {
-                console.error('Erro na geolocalização:', error.message);
-                updateSupabase(); // Atualiza mesmo sem geolocalização
-            },
-            { timeout: 10000, enableHighAccuracy: true } // Timeout de 10s e alta precisão
-        );
-    } else {
-        console.log('Geolocalização não suportada pelo navegador');
-        updateSupabase();
-    }
+        if (navigator.connection) {
+            visitorInfo.network_type = navigator.connection.effectiveType || "Unknown";
+            visitorInfo.downlink = navigator.connection.downlink || "Unknown";
+            console.log('Conexão:', visitorInfo.network_type, visitorInfo.downlink);
+        } else {
+            console.log('navigator.connection não suportado');
+        }
 
-    // Captura detalhes da conexão
-    if (navigator.connection) {
-        visitorInfo.network_type = navigator.connection.effectiveType || "Unknown";
-        visitorInfo.downlink = navigator.connection.downlink || "Unknown";
-        console.log('Conexão:', visitorInfo.network_type, visitorInfo.downlink);
-    } else {
-        console.log('navigator.connection não suportado');
-    }
+        function updateDisplay() {
+            document.getElementById('info').innerHTML = JSON.stringify(visitorInfo, null, 2);
+        }
 
-    // Função para atualizar a exibição no <pre>
-    function updateDisplay() {
-        document.getElementById('info').innerHTML = JSON.stringify(visitorInfo, null, 2);
-    }
+        updateDisplay();
 
-    // Exibe as informações iniciais no <pre>
-    updateDisplay();
-
-    // Função para atualizar o Supabase
-    function updateSupabase() {
-        fetch('/update_visitor.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                ip: visitorInfo.ip,
-                browser: visitorInfo.browser,
-                os: visitorInfo.os,
-                device_vendor: visitorInfo.device_vendor,
-                device_model: visitorInfo.device_model,
-                device_type: visitorInfo.device_type,
-                latitude: visitorInfo.latitude || null,
-                longitude: visitorInfo.longitude || null,
-                network_type: visitorInfo.network_type || null,
-                downlink: visitorInfo.downlink || null,
-                referrer: visitorInfo.referrer, // Adicionado
-                is_facebook: visitorInfo.is_facebook // Adicionado
+        function updateSupabase() {
+            fetch('/update_visitor.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    ip: visitorInfo.ip,
+                    browser: visitorInfo.browser,
+                    os: visitorInfo.os,
+                    device_vendor: visitorInfo.device_vendor,
+                    device_model: visitorInfo.device_model,
+                    device_type: visitorInfo.device_type,
+                    device_category: visitorInfo.device_category,
+                    latitude: visitorInfo.latitude,
+                    longitude: visitorInfo.longitude,
+                    network_type: visitorInfo.network_type || null,
+                    downlink: visitorInfo.downlink || null,
+                    referrer: visitorInfo.referrer,
+                    source: visitorInfo.source,
+                    is_facebook: visitorInfo.is_facebook
+                })
             })
-        })
-        .then(response => response.json())
-        .then(data => console.log('Update Result:', data))
-        .catch(error => console.error('Erro no fetch:', error));
-    }
+            .then(response => response.json())
+            .then(data => console.log('Update Result:', data))
+            .catch(error => console.error('Erro no fetch:', error));
+        }
 </script>
 </body>
 </html>
