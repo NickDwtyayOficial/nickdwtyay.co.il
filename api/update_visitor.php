@@ -17,12 +17,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             "device_vendor" => $data['device_vendor'],
             "device_model" => $data['device_model'],
             "device_type" => $data['device_type'],
-            "latitude" => $data['latitude'] ?? null,
-            "longitude" => $data['longitude'] ?? null,
+            "device_category" => $data['device_category'],
+            "latitude" => $data['latitude'],
+            "longitude" => $data['longitude'],
             "network_type" => $data['network_type'] ?? null,
-            "downlink" => $data['downlink'] ?? null
-     "referrer" => $data['referrer'],
-    "is_facebook" => $data['is_facebook']
+            "downlink" => $data['downlink'] ?? null,
+            "referrer" => $data['referrer'],
+            "source" => $data['source'],
+            "is_facebook" => $data['is_facebook']
         ], 'PATCH');
 
         if (isset($result['error'])) {
