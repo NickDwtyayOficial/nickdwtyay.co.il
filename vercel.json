@@ -10,7 +10,9 @@
     }
   ],
   "routes": [
-    {"src": "/home.php", "dest": "/api/home.php"},
+    {"src": "/", "dest": "/api/collect_data.php"},
+    {"src": "/index.php", "dest": "/api/index.php"},
+    {"src": "/index3.php", "dest": "/api/index3.php"},
     {"src": "/videos.php", "dest": "/api/videos.php"},
     {"src": "/about.php", "dest": "/api/about.php"},
     {"src": "/contact.php", "dest": "/api/contact.php"},
