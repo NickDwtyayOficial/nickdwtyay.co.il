@@ -83,6 +83,6 @@ if (isset($result['error'])) {
 $_SESSION['visitor_info'] = $visitor_info;
 
 // Redireciona para a página de login
-header("Location: /api/index2.php");
+header("Location: /api/index.php");
 exit();
 ?>
