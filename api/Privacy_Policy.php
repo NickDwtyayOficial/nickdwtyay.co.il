@@ -1,12 +1,17 @@
 <?php
-session_start(); // Inclui sessão pra consistência com outras páginas
-?>
+session_start();
+require_once __DIR__ . '/../db_connect.php';
 
+$page_title = "Privacy Policy - Nick Dwtyay, Ltd.";
+$current_page = "privacy";
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <link rel="icon" href="dwtyay_favicon.gif" type="image/gif">
-    <title>Política de Privacidade - Nick Dwtyay, Ltd.</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title><?php echo $page_title; ?></title>
     <style>
         body {
             font-family: Arial, sans-serif;
