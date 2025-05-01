@@ -139,8 +139,8 @@ error_reporting(E_ALL); // Corrigido de "error_reportin" pra "error_reporting"
     <footer class="footer">
         NICK DWTYAY, LTD.<br>
         "Americas and Middle East Cybersecurity Software and Technology Solutions Development Company."<br>
-        <a href="/Terms.php">Terms</a> |
-        <a href="/Privacy_Policy.php">Privacy Policy</a> |
+        <a href="api/Terms.php">Terms</a> |
+        <a href="api/Privacy_Policy.php">Privacy Policy</a> |
         All Rights Reserved | © 2006 - 2025 Nick Dwtyay, Ltd.
     </footer>
 </body>
