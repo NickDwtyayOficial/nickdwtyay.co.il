@@ -302,8 +302,8 @@ $visitor_info = $_SESSION['visitor_info'] ?? [];
         <p>NICK DWTYAY, LTD.</p>
         <p>"Americas and Middle East Cybersecurity Software and Technology Solutions Development Company."</p>
         <p>
-            <a href="/Terms.php">Terms</a> |
-            <a href="/Privacy_Policy.php">Privacy Policy</a> |
+            <a href="api/Terms.php">Terms</a> |
+            <a href="api/Privacy_Policy.php">Privacy Policy</a> |
             All Rights Reserved © 2006 - 2025 Nick Dwtyay, Ltd.
         </p>
     </footer>
