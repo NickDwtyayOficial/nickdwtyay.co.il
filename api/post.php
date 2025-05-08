@@ -51,7 +51,7 @@ if (isset($posts['error'])) {
         <h3>Meus Posts</h3>
         <a href="dashboard.php">Dashboard</a>
         <a href="loja.php">Loja</a>
-        <a href="meus_posts.php">Meus Posts</a>
+        <a href="post.php">Meus Posts</a>
         <a href="logout.php">Sair</a>
     </div>
     <div class="content">
