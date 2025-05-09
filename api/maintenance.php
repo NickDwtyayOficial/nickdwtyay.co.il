@@ -7,7 +7,6 @@ header("Pragma: no-cache");
 
 $redirectTime = 5; // Tempo de redirecionamento em segundos
 ?>
-
 <!DOCTYPE html>
 <html lang="he">
 <head>
