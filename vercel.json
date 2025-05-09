@@ -22,6 +22,10 @@
       "dest": "/home.php"
     },
     {
+      "src": "/maintenance.php",
+      "dest": "/maintenance.php"
+    },
+    {
       "src": "/(.*)",
       "dest": "/maintenance.php"
     },
