@@ -1,4 +1,4 @@
- {
+{
   "version": 2,
   "builds": [
     {
@@ -10,8 +10,7 @@
     }
   ],
   "routes": [
-    {"src": "/", "dest": "/api/collect_data.php"},
-    {"src": "/index.php", "dest": "/api/index.php"},
+    {"src": "/", "dest": "/api/index.php"},
     {"src": "/index3.php", "dest": "/api/index3.php"},
     {"src": "/videos.php", "dest": "/api/videos.php"},
     {"src": "/about.php", "dest": "/api/about.php"},
@@ -24,10 +23,8 @@
     {"src": "/Terms.php", "dest": "/api/Terms.php"},
     {"src": "/Privacy_Policy.php", "dest": "/api/Privacy_Policy.php"},
     {"src": "/api/dashboard.php", "dest": "/api/dashboard.php"},
-    {"src": "/update_visitor.php", "dest": "/api/update_visitor.php"}, 
-    {"src": "/api/post.php", "dest": "/api/post.php"}, // Adicionado
-    {"src": "/api/profile.php", "dest": "/api/profile.php"}, // Adicionado
-    {"src": "api/maintenance.php", "dest": "api/maintenance.php"}, 
-    {"src": "/(.*)", "dest": "/api/index.php"}
+    {"src": "/update_visitor.php", "dest": "/api/update_visitor.php"},
+    {"src": "/api/post.php", "dest": "/api/post.php"},
+    {"src": "/api/profile.php", "dest": "/api/profile.php"}
   ]
-} 
+}
