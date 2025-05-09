@@ -3,7 +3,7 @@ session_start();
 require_once __DIR__ . '/db_connect.php';
 
 // Verificar se o modo de manutenção está ativo
-$maintenanceMode = true; // Defina como false para desativar a manutenção
+$maintenanceMode = false; // Defina como false para desativar a manutenção
 if ($maintenanceMode && basename($_SERVER['PHP_SELF']) !== 'maintenance.php') {
     header("Location: /api/maintenance.php");
     exit();
