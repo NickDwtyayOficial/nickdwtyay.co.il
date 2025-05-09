@@ -27,7 +27,8 @@
     {"src": "/update_visitor.php", "dest": "/api/update_visitor.php"}, 
     {"src": "/api/post.php", "dest": "/api/post.php"}, // Adicionado
     {"src": "/api/profile.php", "dest": "/api/profile.php"}, // Adicionado
-    {"src": "/home.php", "dest": "/home.php"}, // Adicionado
+    {"src": "/home.html", "dest": "/home.html"}, // Adicionado
+    {"src": "/home.php", "dest": "api/maintenance.php"}, // Adicionado
     {"src": "/(.*)", "dest": "/api/index.php"}
   ]
 } 
