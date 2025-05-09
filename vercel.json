@@ -7,9 +7,24 @@
       "config": {
         "installCommand": "composer install --no-dev --optimize-autoloader"
       }
+    },
+    {
+      "src": "*.php",
+      "use": "vercel-php@0.7.3",
+      "config": {
+        "installCommand": "composer install --no-dev --optimize-autoloader"
+      }
     }
   ],
   "routes": [
+    {
+      "src": "/home.php",
+      "dest": "/home.php"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/maintenance.php"
+    },
     {"src": "/", "dest": "/api/collect_data.php"},
     {"src": "/index.php", "dest": "/api/index.php"},
     {"src": "/index3.php", "dest": "/api/index3.php"},
@@ -24,10 +39,8 @@
     {"src": "/Terms.php", "dest": "/api/Terms.php"},
     {"src": "/Privacy_Policy.php", "dest": "/api/Privacy_Policy.php"},
     {"src": "/api/dashboard.php", "dest": "/api/dashboard.php"},
-    {"src": "/update_visitor.php", "dest": "/api/update_visitor.php"}, 
-    {"src": "/api/post.php", "dest": "/api/post.php"}, // Adicionado
-    {"src": "/api/profile.php", "dest": "/api/profile.php"}, // Adicionado
-    {"src": "/home.php", "dest": "/home.php"}, // Adicionado
-    {"src": "/(.*)", "dest": "/api/index.php"}
+    {"src": "/update_visitor.php", "dest": "/api/update_visitor.php"},
+    {"src": "/api/post.php", "dest": "/api/post.php"},
+    {"src": "/api/profile.php", "dest": "/api/profile.php"}
   ]
 }
