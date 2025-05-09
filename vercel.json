@@ -14,12 +14,16 @@
       "config": {
         "installCommand": "composer install --no-dev --optimize-autoloader"
       }
+    },
+    {
+      "src": "*.html",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
-      "src": "/home.php",
-      "dest": "/home.php"
+      "src": "/home.html",
+      "dest": "/home.html"
     },
     {
       "src": "/maintenance.php",
