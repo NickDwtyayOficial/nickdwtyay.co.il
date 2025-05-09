@@ -63,7 +63,7 @@ $redirectTime = 5; // Tempo de redirecionamento em segundos
         <p>אנו מבצעים שיפורים באתר. תועבר לדף הבית בעוד <span id="countdown"><?php echo $redirectTime; ?></span> שניות.</p>
         <p><a href="/home.html">לחץ כאן כדי לעבור כעת</a></p> <!-- ALTERADO: de /home.php para /home.html -->
         <noscript>
-            <p>נראה ש-JavaScript מושבת. <a href="/home.html">לחץ כאן</a> כדי לעבור לדף הבית.</p> <!-- ALTERADO: de /home.php para /home.html -->
+            <p>נראה ש-JavaScript מושבת. <a href="api/home.php">לחץ כאן</a> כדי לעבור לדף הבית.</p> <!-- ALTERADO: de /home.php para /home.html -->
         </noscript>
     </div>
 
@@ -76,7 +76,7 @@ $redirectTime = 5; // Tempo de redirecionamento em segundos
                 countdownElement.textContent = seconds;
                 seconds--;
                 if (seconds < 0) {
-                    window.location.href = '/home.html'; // ALTERADO: de /home.php para /home.html
+                    window.location.href = 'api/home.php'; // ALTERADO: de /home.php para /home.html
                 }
             }
         };
