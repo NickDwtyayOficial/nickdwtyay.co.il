@@ -1,7 +1,6 @@
 <?php
 session_start();
 require_once __DIR__ . '/db_connect.php';
-
 // Configurações para evitar cache
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Pragma: no-cache");
