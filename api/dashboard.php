@@ -1,23 +1,16 @@
 <?php
+
 session_start();
 require_once __DIR__ . '/db_connect.php';
-
-// Verificar se o modo de manutenção está ativo
-$maintenanceMode = false; // Defina como false para desativar a manutenção
-if ($maintenanceMode && basename($_SERVER['PHP_SELF']) !== 'maintenance.php') {
-    header("Location: /api/maintenance.php");
-    exit();
-}
-// FIM DA VERIFICAÇÃO
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 if (isset($_COOKIE['user_id']) && !isset($_SESSION['user_id'])) {
-    $_SESSION['user_id'] = $_COOKIE['user_id'];
-    error_log("Sessão restaurada via cookie - user_id: " . $_SESSION['user_id']);
-}
+    $_SESSION['user_id'] = $_COOKIE['user_id'];
+    error_log("Sessão restaurada via cookie - user_id: " . $_SESSION['user_id']);
+}    
 
 error_log("Iniciando dashboard.php - Sessão: " . json_encode($_SESSION));
 
