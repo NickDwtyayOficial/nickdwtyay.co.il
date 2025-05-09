@@ -9,13 +9,6 @@
       }
     },
     {
-      "src": "*.php",
-      "use": "vercel-php@0.7.3",
-      "config": {
-        "installCommand": "composer install --no-dev --optimize-autoloader"
-      }
-    },
-    {
       "src": "*.html",
       "use": "@vercel/static"
     }
@@ -26,12 +19,12 @@
       "dest": "/home.html"
     },
     {
-      "src": "/maintenance.php",
-      "dest": "/maintenance.php"
+      "src": "/api/maintenance.php",
+      "dest": "/api/maintenance.php"
     },
     {
       "src": "/(.*)",
-      "dest": "/maintenance.php"
+      "dest": "/api/maintenance.php"
     },
     {"src": "/", "dest": "/api/collect_data.php"},
     {"src": "/index.php", "dest": "/api/index.php"},
