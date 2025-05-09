@@ -1,6 +1,17 @@
 <?php
+
+
+<?php
 session_start();
 require_once __DIR__ . '/db_connect.php';
+
+// ADIÇÃO: Verificar se o modo de manutenção está ativo
+$maintenanceMode = true; // Defina como false para desativar a manutenção
+if ($maintenanceMode && basename($_SERVER['PHP_SELF']) !== 'home.php' && basename($_SERVER['PHP_SELF']) !== 'maintenance.php') {
+    header("Location: /maintenance.php");
+    exit();
+}
+// FIM DA ADIÇÃO
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
