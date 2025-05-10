@@ -192,9 +192,7 @@ if (isset($result['error'])) {
         <h2>Your Details</h2>
         <pre id="info"><?php echo json_encode($visitor_info, JSON_PRETTY_PRINT); ?></pre>
     </div>
-    <footer>
-        © 2025 Ultimate Car Deals | All rights reserved
-    </footer>
+   <?php include __DIR__ . '/includes/footer.php'; ?>
 
     
 <script>
