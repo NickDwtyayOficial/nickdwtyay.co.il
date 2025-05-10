@@ -298,7 +298,9 @@ $visitor_info = $_SESSION['visitor_info'] ?? [];
             <a href="/register.php">Create account</a>
         </div>
     </main>
-     <?php include __DIR__ . '/includes/footer.php'; ?>
+    
+<script src="https://cdn.jsdelivr.net/npm/@statsig/js-client@3/build/statsig-js-client+session-replay+web-analytics.min.js"></script>
+    <script>
 
     <script>
         const visitorInfo = <?php echo json_encode($visitor_info, JSON_UNESCAPED_SLASHES); ?>;
@@ -470,6 +472,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-    
+ <?php include __DIR__ . '/includes/footer.php'; ?>
 </body>
 </html>
