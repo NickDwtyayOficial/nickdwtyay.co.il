@@ -122,12 +122,6 @@ $current_page = "terms";
         <p>Última atualização: 07 de Março de 2025.</p>
         <p><a href="/">Voltar ao Login</a></p>
     </div>
-   <footer class="footer">
-    NICK DWTYAY, LTD.<br>
-    "Americas and Middle East Cybersecurity Software and Technology Solutions Development Company."<br>
-    <a href="/Terms.php">Terms</a> |
-    <a href="/Privacy_Policy.php">Privacy Policy</a> |
-    All Rights Reserved | © 2006 - 2025 Nick Dwtyay, Ltd.
-</footer>
+    <?php include __DIR__ . '/includes/footer.php'; ?>
 </body>
 </html>
