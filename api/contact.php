@@ -37,12 +37,6 @@ require_once __DIR__ . '/db_connect.php';
         <h2>Contato</h2>
         <p>Entre em contato conosco em: <a href="mailto:contato@nickdwtyay.com.br">contato@nickdwtyay.com.br</a></p>
     </div>
-    <footer class="footer">
-    NICK DWTYAY, LTD.<br>
-    "Americas and Middle East Cybersecurity Software and Technology Solutions Development Company."<br>
-    <a href="/Terms.php">Terms</a> |
-    <a href="/Privacy_Policy.php">Privacy Policy</a> |
-    All Rights Reserved | © 2006 - 2025 Nick Dwtyay, Ltd.
-</footer>
+     <?php include __DIR__ . '/includes/footer.php'; ?>
 </body>
 </html>
