@@ -136,7 +136,33 @@ error_log("Usuário carregado com sucesso: " . json_encode($user_data));
         }
     })();
 </script>
-    
+
+    <script src="/api/static/statsig-js.min.js" defer></script>
+    <script>
+        (async () => {
+            if (typeof window.statsig === 'undefined') {
+                console.error('Statsig SDK failed to load.');
+                document.querySelector('.products').style.display = 'block'; // Fallback: show products
+                return;
+            }
+            try {
+                await window.statsig.initializeAsync('client-WA7hJS8vXPG4k3WEXJ6V4raziKM5xH4WFc08sYT38qQ', {
+                    userID: '<?php echo htmlspecialchars($_SESSION['user_id'] ?? ''); ?>'
+                });
+                const isGateEnabled = await window.statsig.checkGate('my_feature_gate');
+                if (isGateEnabled) {
+                    console.log('Feature gate my_feature_gate is enabled!');
+                    document.querySelector('.products').style.display = 'block';
+                } else {
+                    console.log('Feature gate my_feature_gate is disabled.');
+                    document.querySelector('.products').style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Statsig initialization failed:', error);
+                document.querySelector('.products').style.display = 'block'; // Fallback
+            }
+        })();
+    </script>
 
     
  <?php include __DIR__ . '/includes/footer.php'; ?></body>
