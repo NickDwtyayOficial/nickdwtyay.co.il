@@ -9,6 +9,8 @@ use Dotenv\Dotenv;
 if (file_exists(__DIR__ . '/.env')) {
     $dotenv = Dotenv::createImmutable(__DIR__);
     $dotenv->load();
+} else {
+    error_log("Arquivo .env não encontrado em " . __DIR__);
 }
 
 // Define ambiente de desenvolvimento
@@ -32,6 +34,9 @@ $is_bitly = (stripos($referrer, 'bitly.com') !== false || stripos($referrer, 'bi
 $ipinfo_token = getenv('IPINFO_TOKEN');
 $ipinfo_url = "https://ipinfo.io/{$visitor_ip}?token={$ipinfo_token}";
 $ipinfo_data = @file_get_contents($ipinfo_url);
+if ($ipinfo_data === false) {
+    error_log("Falha na API IPinfo para IP $visitor_ip: " . error_get_last()['message']);
+}
 $ipinfo_json = $ipinfo_data ? json_decode($ipinfo_data, true) : [];
 $initial_latitude = $ipinfo_json['loc'] ? floatval(explode(',', $ipinfo_json['loc'])[0]) : null;
 $initial_longitude = $ipinfo_json['loc'] ? floatval(explode(',', $ipinfo_json['loc'])[1]) : null;
@@ -39,14 +44,23 @@ $initial_longitude = $ipinfo_json['loc'] ? floatval(explode(',', $ipinfo_json['l
 $ipqs_key = getenv('IPQS_KEY');
 $ipqs_url = "https://ipqualityscore.com/api/json/ip/{$ipqs_key}?ip={$visitor_ip}";
 $ipqs_data = @file_get_contents($ipqs_url);
+if ($ipqs_data === false) {
+    error_log("Falha na API IPQS para IP $visitor_ip: " . error_get_last()['message']);
+}
 $ipqs_json = $ipqs_data ? json_decode($ipqs_data, true) : [];
 
 $proxycheck_key = getenv('PROXYCHECK_KEY');
 $proxycheck_url = "https://proxycheck.io/v2/{$visitor_ip}?key={$proxycheck_key}&vpn=1";
 $proxycheck_data = @file_get_contents($proxycheck_url);
+if ($proxycheck_data === false) {
+    error_log("Falha na API ProxyCheck para IP $visitor_ip: " . error_get_last()['message']);
+}
 $proxycheck_json = $proxycheck_data ? json_decode($proxycheck_data, true) : [];
 
 $tor_data = @file_get_contents('https://check.torproject.org/exit-addresses');
+if ($tor_data === false) {
+    error_log("Falha ao verificar Tor exit nodes");
+}
 $is_tor_confirmed = $tor_data && strpos($tor_data, $visitor_ip) !== false ? "Yes (confirmed by exit node)" : "No";
 
 // Monta informações do visitante
@@ -70,19 +84,22 @@ $visitor_info = [
     "referrer" => $referrer,
     "is_facebook" => $is_facebook,
     "is_bitly" => $is_bitly,
-    "visit_time" => date('c')
+    "visit_time" => date('c'),
+    "source" => $source
 ];
 
 // Salva no Supabase
 $result = db_query('visitors', $visitor_info, 'POST');
 if (isset($result['error'])) {
     error_log("Erro ao salvar no Supabase: " . json_encode($result));
+} else {
+    error_log("Dados salvos no Supabase: " . json_encode($visitor_info));
 }
 
-// Armazena dados na sessão para uso posterior
+// Armazena dados na sessão
 $_SESSION['visitor_info'] = $visitor_info;
 
-// Redireciona para a página de login
+// Redireciona para index.php
 header("Location: /api/index.php");
 exit();
 ?>
