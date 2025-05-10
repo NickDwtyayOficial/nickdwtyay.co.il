@@ -73,7 +73,7 @@ error_log("Usuário carregado com sucesso: " . json_encode($user_data));
             .container { margin: 10px; padding: 15px; }
             .products { flex-direction: column; align-items: center; }
             .product { width: 100%; max-width: 300px; }
-        }
+       .products { display: none;  }
     </style>
 </head>
 <body>
@@ -117,6 +117,28 @@ error_log("Usuário carregado com sucesso: " . json_encode($user_data));
             </div>
         </div>
     </div>
+
+<script src="https://cdn.jsdelivr.net/npm/@statsig/js-client@3/dist/statsig-js.min.js"></script>
+<script>
+    (async () => {
+        const statsig = window.statsig;
+        await statsig.initializeAsync('statsig-dwtyay', {
+            userID: '<?php echo htmlspecialchars($_SESSION['user_id'] ?? ''); ?>'
+        });
+        const isGateEnabled = await statsig.checkGate('my_feature_gate');
+        if (isGateEnabled) {
+            console.log('Feature gate my_feature_gate is enabled!');
+            // Mostrar conteúdo condicional
+            document.querySelector('.products').style.display = 'block';
+        } else {
+            console.log('Feature gate my_feature_gate is disabled.');
+            document.querySelector('.products').style.display = 'none';
+        }
+    })();
+</script>
+    
+
+    
     <footer class="footer">
         NICK DWTYAY, LTD.<br>
         "Americas and Middle East Cybersecurity Software and Technology Solutions Development Company."<br>
