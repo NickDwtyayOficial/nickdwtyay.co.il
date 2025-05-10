@@ -7,6 +7,7 @@ session_start();
 <head>
     <link rel="icon" href="dwtyay_favicon.gif" type="image/gif">
     <title>About - Nick Dwtyay, Ltd.</title>
+    <link rel="icon" href="/api/static/dwtyay_favicon.gif" type="image/gif">
     <style>
         body { font-family: Arial, sans-serif; margin: 0; padding: 0; height: 100vh; overflow-x: hidden; }
         .background-image { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: url('https://codingdatatoday.co/wp-content/uploads/2024/06/Os-Principais-Tipos-de-Analise-de-Dados-e-Suas-Aplicacoes.webp'); background-size: cover; background-position: center; background-repeat: no-repeat; z-index: -1; filter: brightness(70%); }
