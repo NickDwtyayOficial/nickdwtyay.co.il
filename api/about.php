@@ -36,12 +36,6 @@ session_start();
         <h2>Sobre Nós</h2>
         <p>Somos uma empresa dedicada a soluções de cibersegurança desde 2006.</p>
     </div>
-    <footer class="footer">
-    NICK DWTYAY, LTD.<br>
-    "Americas and Middle East Cybersecurity Software and Technology Solutions Development Company."<br>
-    <a href="/Terms.php">Terms</a> |
-    <a href="/Privacy_Policy.php">Privacy Policy</a> |
-    All Rights Reserved | © 2006 - 2025 Nick Dwtyay, Ltd.
-</footer>
+     <?php include __DIR__ . '/includes/footer.php'; ?>
 </body>
 </html>
