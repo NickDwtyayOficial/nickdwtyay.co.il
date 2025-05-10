@@ -54,7 +54,7 @@ error_log("Usuário carregado com sucesso: " . json_encode($user_data));
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Dashboard</title>  <link rel="icon" href="https://static.nickdwtyay.com.br/static/favicon.ico" type="image/x-icon">
     <style>
         body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; }
         nav { background: #333; color: white; padding: 10px; }
