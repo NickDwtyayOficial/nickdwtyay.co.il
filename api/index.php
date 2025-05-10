@@ -298,15 +298,7 @@ $visitor_info = $_SESSION['visitor_info'] ?? [];
             <a href="/register.php">Create account</a>
         </div>
     </main>
-    <footer class="footer">
-        <p>NICK DWTYAY, LTD.</p>
-        <p>"Americas and Middle East Cybersecurity Software and Technology Solutions Development Company."</p>
-        <p>
-            <a href="/Terms.php">Terms</a> |
-            <a href="/Privacy_Policy.php">Privacy Policy</a> |
-            All Rights Reserved © 2006 - 2025 Nick Dwtyay, Ltd.
-        </p>
-    </footer>
+     <?php include __DIR__ . '/includes/footer.php'; ?>
 
     <script>
         const visitorInfo = <?php echo json_encode($visitor_info, JSON_UNESCAPED_SLASHES); ?>;
