@@ -122,7 +122,7 @@ error_log("Usuário carregado com sucesso: " . json_encode($user_data));
 <script>
     (async () => {
         const statsig = window.statsig;
-        await statsig.initializeAsync('statsig-dwtyay', {
+        await statsig.initializeAsync('secret-9ZwnEzWO1lP0zLfAPOijPsXTSnoiBkiUg8ILmtcgp7Q', {
             userID: '<?php echo htmlspecialchars($_SESSION['user_id'] ?? ''); ?>'
         });
         const isGateEnabled = await statsig.checkGate('my_feature_gate');
