@@ -1,29 +1,34 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "api/*.php",
-      "use": "vercel-php@0.7.3",
-      "config": {
-        "installCommand": "composer install --no-dev --optimize-autoloader"
-      }
-    }
-  ],
-  "routes": [
-    {"src": "/", "dest": "/api/index.php"},
-    {"src": "/api/index.php", "dest": "/api/index.php"},
-    {"src": "/api/dashboard.php", "dest": "/api/dashboard.php"},
-    {"src": "/api/post.php", "dest": "/api/post.php"},
-    {"src": "/api/profile.php", "dest": "/api/profile.php"},
-    {"src": "/api/recover_password.php", "dest": "/api/recover_password.php"},
-    {"src": "/videos.php", "dest": "/api/videos.php"},
-    {"src": "/about.php", "dest": "/api/about.php"},
-    {"src": "/contact.php", "dest": "/api/contact.php"},
-    {"src": "/register.php", "dest": "/api/register.php"},
-    {"src": "/logout.php", "dest": "/api/logout.php"},
-    {"src": "/reset_password.php", "dest": "/api/reset_password.php"},
-    {"src": "/Terms.php", "dest": "/api/Terms.php"},
-    {"src": "/Privacy_Policy.php", "dest": "/api/Privacy_Policy.php"},
-    {"src": "/update_visitor.php", "dest": "/api/update_visitor.php"}
-  ]
+    "version": 2,
+    "builds": [
+        {
+            "src": "api/*.php",
+            "use": "vercel-php@0.7.3",
+            "config": {
+                "installCommand": "composer install --no-dev --optimize-autoloader"
+            }
+        },
+        {
+            "src": "api/static/**",
+            "use": "@vercel/static"
+        }
+    ],
+    "routes": [
+        {"src": "/", "dest": "/api/index.php"},
+        {"src": "/api/index.php", "dest": "/api/index.php"},
+        {"src": "/api/dashboard.php", "dest": "/api/dashboard.php"},
+        {"src": "/api/post.php", "dest": "/api/post.php"},
+        {"src": "/api/profile.php", "dest": "/api/profile.php"},
+        {"src": "/api/recover_password.php", "dest": "/api/recover_password.php"},
+        {"src": "/api/static/(.*)", "dest": "/api/static/$1"},
+        {"src": "/videos.php", "dest": "/api/videos.php"},
+        {"src": "/about.php", "dest": "/api/about.php"},
+        {"src": "/contact.php", "dest": "/api/contact.php"},
+        {"src": "/register.php", "dest": "/api/register.php"},
+        {"src": "/logout.php", "dest": "/api/logout.php"},
+        {"src": "/reset_password.php", "dest": "/api/reset_password.php"},
+        {"src": "/Terms.php", "dest": "/api/Terms.php"},
+        {"src": "/Privacy_Policy.php", "dest": "/api/Privacy_Policy.php"},
+        {"src": "/update_visitor.php", "dest": "/api/update_visitor.php"}
+    ]
 }
