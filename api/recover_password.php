@@ -99,13 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </form>
         <p><a href="/">Voltar ao Login</a></p>
     </div>
-    <footer class="footer">
-        NICK DWTYAY, LTD.<br>
-        "Americas and Middle East Cybersecurity Software and Technology Solutions Development Company."<br>
-        <a href="/Terms.php">Terms</a> |
-        <a href="/Privacy_Policy.php">Privacy Policy</a> |
-        All Rights Reserved | © 2006 - 2022 Nick Dwtyay, Ltd.
-    </footer>
+      <?php include __DIR__ . '/includes/footer.php'; ?>
     <script>
         window.va = window.va || function (...args) { (window.vaq = window.vaq || []).push(args); };
     </script>
