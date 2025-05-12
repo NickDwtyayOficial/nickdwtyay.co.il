@@ -356,7 +356,7 @@ $visitor_info = $_SESSION['visitor_info'] ?? [];
         <?php if (isset($error)): ?>
             <p class="error"><?php echo htmlspecialchars($error); ?></p>
         <?php endif; ?>
-        <form method="POST" action="/api/recover_password.php">
+        <form method="POST" action="/api/index.php">
             <div class="form-group">
                 <label for="email">E-mail:</label>
                 <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($email ?? ''); ?>" required>
