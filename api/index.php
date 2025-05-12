@@ -370,8 +370,8 @@ $visitor_info = $_SESSION['visitor_info'] ?? [];
             </div>
         </form>
         <div class="form-links">
-            <a href="/recover_password.php">Forgot your password?</a>
-            <a href="/register.php">Create account</a>
+            <a href="api/recover_password.php">Forgot your password?</a>
+            <a href="api/register.php">Create account</a>
         </div>
     </main>
     
