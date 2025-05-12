@@ -9,9 +9,11 @@ error_log("Iniciando recover_password.php");
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = strtolower(trim($_POST['email'] ?? ''));
+    error_log("E-mail recebido: $email");
 
     if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = "Digite um e-mail válido!";
+        error_log("Erro: E-mail inválido");
     } else {
         // Buscar usuário no Supabase
         $user = db_query("users?email=eq.$email&is_active=eq.true");
@@ -26,9 +28,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $token = bin2hex(random_bytes(16)); // Token de 32 caracteres
                 $expires_at = date('c', strtotime('+1 hour')); // Expira em 1 hora
 
-                // Usar user_id (ou email, se preferir)
+                // Usar user_id
                 $reset_data = [
-                    'user_id' => $user_id, // Comente e use 'email' => $email se o schema usar email
+                    'user_id' => $user_id,
                     'token' => $token,
                     'expires_at' => $expires_at,
                     'created_at' => date('c')
@@ -41,7 +43,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                     // Enviar e-mail via SendGrid
                     $sendgrid = new Mail();
-                    $sendgrid->setFrom(getenv('FROM_EMAIL'), getenv('FROM_NAME'));
+                    $from_email = getenv('FROM_EMAIL');
+                    $from_name = getenv('FROM_NAME');
+                    error_log("Enviando e-mail de $from_email para $email");
+                    $sendgrid->setFrom($from_email, $from_name);
                     $sendgrid->setSubject("Recuperação de Senha - Nick Dwtyay, Ltd.");
                     $sendgrid->addTo($email);
                     $sendgrid->addContent("text/plain", "Clique no link para redefinir sua senha: $reset_link\nO link expira em 1 hora.");
@@ -49,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                     try {
                         $response = $sg->send($sendgrid);
-                        error_log("SendGrid response: " . $response->statusCode());
+                        error_log("SendGrid response: " . $response->statusCode() . " - " . json_encode($response->body()));
                         if ($response->statusCode() >= 200 && $response->statusCode() < 300) {
                             $_SESSION['success'] = "Link de redefinição enviado para o seu e-mail!";
                             header("Location: /");
@@ -69,8 +74,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         } else {
             $error = "E-mail não encontrado!";
+            error_log("Nenhum usuário encontrado para $email");
         }
     }
+} else {
+    error_log("Método não é POST: " . $_SERVER['REQUEST_METHOD']);
 }
 ?>
 
