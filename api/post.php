@@ -80,5 +80,6 @@ if (isset($posts['error'])) {
             </div>
         <?php endforeach; ?>
     </div>
+  <?php include __DIR__ . '/includes/footer.php'; ?>
 </body>
 </html>
