@@ -82,5 +82,6 @@ $redirectTime = 5; // Tempo de redirecionamento em segundos
         updateCountdown();
         setInterval(updateCountdown, 1000);
     </script>
+    <?php include __DIR__ . '/includes/footer.php'; ?>
 </body>
 </html>
