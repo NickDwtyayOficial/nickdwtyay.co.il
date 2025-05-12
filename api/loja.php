@@ -49,5 +49,6 @@ if (isset($result['error'])) {
             </div>
         <?php endforeach; ?>
     </div>
+    <?php include __DIR__ . '/includes/footer.php'; ?>
 </body>
 </html>
