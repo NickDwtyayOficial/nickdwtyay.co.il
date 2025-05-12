@@ -136,12 +136,6 @@ error_reporting(E_ALL); // Corrigido de "error_reportin" pra "error_reporting"
         <div class="message">This page is under construction.</div>
         <div class="hebrew">דף זה נמצא בבנייה.</div>
     </div>
-    <footer class="footer">
-        NICK DWTYAY, LTD.<br>
-        "Americas and Middle East Cybersecurity Software and Technology Solutions Development Company."<br>
-        <a href="api/Terms.php">Terms</a> |
-        <a href="api/Privacy_Policy.php">Privacy Policy</a> |
-        All Rights Reserved | © 2006 - 2025 Nick Dwtyay, Ltd.
-    </footer>
+      <?php include __DIR__ . '/includes/footer.php'; ?>
 </body>
 </html>
