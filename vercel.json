@@ -22,14 +22,14 @@
         {"src": "/api/profile.php", "dest": "/api/profile.php"},
         {"src": "/api/recover_password.php", "dest": "/api/recover_password.php"},
         {"src": "/api/static/(.*)", "dest": "/api/static/$1"},
-        {"src": "api/videos.php", "dest": "/api/videos.php"},
-        {"src": "api/about.php", "dest": "/api/about.php"},
-        {"src": "api/contact.php", "dest": "/api/contact.php"},
-        {"src": "api/register.php", "dest": "/api/register.php"},
-        {"src": "api/logout.php", "dest": "/api/logout.php"},
-        {"src": "api/reset_password.php", "dest": "/api/reset_password.php"},
-        {"src": "api/Terms.php", "dest": "/api/Terms.php"},
-        {"src": "api/Privacy_Policy.php", "dest": "/api/Privacy_Policy.php"},
-        {"src": "api/api/update_visitor.php", "dest": "/api/update_visitor.php"}
+        {"src": "/videos.php", "dest": "/api/videos.php"},
+        {"src": "/about.php", "dest": "/api/about.php"},
+        {"src": "/contact.php", "dest": "/api/contact.php"},
+        {"src": "/register.php", "dest": "/api/register.php"},
+        {"src": "/logout.php", "dest": "/api/logout.php"},
+        {"src": "/reset_password.php", "dest": "/api/reset_password.php"},
+        {"src": "/Terms.php", "dest": "/api/Terms.php"},
+        {"src": "/Privacy_Policy.php", "dest": "/api/Privacy_Policy.php"},
+        {"src": "/api/update_visitor.php", "dest": "/api/update_visitor.php"}
     ]
 }
