@@ -356,7 +356,7 @@ $visitor_info = $_SESSION['visitor_info'] ?? [];
         <?php if (isset($error)): ?>
             <p class="error"><?php echo htmlspecialchars($error); ?></p>
         <?php endif; ?>
-        <form method="POST" action="">
+        <form method="POST" action="/api/recover_password.php">
             <div class="form-group">
                 <label for="email">E-mail:</label>
                 <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($email ?? ''); ?>" required>
@@ -370,7 +370,7 @@ $visitor_info = $_SESSION['visitor_info'] ?? [];
             </div>
         </form>
         <div class="form-links">
-            <a href="api/recover_password.php">Forgot your password?</a>
+            <a href="/recover_password.php">Forgot your password?</a>
             <a href="/register.php">Create account</a>
         </div>
     </main>
