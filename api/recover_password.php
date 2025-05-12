@@ -124,7 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <?php if (isset($error)) echo "<p class='error'>$error</p>"; ?>
         <?php if (isset($success)) echo "<p class='success'>$success</p>"; ?>
         <form method="POST">
-            <div class="form-group">
+            <form method="POST" action="api/recover_password.php">
                 <label>E-mail:</label>
                 <input type="email" name="email" value="<?php echo htmlspecialchars($email ?? ''); ?>" required>
             </div>
