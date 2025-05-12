@@ -80,8 +80,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.statcounter.com 'unsafe-inline'; connect-src 'self' https://*.vercel.app https://c.statcounter.com; style-src 'self' 'unsafe-inline'; img-src 'self' https://c.statcounter.com; font-src 'self';">
-    <link rel="icon" href="api/static/dwtyay_favicon.gif" type="image/gif">
-    <title>Recover Password - Nick Dwtyay, Ltd.</title>
+    <link rel="icon" href="/dwtyay_favicon.gif" type="image/gif">
+    <title>Recuperar Senha - Nick Dwtyay, Ltd.</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 0; padding: 0; height: 100vh; overflow-x: hidden; }
         .background-image { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: url('https://codingdatatoday.co/wp-content/uploads/2024/06/Os-Principais-Tipos-de-Analise-de-Dados-e-Suas-Aplicacoes.webp'); background-size: cover; background-position: center; background-repeat: no-repeat; z-index: -1; filter: brightness(70%); }
@@ -112,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 
     <div class="container">
-        <h2>Recover Password</h2>
+        <h2>Recuperar Senha</h2>
         <?php if (isset($error)) echo "<p class='error'>$error</p>"; ?>
         <?php if (isset($success)) echo "<p class='success'>$success</p>"; ?>
         <form method="POST">
@@ -121,10 +121,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <input type="email" name="email" value="<?php echo htmlspecialchars($email ?? ''); ?>" required>
             </div>
             <div class="form-group">
-                <button type="submit">Send Link</button>
+                <button type="submit">Enviar Link</button>
             </div>
         </form>
-        <p><a href="/">Return to Login</a></p>
+        <p><a href="/">Voltar ao Login</a></p>
     </div>
     <?php include __DIR__ . '/includes/footer.php'; ?>
     <script>
