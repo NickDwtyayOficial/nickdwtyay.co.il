@@ -27,7 +27,8 @@
         {"src": "/contact.php", "dest": "/api/contact.php"},
         {"src": "/register.php", "dest": "/api/register.php"},
         {"src": "/logout.php", "dest": "/api/logout.php"},
-        {"src": "/reset_password.php", "dest": "/api/reset_password.php"},
+        {"src": "/api/recover_password.php", "dest": "/api/recover_password.php"},
+{"src": "/recover_password.php", "dest": "/api/recover_password.php"},
         {"src": "/Terms.php", "dest": "/api/Terms.php"},
         {"src": "/Privacy_Policy.php", "dest": "/api/Privacy_Policy.php"},
         {"src": "/api/update_visitor.php", "dest": "/api/update_visitor.php"}
