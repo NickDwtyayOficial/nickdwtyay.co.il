@@ -90,33 +90,10 @@ error_log("Usuário carregado com sucesso: " . json_encode($user_data));
         <h1>Bem-vindo à Loja, <?php echo htmlspecialchars($user_data['first_name'] ?? 'Usuário'); ?>!</h1>
         <p>ID do usuário: <?php echo htmlspecialchars($user_data['id'] ?? 'N/A'); ?></p>
         <p>Nome: <?php echo htmlspecialchars(($user_data['first_name'] ?? '') . ' ' . ($user_data['last_name'] ?? '')); ?></p>
-        <div class="products">
-            <div class="product">
-                <img src="https://via.placeholder.com/150" alt="Produto 1">
-                <h3>Camiseta Básica</h3>
-                <p>R$ 29,90</p>
-                <button>Comprar</button>
-            </div>
-            <div class="product">
-                <img src="https://via.placeholder.com/150" alt="Produto 2">
-                <h3>Calça Jeans</h3>
-                <p>R$ 79,90</p>
-                <button>Comprar</button>
-            </div>
-            <div class="product">
-                <img src="https://via.placeholder.com/150" alt="Produto 3">
-                <h3>Tênis Casual</h3>
-                <p>R$ 129,90</p>
-                <button>Comprar</button>
-            </div>
-            <div class="product">
-                <img src="https://via.placeholder.com/150" alt="Produto 4">
-                <h3>Mochila Simples</h3>
-                <p>R$ 49,90</p>
-                <button>Comprar</button>
-            </div>
-        </div>
-    </div>
+        <div>
+
+
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@statsig/js-client@3/dist/statsig-js.min.js"></script>
 <script>
