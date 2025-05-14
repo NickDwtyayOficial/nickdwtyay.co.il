@@ -11,10 +11,6 @@
         {
             "src": "api/static/**",
             "use": "@vercel/static"
-        },
-        {
-            "src": "api/public/**",
-            "use": "@vercel/static"
         }
     ],
     "routes": [
@@ -26,7 +22,6 @@
         {"src": "/api/profile.php", "dest": "/api/profile.php"},
         {"src": "/api/recover_password.php", "dest": "/api/recover_password.php"},
         {"src": "/api/static/(.*)", "dest": "/api/static/$1"},
-        {"src": "/api/public/(.*)", "dest": "/api/public/$1"},
         {"src": "/videos.php", "dest": "/api/videos.php"},
         {"src": "/about.php", "dest": "/api/about.php"},
         {"src": "/contact.php", "dest": "/api/contact.php"},
@@ -36,6 +31,13 @@
         {"src": "/Terms.php", "dest": "/api/Terms.php"},
         {"src": "/Privacy_Policy.php", "dest": "/api/Privacy_Policy.php"},
         {"src": "/api/update_visitor.php", "dest": "/api/update_visitor.php"},
-        {"src": "/(.*)", "dest": "/api/index.php"}
+        {"src": "/(.*)", "dest": "/api/404.php", "status": 404}
+    ],
+    "redirects": [
+        {
+            "source": "/(.*)",
+            "destination": "/",
+            "statusCode": 302
+        }
     ]
 }
