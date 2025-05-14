@@ -11,7 +11,7 @@ include __DIR__ . '/includes/head.php';
 <body>
     <h1>Erro 404</h1>
     <p>Ops! A página que você procura não foi encontrada.</p>
-    <p><a href="api/Index.php">Voltar para a página inicial</a></p>
+    <p><a href="api/index.php">Voltar para a página inicial</a></p>
 
    <?php include __DIR__ . '/includes/footer.php'; ?>
 </body>
