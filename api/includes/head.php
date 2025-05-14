@@ -10,6 +10,6 @@
     <link rel="icon" type="image/gif" href="/api/static/dwtyay_favicon.gif">
 
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/api/static/global.css">
+    <link rel="stylesheet" href="/api/public/style.css">
     <!-- Outros links/scripts globais -->
 </head>
