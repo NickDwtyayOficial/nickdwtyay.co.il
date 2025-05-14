@@ -86,7 +86,26 @@ error_log("Usuário carregado com sucesso: " . json_encode($user_data));
             <li><a href="/logout.php">Sair</a></li>
         </ul>
     </nav>
-    <div class="container">
+    <div class="container"><div class="dev-warning" style="text-align:center; margin:40px 0;">
+    <img 
+        src="https://cdn.pixabay.com/animation/2022/12/07/12/32/12-32-10-885_512.gif" 
+        alt="Under Construction Worker" 
+        style="width:180px; max-width:100%; margin-bottom:20px; display:inline-block;">
+    <h2 style="color:#e67e22; margin-bottom:10px;">This page is under development</h2>
+    <p style="font-size:18px; color:#555;">Please come back soon.<br>
+        <span style="font-size: 80px; display: block; margin-top: 10px;">🛠️</span>
+    </p>
+    <p style="font-size:16px; color:#888;">
+        <strong>
+            <em>
+                (A character with a sledgehammer is breaking rocks while we work!)
+            </em>
+        </strong>
+    </p>
+</div>
+
+
+
         <h1>Bem-vindo à Loja, <?php echo htmlspecialchars($user_data['first_name'] ?? 'Usuário'); ?>!</h1>
         <p>ID do usuário: <?php echo htmlspecialchars($user_data['id'] ?? 'N/A'); ?></p>
         <p>Nome: <?php echo htmlspecialchars(($user_data['first_name'] ?? '') . ' ' . ($user_data['last_name'] ?? '')); ?></p>
