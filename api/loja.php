@@ -40,7 +40,35 @@ if (isset($result['error'])) {
     <div class="content">
         <h1>Loja Online</h1>
         <?php foreach ($result as $produto): ?>
-            <div class="produto">
+            <div class="products">
+            <div class="product">
+                <img src="https://via.placeholder.com/150" alt="Produto 1">
+                <h3>Camiseta Básica</h3>
+                <p>R$ 29,90</p>
+                <button>Comprar</button>
+            </div>
+            <div class="product">
+                <img src="https://via.placeholder.com/150" alt="Produto 2">
+                <h3>Calça Jeans</h3>
+                <p>R$ 79,90</p>
+                <button>Comprar</button>
+            </div>
+            <div class="product">
+                <img src="https://via.placeholder.com/150" alt="Produto 3">
+                <h3>Tênis Casual</h3>
+                <p>R$ 129,90</p>
+                <button>Comprar</button>
+            </div>
+            <div class="product">
+                <img src="https://via.placeholder.com/150" alt="Produto 4">
+                <h3>Mochila Simples</h3>
+                <p>R$ 49,90</p>
+                <button>Comprar</button>
+            </div>
+        </div>
+    </div>
+
+<div class="produto">
                 <img src="imagens/<?php echo $produto['imagem']; ?>" alt="<?php echo $produto['nome']; ?>">
                 <h2><?php echo $produto['nome']; ?></h2>
                 <p><?php echo $produto['descricao']; ?></p>
