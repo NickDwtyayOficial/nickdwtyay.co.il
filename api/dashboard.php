@@ -106,14 +106,7 @@ error_log("Usuário carregado com sucesso: " . json_encode($user_data));
 
 
 
-        <h1>Bem-vindo à Loja, <?php echo htmlspecialchars($user_data['first_name'] ?? 'Usuário'); ?>!</h1>
-        <p>ID do usuário: <?php echo htmlspecialchars($user_data['id'] ?? 'N/A'); ?></p>
-        <p>Nome: <?php echo htmlspecialchars(($user_data['first_name'] ?? '') . ' ' . ($user_data['last_name'] ?? '')); ?></p>
-        <div>
-
-
-</div>
-
+        <<h1>Hello, world!</h1>
 <script src="https://cdn.jsdelivr.net/npm/@statsig/js-client@3/dist/statsig-js.min.js"></script>
 <script>
     (async () => {
