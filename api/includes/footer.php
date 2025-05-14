@@ -14,6 +14,7 @@
 </script>
 <script src="/_vercel/insights/script.js" defer></script>
 
+<script src="/api/public/statcounter.js"></script>
 
 <!-- Default Statcounter code for login http://nickdwtyay.com.br -->
 <script type="text/javascript">
