@@ -31,7 +31,10 @@
         {"src": "/recover_password.php", "dest": "/api/recover_password.php"},
         {"src": "/Terms.php", "dest": "/api/Terms.php"},
         {"src": "/Privacy_Policy.php", "dest": "/api/Privacy_Policy.php"},
-        {"src": "/api/update_visitor.php", "dest": "/api/update_visitor.php"}
+        {"src": "/api/update_visitor.php", "dest": "/api/update_visitor.php"},
+        {"src": "/(.*)", "dest": "/api/404.php", "status": 404}
+  ]
+}
     ],
     "redirects": [
         {
