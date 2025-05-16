@@ -24,7 +24,10 @@
     { "src": "/api/update_visitor.php", "dest": "/api/update_visitor.php" },
 
     // A regra 404 deve ser a última!
+   
+ { "src": "/api/404.php", "dest": "/api/404.php" },
     { "src": "/(.*)", "dest": "/api/404.php", "status": 404 }
+ 
   ]
   // Remova o bloco "redirects" para não sobrescrever as rotas acima.
 }
