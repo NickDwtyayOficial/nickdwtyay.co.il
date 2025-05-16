@@ -1,7 +1,7 @@
 
 <?php
 http_response_code(404);
-<?php
+
 $pageTitle = "404 erro";
 $pageDescription = "Nick Dwtyay Ltd, is a Middle East-based Telecommunications, Cybersecurity Software and Technology Solution Development Company offering innovative solutions to businesses and individuals. Our partnerships in South America give us the opportunity to provide world-class services to our customers. essa página possivelmente está em manutenção e por isso você está visualizando ela";
 include __DIR__ . '/includes/head.php';
@@ -15,3 +15,5 @@ include __DIR__ . '/includes/head.php';
 
    <?php include __DIR__ . '/includes/footer.php'; ?>
 </body>
+    
+</html>
