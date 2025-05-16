@@ -9,7 +9,7 @@
     <?php if (isset($pageExtraMeta)) echo $pageExtraMeta; ?>
     <link rel="icon" type="image/gif" href="/api/static/dwtyay_favicon.gif">
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/api/public/style.css">
+    <link rel="stylesheet" href="/api/css/style.css">
     <!-- Script do StatCounter removido ou substituído por local: -->
     <!-- <script src="/api/public/counter.js"></script> -->
 </head>
