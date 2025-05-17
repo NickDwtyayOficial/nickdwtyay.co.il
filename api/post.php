@@ -6,7 +6,6 @@ if (!isset($_SESSION['logado'])) {
     header("Location: login.php");
     exit();
 }
-
 $email = $_SESSION['email'];
 $usuario = db_query("users?email=eq.$email")[0]; // Mudado de "usuarios" para "users"
 $usuario_id = $usuario['id']; // Agora é um UUID
