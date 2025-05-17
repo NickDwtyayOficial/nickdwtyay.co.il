@@ -1,167 +1,21 @@
+# 💫 About Me:
+<br># Nick DwtyAy Project<br><br>Welcome to the official repository of **Nick DwtyAy**, a project by **Nick DwtyAy Ltd.**, a pioneering telecommunications and cybersecurity company based in Tel Aviv, Israel, with partnerships in South America. Founded in 2006 by Nicássio Guimarães, **Nick DwtyAy** began as a creative pseudonym on Orkut and has grown into a global brand, blending innovative technology with engaging media to empower communities.<br><br>🌐 **Websites**: [nickdwtyay.com.br](https://nickdwtyay.com.br) | [nickdwtty.co.il](https://nickdwtty.co.il)  <br>📍 **Location**: Weizmann St 9, Tel Aviv-Yafo, 677517, Israel  <br>📅 **Founded**: 2006  <br>📧 **Contact**: [contato@nickdwtyay.com.br](mailto:contato@nickdwtyay.com.br)  <br><br>![Version](https://img.shields.io/badge/version-2.2-blue) ![Build Status](https://img.shields.io/badge/build-passing-green) ![Contributors](https://img.shields.io/badge/contributors-1-orange)<br><br>---<br><br>## Our Journey<br><br>The story of **Nick DwtyAy** is one of resilience, creativity, and innovation, driven by founder Nicássio Guimarães from Candeal, Bahia, Brazil (CEP 48710-000):<br><br>- **2006**: Born as a pseudonym on Orkut to protect Nicássio’s identity, **Nick DwtyAy** marked the start of a digital journey.<br>- **2010–2012**: Transitioned to Facebook, maintaining anonymity while building an online presence.<br>- **2014–2017**: Launched a YouTube channel ([youtube.com/nickdwtyay](https://www.youtube.com/nickdwtyay)), achieving a milestone with a video garnering **100,000 views** in days, a landmark for Candeal. Published over 70 videos but faced platform strikes, leading to a pause.<br>- **2017**: Developed **Candeal Notícia**, a popular local blog on Blogger, archived at web.archive.org, and learned **HTML** and **CSS**, skills still used today.<br>- **2018**: Concluded Candeal Notícia, leaving a lasting community impact.<br>- **2018–2021**: Expanded into media, engaging with series and films on platforms like Filmow, and launched short miniseries on **Kwai** and **TikTok**. TikTok gained **3,500 followers** before a strike deleted high-quality content. Kwai thrived, hitting **1 million views** on a single video (2021–2022).<br>- **2021–2025**: Grew **Kwai** to **10,000 followers**, with **5,000–17,000 monthly views** and over **300 videos** on holidays and commemorative dates. Established a GitHub profile in 2021, with active contributions starting later.<br>- **2023**: Launched [nickdwtyay.com.br](https://nickdwtyay.com.br) using **GitHub** for hosting and **Cloudflare** for DNS, incorporating **HTML Canvas**, **SVG**, and advanced technologies.<br>- **2025**: Evolved the website to **PHP** with a database, integrated with **GitHub**, **Vercel**, and **Supabase**, currently in production. Advancing cybersecurity tools like the DNS cleanup script (version 2.2 in testing).<br><br>Today, **Nick DwtyAy Ltd.** is a beacon of innovation, scaling infrastructure and creating impactful media for a global audience.<br><br>---<br><br>## Our Projects<br><br>- **[Community Server](https://github.com/NickDwtyayOficial/community-server)**: Python scripts for network monitoring (port scanning, HTTP traffic analysis).<br>- **[Cache and DNS Cleanup Tool](https://github.com/NickDwtyayOficial/nickdwtyay.co.il/blob/main/Command-ipconfig-Nick-Dwtyay-Ltd.bat)**: Optimizes system performance. Version 2.2 in testing.<br><br>---<br><br>## Getting Started<br><br>### Prerequisites<br>- OS: Windows, Linux, macOS<br>- Languages: Python 3.8+, PHP, HTML, CSS, JavaScript<br>- Tools: Scapy, GCC, pip, Cloudflare, Vercel, Supabase, WordPress<br><br>### Installation<br>1. Clone the repository:<br>   ```bash<br>   git clone https://github.com/NickDwtyayOficial/nickdwtyay.git<br>   ```<br>2. Navigate to the directory:<br>   ```bash<br>   cd nickdwtyay<br>   ```<br>3. Install dependencies:<br>   ```bash<br>   pip install -r requirements.txt<br>   ```<br>4. Configure environment variables:<br>   ```bash<br>   cp .env.example .env<br>   ```<br>5. Run the project:<br>   ```bash<br>   python main.py<br>   ```<br><br>See [docs/installation.md](docs/installation.md) for detailed instructions.<br><br>---<br><br>## Usage<br><br>Example for Cache and DNS Cleanup Tool (Windows):<br>```bash<br>:: Command-ipconfig-Nick-Dwtyay-Ltd.bat<br>@echo off<br>ipconfig /flushdns<br>del /q /s %temp%\*<br>echo Cache and DNS cleared successfully!<br>pause<br>```<br><br>More examples in [docs/usage.md](docs/usage.md).<br><br>---<br><br>## Contributing<br><br>Join our community:<br>1. Read [Contribution Guidelines](CONTRIBUTING.md).<br>2. Fork and create a branch:<br>   ```bash<br>   git checkout -b my-feature<br>   ```<br>3. Submit a Pull Request with a clear description.<br>4. Report issues via [Issues](https://github.com/NickDwtyayOficial/nickdwtyay/issues).<br><br>We value your feedback to enhance our platform!<br><br>---<br><br>## License<br><br>This software, developed by **Nick DwtyAy Ltd.**, is licensed under the following terms:<br><br>- **Permissions**: Non-exclusive, non-transferable license for commercial or personal use.<br>- **Restrictions**: No copying, modifying, distributing, sublicensing, renting, or transferring without prior written permission. Illegal use or violation of third-party IP is prohibited.<br>- **Intellectual Property**: All rights, title, and interest remain with Nick DwtyAy Ltd.<br>- **Support**: Technical support and updates may be provided during the license term. No liability for damages from use or inability to use the software.<br><br>Full details in [LICENSE](LICENSE).<br><br>---<br><br>## Authors<br><br>- **Nicássio Guimarães** - Founder (Nick DwtyAy Pseudonym) - [LinkedIn](https://il.linkedin.com/in/nic%C3%A1ssio-guimar%C3%A3es-b0660223b) | [Instagram](https://www.instagram.com/nic2ss7o) | [TikTok](https://www.tiktok.com/@nick.dwtyay)<br>- **Nick DwtyAy Ltd.** - Development Team<br><br>---<br><br>## Connect with Us<br><br>Join our **15,000+ followers** and **35,000 monthly views** across platforms:<br>- 🌐 [Website (Brazil)](https://nickdwtyay.com.br) | [Website (Israel)](https://nickdwtty.co.il) *(6,000 monthly views in 2024)*<br>- 📍 [Google Business](https://nickdwtyayltd.business.site)<br>- 📹 [Kwai](https://www.kwai.com/@NICK_DWTYAY) *(10,000 followers, 17,000 monthly views, 300+ videos)*<br>- 🎵 [SoundCloud](https://soundcloud.com/nick-dwtyay) *(Tracks like “I’m Tired Of You”)*<br>- 🎧 [Spotify](https://open.spotify.com/user/22seuxxasmpnyt5gsobxyzfty) *(Playlists & Music)*<br>- 🐦 [Twitter](https://mobile.twitter.com/dwtyayoficial)<br>- 📸 [Instagram (Official)](https://www.instagram.com/nickdwtyay) | [Instagram (Founder)](https://www.instagram.com/nic2ss7o)<br>- 🎥 [TikTok](https://www.tiktok.com/@nick.dwtyay) *(Active in 2025)*<br>- 📹 [YouTube](https://www.youtube.com/nickdwtyay) *(Tech & Media Content, 100,000 views milestone)*<br>- 🎬 [Filmow](https://filmow.com/usuario/NICKDWTYAY/) *(Cinema Discussions)*<br>- 🎬 [IMDb](https://www.imdb.com/user/ur123356938/) *(Cinema Engagement)*<br>- 👻 [Snapchat](https://www.snapchat.com/add/nick_dwtyay)<br>- 📌 [Pinterest](https://br.pinterest.com/dwtyay/) *(Visual Inspiration)*<br>- 📝 [Pensador](https://www.pensador.com/colecao/nicassiocguimaraes/) *(Founder’s Reflections)*<br>- 📧 [contato@nickdwtyay.com.br](mailto:contato@nickdwtyay.com.br)<br><br>---<br><br>## Partnerships<br><br>We collaborate with [Contabil-D.com.br](https://contabil-d.com.br), a leading Brazilian accounting firm, to manage our Brazilian operations.<br><br>---<br><br>## Our Commitment<br><br>As leaders in cybersecurity and telecommunications, we deliver secure, innovative solutions. Our tools optimize performance, and our media inspires. In 2025, we’re scaling infrastructure, enhancing personalization, and integrating new features to meet user needs.<br><br>---<br><br>## Acknowledgments<br><br>Thank you to Nicássio Guimarães, our partners, and our community for driving our success. Your feedback shapes our platform—contact us with ideas!<br><br>---<br><br>### Technologies<br>- **Languages**: HTML (75.4%), PHP (22.1%), CSS (1.7%), JavaScript (0.3%), Python (0.2%), Hack (0.1%)<br>- **Tools**: Scapy, Cloudflare, Vercel, Supabase, WordPress<br>```<br><br>
 
-# Nick DwtyAy Project
 
-Welcome to the official repository of **Nick DwtyAy**, a project by **Nick DwtyAy Ltd.**, a pioneering telecommunications and cybersecurity company based in Tel Aviv, Israel, with partnerships in South America. Founded in 2006 by Nicássio Guimarães, **Nick DwtyAy** began as a creative pseudonym on Orkut and has grown into a global brand, blending innovative technology with engaging media to empower communities.
+# 💻 Tech Stack:
+![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E) ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white) ![Vercel](https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white) ![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white) ![PHP](https://img.shields.io/badge/php-%23777BB4.svg?style=for-the-badge&logo=php&logoColor=white) ![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens) ![Web3.js](https://img.shields.io/badge/web3.js-F16822?style=for-the-badge&logo=web3.js&logoColor=white) ![C#](https://img.shields.io/badge/c%23-%23239120.svg?style=for-the-badge&logo=csharp&logoColor=white) ![Lua](https://img.shields.io/badge/lua-%232C2D72.svg?style=for-the-badge&logo=lua&logoColor=white) ![Cloudflare](https://img.shields.io/badge/Cloudflare-F38020?style=for-the-badge&logo=Cloudflare&logoColor=white)
+# 📊 GitHub Stats:
+![](https://github-readme-stats.vercel.app/api?username=nickdwtyayoficial&theme=dark&hide_border=false&include_all_commits=false&count_private=false)<br/>
+![](https://nirzak-streak-stats.vercel.app/?user=nickdwtyayoficial&theme=dark&hide_border=false)<br/>
+![](https://github-readme-stats.vercel.app/api/top-langs/?username=nickdwtyayoficial&theme=dark&hide_border=false&include_all_commits=false&count_private=false&layout=compact)
 
-🌐 **Websites**: [nickdwtyay.com.br](https://nickdwtyay.com.br) | [nickdwtty.co.il](https://nickdwtty.co.il)  
-📍 **Location**: Weizmann St 9, Tel Aviv-Yafo, 677517, Israel  
-📅 **Founded**: 2006  
-📧 **Contact**: [contato@nickdwtyay.com.br](mailto:contato@nickdwtyay.com.br)  
+## 🏆 GitHub Trophies
+![](https://github-profile-trophy.vercel.app/?username=nickdwtyayoficial&theme=radical&no-frame=false&no-bg=true&margin-w=4)
 
-![Version](https://img.shields.io/badge/version-2.2-blue) ![Build Status](https://img.shields.io/badge/build-passing-green) ![Contributors](https://img.shields.io/badge/contributors-1-orange)
-
----
-
-## Our Journey
-
-The story of **Nick DwtyAy** is one of resilience, creativity, and innovation, driven by founder Nicássio Guimarães from Candeal, Bahia, Brazil (CEP 48710-000):
-
-- **2006**: Born as a pseudonym on Orkut to protect Nicássio’s identity, **Nick DwtyAy** marked the start of a digital journey.
-- **2010–2012**: Transitioned to Facebook, maintaining anonymity while building an online presence.
-- **2014–2017**: Launched a YouTube channel ([youtube.com/nickdwtyay](https://www.youtube.com/nickdwtyay)), achieving a milestone with a video garnering **100,000 views** in days, a landmark for Candeal. Published over 70 videos but faced platform strikes, leading to a pause.
-- **2017**: Developed **Candeal Notícia**, a popular local blog on Blogger, archived at web.archive.org, and learned **HTML** and **CSS**, skills still used today.
-- **2018**: Concluded Candeal Notícia, leaving a lasting community impact.
-- **2018–2021**: Expanded into media, engaging with series and films on platforms like Filmow, and launched short miniseries on **Kwai** and **TikTok**. TikTok gained **3,500 followers** before a strike deleted high-quality content. Kwai thrived, hitting **1 million views** on a single video (2021–2022).
-- **2021–2025**: Grew **Kwai** to **10,000 followers**, with **5,000–17,000 monthly views** and over **300 videos** on holidays and commemorative dates. Established a GitHub profile in 2021, with active contributions starting later.
-- **2023**: Launched [nickdwtyay.com.br](https://nickdwtyay.com.br) using **GitHub** for hosting and **Cloudflare** for DNS, incorporating **HTML Canvas**, **SVG**, and advanced technologies.
-- **2025**: Evolved the website to **PHP** with a database, integrated with **GitHub**, **Vercel**, and **Supabase**, currently in production. Advancing cybersecurity tools like the DNS cleanup script (version 2.2 in testing).
-
-Today, **Nick DwtyAy Ltd.** is a beacon of innovation, scaling infrastructure and creating impactful media for a global audience.
+### 🔝 Top Contributed Repo
+![](https://github-contributor-stats.vercel.app/api?username=nickdwtyayoficial&limit=5&theme=dark&combine_all_yearly_contributions=true)
 
 ---
+[![](https://visitcount.itsvg.in/api?id=nickdwtyayoficial&icon=0&color=0)](https://visitcount.itsvg.in)
 
-## Our Projects
-
-- **[Community Server](https://github.com/NickDwtyayOficial/community-server)**: Python scripts for network monitoring (port scanning, HTTP traffic analysis).
-- **[Cache and DNS Cleanup Tool](https://github.com/NickDwtyayOficial/nickdwtyay.co.il/blob/main/Command-ipconfig-Nick-Dwtyay-Ltd.bat)**: Optimizes system performance. Version 2.2 in testing.
-
----
-
-## Getting Started
-
-### Prerequisites
-- OS: Windows, Linux, macOS
-- Languages: Python 3.8+, PHP, HTML, CSS, JavaScript
-- Tools: Scapy, GCC, pip, Cloudflare, Vercel, Supabase, WordPress
-
-### Installation
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/NickDwtyayOficial/nickdwtyay.git
-   ```
-2. Navigate to the directory:
-   ```bash
-   cd nickdwtyay
-   ```
-3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-4. Configure environment variables:
-   ```bash
-   cp .env.example .env
-   ```
-5. Run the project:
-   ```bash
-   python main.py
-   ```
-
-See [docs/installation.md](docs/installation.md) for detailed instructions.
-
----
-
-## Usage
-
-Example for Cache and DNS Cleanup Tool (Windows):
-```bash
-:: Command-ipconfig-Nick-Dwtyay-Ltd.bat
-@echo off
-ipconfig /flushdns
-del /q /s %temp%\*
-echo Cache and DNS cleared successfully!
-pause
-```
-
-More examples in [docs/usage.md](docs/usage.md).
-
----
-
-## Contributing
-
-Join our community:
-1. Read [Contribution Guidelines](CONTRIBUTING.md).
-2. Fork and create a branch:
-   ```bash
-   git checkout -b my-feature
-   ```
-3. Submit a Pull Request with a clear description.
-4. Report issues via [Issues](https://github.com/NickDwtyayOficial/nickdwtyay/issues).
-
-We value your feedback to enhance our platform!
-
----
-
-## License
-
-This software, developed by **Nick DwtyAy Ltd.**, is licensed under the following terms:
-
-- **Permissions**: Non-exclusive, non-transferable license for commercial or personal use.
-- **Restrictions**: No copying, modifying, distributing, sublicensing, renting, or transferring without prior written permission. Illegal use or violation of third-party IP is prohibited.
-- **Intellectual Property**: All rights, title, and interest remain with Nick DwtyAy Ltd.
-- **Support**: Technical support and updates may be provided during the license term. No liability for damages from use or inability to use the software.
-
-Full details in [LICENSE](LICENSE).
-
----
-
-## Authors
-
-- **Nicássio Guimarães** - Founder (Nick DwtyAy Pseudonym) - [LinkedIn](https://il.linkedin.com/in/nic%C3%A1ssio-guimar%C3%A3es-b0660223b) | [Instagram](https://www.instagram.com/nic2ss7o) | [TikTok](https://www.tiktok.com/@nick.dwtyay)
-- **Nick DwtyAy Ltd.** - Development Team
-
----
-
-## Connect with Us
-
-Join our **15,000+ followers** and **35,000 monthly views** across platforms:
-- 🌐 [Website (Brazil)](https://nickdwtyay.com.br) | [Website (Israel)](https://nickdwtty.co.il) *(6,000 monthly views in 2024)*
-- 📍 [Google Business](https://nickdwtyayltd.business.site)
-- 📹 [Kwai](https://www.kwai.com/@NICK_DWTYAY) *(10,000 followers, 17,000 monthly views, 300+ videos)*
-- 🎵 [SoundCloud](https://soundcloud.com/nick-dwtyay) *(Tracks like “I’m Tired Of You”)*
-- 🎧 [Spotify](https://open.spotify.com/user/22seuxxasmpnyt5gsobxyzfty) *(Playlists & Music)*
-- 🐦 [Twitter](https://mobile.twitter.com/dwtyayoficial)
-- 📸 [Instagram (Official)](https://www.instagram.com/nickdwtyay) | [Instagram (Founder)](https://www.instagram.com/nic2ss7o)
-- 🎥 [TikTok](https://www.tiktok.com/@nick.dwtyay) *(Active in 2025)*
-- 📹 [YouTube](https://www.youtube.com/nickdwtyay) *(Tech & Media Content, 100,000 views milestone)*
-- 🎬 [Filmow](https://filmow.com/usuario/NICKDWTYAY/) *(Cinema Discussions)*
-- 🎬 [IMDb](https://www.imdb.com/user/ur123356938/) *(Cinema Engagement)*
-- 👻 [Snapchat](https://www.snapchat.com/add/nick_dwtyay)
-- 📌 [Pinterest](https://br.pinterest.com/dwtyay/) *(Visual Inspiration)*
-- 📝 [Pensador](https://www.pensador.com/colecao/nicassiocguimaraes/) *(Founder’s Reflections)*
-- 📧 [contato@nickdwtyay.com.br](mailto:contato@nickdwtyay.com.br)
-
----
-
-## Partnerships
-
-We collaborate with [Contabil-D.com.br](https://contabil-d.com.br), a leading Brazilian accounting firm, to manage our Brazilian operations.
-
----
-
-## Our Commitment
-
-As leaders in cybersecurity and telecommunications, we deliver secure, innovative solutions. Our tools optimize performance, and our media inspires. In 2025, we’re scaling infrastructure, enhancing personalization, and integrating new features to meet user needs.
-
----
-
-## Acknowledgments
-
-Thank you to Nicássio Guimarães, our partners, and our community for driving our success. Your feedback shapes our platform—contact us with ideas!
-
----
-
-### Technologies
-- **Languages**: HTML (75.4%), PHP (22.1%), CSS (1.7%), JavaScript (0.3%), Python (0.2%), Hack (0.1%)
-- **Tools**: Scapy, Cloudflare, Vercel, Supabase, WordPress
-```
-
+<!-- Proudly created with GPRM ( https://gprm.itsvg.in ) -->
