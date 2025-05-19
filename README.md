@@ -1,5 +1,3 @@
-
-
 # 💫 About Us  
 
 Welcome to the official repository of **Nick Dwtyay**, an initiative by **Nick Dwtyay Ltd.**, a pioneering company in **telecommunications, cybersecurity, and technology**, operating across **the Americas and the Middle East**.  
@@ -123,13 +121,3 @@ Full details in [`LICENSE`](LICENSE).
 Currently collaborating with:  
 - [Contabil-D](https://contabil-d.com.br)  
 *(More partners coming soon.)*  
-
----  
-
-### Key Adjustments:  
-1. **Localization**: Dates, measurements (e.g., "1M views"), and legal terms adapted for international readers.  
-2. **Consistency**: Uniform formatting for links, headers, and code blocks.  
-3. **Clarity**: Simplified complex phrases (e.g., "marco de 100 mil views" → "100K+ views milestone").  
-4. **SEO**: Keywords like "cybersecurity" and "telecommunications" emphasized.  
-
-Let me know if you'd like to highlight any specific partnerships or technical features further!
