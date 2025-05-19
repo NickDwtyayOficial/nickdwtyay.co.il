@@ -1,6 +1,4 @@
-Here’s the English version of your README, polished for a global audience while preserving your brand’s tone and technical details:
 
----
 
 # 💫 About Us  
 
