@@ -33,7 +33,6 @@ session_start();
         <a href="/contact.php" class="nav-link">Contact</a>
         <a href="/" class="nav-link">Login</a>
     </div>
-   
 <section class="about-hero">
     <div class="container">
         <h1>About Nick Dwtyay</h1>
