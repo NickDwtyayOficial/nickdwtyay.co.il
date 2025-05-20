@@ -1,15 +1,23 @@
 <?php
-session_start();
+session_start([
+    'cookie_lifetime' => 3600,
+    'cookie_secure' => true,
+    'cookie_httponly' => true,
+    'cookie_samesite' => 'Strict',
+    'use_strict_mode' => true
+]);
 require_once __DIR__ . '/db_connect.php';
 
-
-if (!isset($_SESSION['logado'])) {
-    header("Location: login.php");
-    exit();
+// Restaurar sessão via cookie, se necessário
+if (isset($_COOKIE['user_id']) && !isset($_SESSION['user_id'])) {
+    $_SESSION['user_id'] = $_COOKIE['user_id'];
 }
-$email = $_SESSION['email'];
-$usuario = db_query("users?email=eq.$email")[0]; // Mudado de "usuarios" para "users"
-$usuario_id = $usuario['id']; // Agora é um UUID
+
+// Verificação padrão de autenticação
+if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
+    header("Location: /api/index.php?error=no_session");
+    exit();
+ // Agora é um UUID
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $tipo = $_POST['tipo'];
