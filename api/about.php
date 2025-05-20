@@ -3,7 +3,8 @@ require_once __DIR__ . '/db_connect.php';
 session_start();
 ?>
 <!DOCTYPE html>
-<html lang="pt-BR">
+
+<html lang="us">
 <head> <link rel="icon" href="dwtyay_favicon.gif" type="image/gif">
     <title>About - Nick Dwtyay, Ltd.</title>
  <link rel="icon" type="image/gif" href="/api/static/dwtyay_favicon.gif">
