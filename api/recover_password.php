@@ -131,7 +131,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <button type="submit">Enviar Link</button>
             </div>
         </form>
-        <p><a href="/">Voltar ao Login</a></p>
+        <p><a href="/api/Index.php">Voltar ao Login</a></p>
     </div>
     <?php include __DIR__ . '/includes/footer.php'; ?>
     <script>
