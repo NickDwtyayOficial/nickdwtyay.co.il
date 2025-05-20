@@ -36,7 +36,7 @@ session_start();
 <main>
   <section>
     <h2>Welcome</h2>
-    <p>Welcome to the official repository of <strong>Nick DwtyAy</strong>, an initiative by <strong>Nick DwtyAy Ltd.</strong>, a pioneer company in <strong>telecommunications, cybersecurity, and technology</strong>, operating across the <strong>Americas and the Middle East</strong>.</p>
+    <p>Welcome to the official repository of <strong>Nick Dwtyay</strong>, an initiative by <strong>Nick Dwtyay, Ltd.</strong>, a pioneer company in <strong>telecommunications, cybersecurity, and technology</strong>, operating across the <strong>Americas and the Middle East</strong>.</p>
     <p>Founded in <strong>2006</strong> by <strong>Nicássio Guimarães</strong>, the brand originated as a creative pseudonym on Orkut and evolved into a <strong>global ecosystem of innovation, media, and technology</strong> that empowers communities with digital solutions.</p>
   </section>
 
