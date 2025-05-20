@@ -35,7 +35,7 @@ Nick Dwtyay’s trajectory is defined by **resilience, creativity, and digital t
 ## 💼 Key Projects  
 
 - 🔧 **[Community Server](https://github.com/NickDwtyayOficial/community-server)**: Python scripts for network monitoring.  
-- 🧹 **[Cache & DNS Cleanup Tool](https://github.com/NickDwtyayOficial/nickdwtyay.co.il/blob/main/Command-ipconfig-Nick-Dwtyay-Ltd.bat)**: Optimizes system performance via cache/DNS flushing.  
+- 🧹 **[Cache & DNS Cleanup Tool](https://github.com/NickDwtyayOficial/Full-Network-Reset-Tool/blob/main/reset_network.bat)**: Optimizes system performance via cache/DNS flushing.  
 
 ---
 
