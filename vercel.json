@@ -33,11 +33,5 @@
         {"src": "/api/update_visitor.php", "dest": "/api/update_visitor.php"},
         {"src": "/(.*)", "dest": "/api/maintenance.php", "status": 404}
     ],
-    "redirects": [
-        {
-            "source": "/(.*)",
-            "destination": "/",
-            "statusCode": 302
-        }
-    ]
+    
 }
