@@ -4,8 +4,7 @@ session_start();
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <link rel="icon" href="dwtyay_favicon.gif" type="image/gif">
+<head> <link rel="icon" href="dwtyay_favicon.gif" type="image/gif">
     <title>About - Nick Dwtyay, Ltd.</title>
  <link rel="icon" type="image/gif" href="/api/static/dwtyay_favicon.gif">
     <style>
