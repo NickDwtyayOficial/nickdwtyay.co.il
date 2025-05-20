@@ -9,16 +9,91 @@ session_start();
     <title>About - Nick Dwtyay, Ltd.</title>
  <link rel="icon" type="image/gif" href="/api/static/dwtyay_favicon.gif">
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; height: 100vh; overflow-x: hidden; }
-        .background-image { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: url('https://codingdatatoday.co/wp-content/uploads/2024/06/Os-Principais-Tipos-de-Analise-de-Dados-e-Suas-Aplicacoes.webp'); background-size: cover; background-position: center; background-repeat: no-repeat; z-index: -1; filter: brightness(70%); }
-        .top-nav { display: flex; justify-content: center; background-color: rgba(51, 51, 51, 0.9); padding: 10px 0; position: relative; z-index: 1; }
-        .nav-link { padding: 10px 20px; color: #fff; text-decoration: none; transition: background-color 0.3s ease; }
-        .nav-link:hover { background-color: #555; }
-        .container { max-width: 800px; margin: 50px auto; background-color: rgba(255, 255, 255, 0.95); border: 1px solid #ccc; padding: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); position: relative; z-index: 1; }
-        h2 { text-align: center; color: #333; }
-        .footer { background-color: rgba(51, 51, 51, 0.9); padding: 20px; text-align: center; font-size: 14px; color: #fff; width: 100%; position: relative; bottom: 0; z-index: 1; }
-        .footer a { color: #fff; text-decoration: none; margin: 0 5px; }
-        .footer a:hover { text-decoration: underline; }
+     body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  overflow-x: hidden;
+}
+.background-image {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('https://codingdatatoday.co/wp-content/uploads/2024/06/Os-Principais-Tipos-de-Analise-de-Dados-e-Suas-Aplicacoes.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: -1;
+  filter: brightness(70%);
+}
+.top-nav {
+  display: flex;
+  justify-content: center;
+  background-color: rgba(51, 51, 51, 0.9);
+  padding: 10px 0;
+  position: relative;
+  z-index: 1;
+}
+.nav-link {
+  padding: 10px 20px;
+  color: #fff;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+.nav-link:hover {
+  background-color: #555;
+}
+.container {
+  max-width: 800px;
+  margin: 50px auto;
+  background-color: rgba(255, 255, 255, 0.95);
+  border: 1px solid #ccc;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1;
+}
+h2 {
+  text-align: center;
+  color: #333;
+}
+.footer {
+  background-color: rgba(51, 51, 51, 0.9);
+  padding: 20px;
+  text-align: center;
+  font-size: 14px;
+  color: #fff;
+  width: 100%;
+  position: relative;
+  bottom: 0;
+  z-index: 1;
+}
+.footer a {
+  color: #fff;
+  text-decoration: none;
+  margin: 0 5px;
+}
+.footer a:hover {
+  text-decoration: underline;
+}
+.texto-branco {
+  color: white;
+}
+/* Box personalizado */
+.meu-box {
+  width: 300px;
+  height: 150px;
+  background: #fff;
+  border: 2px solid #333;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px auto;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  color: #333; /* texto escuro para fundo claro */
+           }
     </style>
     <script>
         window.va = window.va || function (...args) { (window.vaq = window.vaq || []).push(args); };
@@ -33,6 +108,7 @@ session_start();
         <a href="/contact.php" class="nav-link">Contact</a>
         <a href="/" class="nav-link">Login</a>
     </div>
+<div class="meu-box">
 <main>
   <section>
     <h2>Welcome</h2>
@@ -57,7 +133,7 @@ session_start();
       <li><strong>2010–2012</strong> – Moved to Facebook, keeping anonymity and growing reach.</li>
       <li><strong>2014–2017</strong> – Launched a YouTube channel with a viral video reaching <strong>100k views</strong>.</li>
       <li><strong>2017</strong> – Created the community-focused blog <em>Candeal Notícia</em> hosted on Blogger. Learned <strong>HTML and CSS</strong>.</li>
-      <li><strong>2018</strong> – Blog closed with a positive legacy for the community.</li>
+      <li><strong>2018</strong> – Blog closed with a positive legacy for the community. You can check it here https://web.archive.org/web/20181122114420/http://candealbanoticias.blogspot.com/</li>
       <li><strong>2018–2021</strong> – Expanded to <strong>Kwai</strong> and <strong>TikTok</strong>, with videos reaching over <strong>1 million views</strong>.</li>
       <li><strong>2021–2025</strong> – Solidified on Kwai with <strong>10k+ followers</strong> and <strong>300+ videos</strong>. Website created on <strong>GitHub Pages</strong> using <strong>Canvas, SVG, PHP, and Supabase</strong>.</li>
       <li><strong>2025</strong> – Launched cybersecurity tools like the <strong>DNS Cleanup Tool</strong> (v2.2 in testing).</li>
@@ -154,6 +230,7 @@ pause</code></pre>
     </ul>
   </section>
 </main>
+</div>
          <?php include __DIR__ . '/includes/footer.php'; ?>
 </body>
 </html>
