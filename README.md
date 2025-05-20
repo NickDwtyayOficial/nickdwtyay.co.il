@@ -46,10 +46,11 @@ Nick Dwtyay’s trajectory is defined by **resilience, creativity, and digital t
 - Languages: Python 3.8+, PHP, HTML, CSS, JavaScript  
 - Tools: Scapy, GCC, pip, Vercel, Supabase, Cloudflare, WordPress  
 
-**Installation:**  
-```bash  
-git clone https://github.com/NickDwtyayOficial/nickdwtyay.git  
-cd nickdwtyay  
+### Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/NickDwtyayOficial/Full-Network-Reset-Tool.git
+   cd Full-Network-Reset-Tool
 pip install -r requirements.txt  
 cp .env.example .env  
 python main.py  
@@ -57,15 +58,30 @@ python main.py
 
 ---
 
-## 🛠️ Usage Example  
+## 🛠️ How to Use
+  
 
 Windows Script – Cache/DNS Cleanup:  
 ```bat  
-@echo off  
-ipconfig /flushdns  
-del /q /s %temp%\*  
-echo Cache and DNS cleared successfully!  
-pause  
+@echo off
+:: Full Network Reset Tool v2.2
+:: Copyright (c) 2025 Nick Dwtyay Ltd.
+
+echo [1/5] Flushing DNS cache...
+ipconfig /flushdns
+
+echo [2/5] Resetting TCP/IP stack...
+netsh int ip reset reset.log
+
+echo [3/5] Clearing temp files...
+del /q /s %temp%\*
+
+echo [4/5] Renewing IP address...
+ipconfig /release && ipconfig /renew
+
+echo [5/5] Rebooting interfaces...
+netsh interface set interface "Ethernet" admin=disable
+netsh interface set interface "Ethernet" admin=enable
 ```  
 More examples in [`docs/usage.md`](docs/usage.md).  
 
