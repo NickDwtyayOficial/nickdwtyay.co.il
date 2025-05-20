@@ -142,7 +142,8 @@ $visitor_info = $_SESSION['visitor_info'] ?? [];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Sign in to access exclusive cybersecurity solutions from Nick Dwtyay, Ltd.">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com https://static.cloudflareinsights.com https://pagead2.googlesyndication.com https://www.googletagmanager.com 'unsafe-inline'; connect-src 'self' https://*.vercel.app https://cloudflareinsights.com https://ipinfo.io https://ipqualityscore.com https://proxycheck.io https://www.google-analytics.com https://stats.g.doubleclick.net; style-src 'self' 'unsafe-inline'; img-src 'self'; font-src 'self';">
-    <link rel="icon" href="/dwtyay_favicon.gif" type="image/gif">
+    <link rel="icon" href="/api/static/dwtyay_favicon.gif" type="image/gif">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <title>Sign In - Nick Dwtyay, Ltd.</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ua-parser-js/1.0.37/ua-parser.min.js"></script>
     <?php if (!$is_dev): ?>
