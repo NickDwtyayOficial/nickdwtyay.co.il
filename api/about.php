@@ -230,7 +230,7 @@ pause</code></pre>
     </ul>
   </section>
 </main>
-</div>
          <?php include __DIR__ . '/includes/footer.php'; ?>
 </body>
+</div>
 </html>
