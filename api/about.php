@@ -124,7 +124,7 @@ session_start();
             <section>
                 <h2>General Information</h2>
                 <ul>
-                    <li><strong>Headquarters:</strong> Candeal, Bahia - Brazil (ZIP 48710-000)</li>
+                    <li><strong>Headquarters:</strong> Unknown</li>
                     <li><strong>Founded:</strong> 2006</li>
                     <li><strong>Contact:</strong> <a href="mailto:contato@nickdwtyay.com.br">contato@nickdwtyay.com.br</a></li>
                     <li><strong>Website:</strong> <a href="https://nickdwtyay.com.br">nickdwtyay.com.br</a></li>
