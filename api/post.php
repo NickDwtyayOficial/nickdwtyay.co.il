@@ -8,36 +8,37 @@ session_start([
 ]);
 require_once __DIR__ . '/db_connect.php';
 
-// Restaurar sessão via cookie, se necessário
+// Restore session from cookie if needed
 if (isset($_COOKIE['user_id']) && !isset($_SESSION['user_id'])) {
     $_SESSION['user_id'] = $_COOKIE['user_id'];
 }
 
-// Verificação padrão de autenticação
+// Authentication check
 if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
     header("Location: /api/index.php?error=no_session");
     exit();
- // Agora é um UUID
+}
+
+$user_id = $_SESSION['user_id'];
+$user = db_query("users?id=eq.$user_id&is_active=eq.true&select=id,email,first_name,last_name")[0] ?? null;
+if (!$user) die('User not found.');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $tipo = $_POST['tipo'];
-    $conteudo = filter_input(INPUT_POST, 'conteudo', FILTER_SANITIZE_STRING);
+    $type = $_POST['type'];
+    $content = filter_input(INPUT_POST, 'content', FILTER_DEFAULT);
 
-    if (!empty($conteudo)) {
+    if (!empty($content)) {
         $params = [
-            "usuario_id" => $usuario_id, // UUID
-            "tipo" => $tipo,
-            "conteudo" => $conteudo
+            "user_id" => $user_id,
+            "type" => $type,
+            "content" => $content
         ];
         db_query("posts", $params, "POST");
     }
 }
 
-$posts = db_query("posts?usuario_id=eq.$usuario_id&order=data_criacao.desc");
-
-if (isset($posts['error'])) {
-    die("Erro ao consultar posts: " . $posts['error']);
-}
+$posts = db_query("posts?user_id=eq.$user_id&order=created_at.desc");
+if (isset($posts['error'])) die("Failed to fetch posts: " . $posts['error']);
 ?>
 
 <!DOCTYPE html>
