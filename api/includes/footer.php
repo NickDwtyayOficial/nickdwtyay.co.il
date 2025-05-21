@@ -23,8 +23,7 @@
             <i class="fab fa-x-twitter"></i>
         </a>
     </div>
-    NICK DWTYAY, LTD.<br>
-    "Americas and Middle East Cybersecurity Software and Technology Solutions Development Company."<br>
+   
     <a href="/Terms.php">Terms</a> |
     <a href="/Privacy_Policy.php">Privacy Policy</a> |
     All Rights Reserved © 2006 - 2025 Nick Dwtyay, Ltd.
