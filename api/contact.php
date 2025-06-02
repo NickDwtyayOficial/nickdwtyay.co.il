@@ -34,8 +34,10 @@ require_once __DIR__ . '/db_connect.php';
         <a href="/" class="nav-link">Login</a>
     </div>
     <div class="container">
-        <h2>Contato</h2>
-        <p>Entre em contato conosco em: <a href="mailto:contato@nickdwtyay.com.br">contato@nickdwtyay.com.br</a></p>
+        <h2>contact</h2>
+        <p>
+Neem contact op met ons: <a href="mailto:contato@nickdwtyay.com.br">contato@nickdwtyay.com.br
+</a></p>
     </div>
      <?php include __DIR__ . '/includes/footer.php'; ?>
 </body>
