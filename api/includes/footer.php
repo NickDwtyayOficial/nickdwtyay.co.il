@@ -3,7 +3,7 @@
 ?>
 <footer class="footer" style="background:#222; color:#fff; padding:20px 0; text-align:center;">
     <div class="footer-social" style="margin: 20px 0;">
-        <span>Siga-nos:</span>
+        <span>Follow us:</span>
         <a href="https://facebook.com/nikc.dwtyay" target="_blank" style="margin:0 10px; color:#3b5998;" title="Facebook">
             <i class="fab fa-facebook-f"></i>
         </a>
