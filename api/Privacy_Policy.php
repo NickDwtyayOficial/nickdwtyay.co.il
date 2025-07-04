@@ -13,86 +13,92 @@ $current_page = "privacy";
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <title><?php echo $page_title; ?></title>
     <link rel="icon" href="/api/static/dwtyay_favicon.gif" type="image/gif">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
+   
+ <style>
+        body, html {
+            height: 100%;
             margin: 0;
             padding: 0;
-            height: 100vh;
-            overflow-x: hidden;
         }
         .background-image {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('https://codingdatatoday.co/wp-content/uploads/2024/06/Os-Principais-Tipos-de-Analise-de-Dados-e-Suas-Aplicacoes.webp');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            z-index: -1;
-            filter: brightness(70%);
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 0;
+            background: url('/caminho/para/sua-imagem.jpg') center center/cover no-repeat;
         }
         .top-nav {
-            display: flex;
-            justify-content: center;
-            background-color: rgba(51, 51, 51, 0.9);
-            padding: 10px 0;
+            width: 100%;
+            text-align: center;
+            padding: 20px 0 10px 0;
+            background: rgba(51, 51, 51, 0.80);
             position: relative;
-            z-index: 1;
+            z-index: 2;
         }
         .nav-link {
             padding: 10px 20px;
             color: #fff;
             text-decoration: none;
             transition: background-color 0.3s ease;
+            border-radius: 5px;
+            margin: 0 4px;
         }
         .nav-link:hover {
             background-color: #555;
         }
         .container {
-            max-width: 800px;
-            margin: 50px auto;
-            background-color: rgba(255, 255, 255, 0.95);
-            border: 1px solid #ccc;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 850px;
+            margin: 50px auto 30px auto;
+            background-color: rgba(255,255,255,0.97);
+            border-radius: 15px;
+            border: 1px solid #e4e4e4;
+            padding: 38px 28px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.10);
             position: relative;
-            z-index: 1;
+            z-index: 3;
         }
         h1, h2 {
-            color: #333;
+            color: #2a4580;
             text-align: center;
         }
-        p {
-            line-height: 1.6;
+        h1 {
+            font-size: 2em;
+            margin-bottom: 0.2em;
+        }
+        h2 {
+            font-size: 1.2em;
+            margin-top: 2em;
+        }
+        p, ul {
+            font-size: 1.08em;
+            line-height: 1.7;
             color: #555;
         }
+        ul { padding-left: 1.5em; }
         .footer {
-            background-color: rgba(51, 51, 51, 0.9);
-            padding: 20px;
+            background-color: rgba(51,51,51,0.9);
+            padding: 18px;
             text-align: center;
             font-size: 14px;
             color: #fff;
             width: 100%;
             position: relative;
             bottom: 0;
-            z-index: 1;
+            z-index: 2;
+            margin-top: 30px;
+            border-radius: 0 0 10px 10px;
         }
         .footer a {
             color: #fff;
             text-decoration: none;
             margin: 0 5px;
         }
-        .footer a:hover {
-            text-decoration: underline;
+        .footer a:hover { text-decoration: underline; }
+        @media (max-width: 600px) {
+            .container { padding: 12px 2vw; }
+            h1 { font-size: 1.2em; }
+            .top-nav { font-size: 0.95em; }
         }
     </style>
-    <script>
-        window.va = window.va || function (...args) { (window.vaq = window.vaq || []).push(args); };
-    </script>
-    <script src="/_vercel/insights/script.js" defer></script>
 </head>
 <body>
     <div class="background-image"></div>
@@ -108,21 +114,143 @@ $current_page = "privacy";
             <a href="/" class="nav-link">Login</a>
         <?php endif; ?>
     </div>
-    <div class="container">
-        <h1>Política de Privacidade</h1>
-        <h2>Nick Dwtyay, Ltd.</h2>
-        <p>Nós da Nick Dwtyay, Ltd. estamos comprometidos em proteger sua privacidade. Esta política descreve como coletamos e usamos suas informações.</p>
-        <h3>1. Informações Coletadas</h3>
-        <p>Coletamos dados pessoais como nome, e-mail e telefone quando você se registra ou interage com nossos serviços.</p>
-        <h3>2. Finalidade dos Dados</h3>
-        <p>Usamos suas informações pra gerenciar sua conta, fornecer suporte e melhorar nossos serviços.</p>
-        <h3>3. Segurança</h3>
-        <p>Adotamos medidas pra proteger seus dados, mas não garantimos segurança absoluta contra ataques cibernéticos.</p>
-        <h3>4. Cookies</h3>
-        <p>Usamos cookies pra melhorar sua experiência no site. Você pode desativá-los nas configurações do navegador.</p>
-        <p>Última atualização: 07 de Março de 2025.</p>
-        <p><a href="/">Voltar ao Login</a></p>
+
+    
+<div class="container">
+    <div class="switcher">
+      <!-- Language Switcher Placeholder -->
+      <button onclick="switchLang('en')">EN</button>
+      <button onclick="switchLang('pt')">PT</button>
     </div>
+    <h1>Privacy Policy</h1>
+    <p style="text-align: center; font-size: 1.1em; margin-bottom: 0;">Nickdwtyay.com.br</p>
+    <p style="text-align: center; font-size: 0.95em; margin-top: 0;">Last updated: June 30, 2025</p>
+
+    <p>
+      Nick Dwtyay Ltd. (“Company”, “we”, “our”) is committed to protecting your privacy and handling your data in accordance with applicable law, including the <strong>Protection of Privacy Law, 5741-1981 (Israel)</strong>, and when applicable, international frameworks such as the <strong>General Data Protection Regulation (GDPR)</strong>.
+    </p>
+    <p>
+      This Privacy Policy explains how we collect, use, store, and protect your personal information when you interact with our website, services, or API.
+    </p>
+
+    <h2>1. Legal Basis</h2>
+    <p>
+      This policy is governed by the <strong>Israeli Protection of Privacy Law (1981)</strong> and its associated regulations. Where relevant, and in case of data subjects from outside Israel, we also align with <strong>international privacy principles</strong>, including consent, purpose limitation, and proportionality.
+    </p>
+
+    <h2>2. Information We Collect</h2>
+    <ul>
+      <li><strong>Personal Data</strong>
+        <ul>
+          <li>Full name</li>
+          <li>Email address</li>
+          <li>IP address and geolocation data</li>
+          <li>Phone number (if submitted)</li>
+          <li>User-generated content (e.g., messages, form entries)</li>
+        </ul>
+      </li>
+      <li><strong>Technical and Usage Data</strong>
+        <ul>
+          <li>Device and browser type</li>
+          <li>Operating system</li>
+          <li>Pages visited and time spent</li>
+          <li>Referrer URLs and session logs</li>
+          <li>Cookies and tracking data</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h2>3. Purpose of Data Collection</h2>
+    <ul>
+      <li>To provide and operate our services</li>
+      <li>To respond to your inquiries or support requests</li>
+      <li>To improve user experience through analytics</li>
+      <li>To enforce our terms and protect against fraud or abuse</li>
+      <li>To comply with legal obligations or requests from Israeli authorities</li>
+    </ul>
+
+    <h2>4. Consent and Your Rights</h2>
+    <p>
+      By using our services, you consent to the collection and use of your personal data as described in this policy.
+    </p>
+    <ul>
+      <li><strong>Access:</strong> You may request a copy of your personal data.</li>
+      <li><strong>Correction:</strong> You may request that we correct inaccurate data.</li>
+      <li><strong>Deletion:</strong> You may request that we delete your data (subject to legal limitations).</li>
+      <li><strong>Objection:</strong> You may object to certain data uses, especially direct marketing.</li>
+      <li><strong>Withdrawal of Consent:</strong> Where processing is based on consent, you may withdraw it at any time.</li>
+    </ul>
+    <p>To exercise these rights, please contact us at: <a href="mailto:contato@nickdwtyay.com.br">contato@nickdwtyay.com.br</a></p>
+
+    <h2>5. Data Retention</h2>
+    <p>
+      We retain your data only as long as it is necessary for the purposes described in this policy, or as required by Israeli law, including data retention obligations under tax or corporate law.
+    </p>
+
+    <h2>6. Data Security</h2>
+    <p>
+      We implement reasonable and industry-standard technical and organizational safeguards, including:
+    </p>
+    <ul>
+      <li>TLS/SSL encryption</li>
+      <li>Firewalls and monitoring tools</li>
+      <li>Restricted administrative access</li>
+      <li>Regular security audits</li>
+    </ul>
+    <p>
+      However, no method of transmission over the internet is 100% secure. We do our best to protect your data, but we cannot guarantee absolute security.
+    </p>
+
+    <h2>7. Data Sharing and Disclosure</h2>
+    <p>
+      We do <strong>not sell or rent</strong> your personal data.
+    </p>
+    <ul>
+      <li>With service providers acting on our behalf under data processing agreements</li>
+      <li>To comply with legal obligations or court orders from Israeli authorities</li>
+      <li>To protect rights, safety, or enforce our legal terms</li>
+    </ul>
+
+    <h2>8. International Transfers</h2>
+    <p>
+      If we transfer your data outside Israel (for example, for cloud hosting), we ensure adequate protection measures are in place, including:
+    </p>
+    <ul>
+      <li>Transfers to countries with recognized data protection standards, or</li>
+      <li>Standard contractual clauses (SCCs) approved by the Israeli Privacy Protection Authority or under GDPR.</li>
+    </ul>
+
+    <h2>9. Cookies and Tracking</h2>
+    <p>
+      We use cookies and similar technologies to improve website performance, personalize content, and analyze user behavior.
+    </p>
+    <p>
+      You can manage cookie preferences in your browser settings. For more details, refer to our <strong>Cookie Policy</strong>.
+    </p>
+
+    <h2>10. Children’s Privacy</h2>
+    <p>
+      Our services are not intended for children under the age of 13. We do not knowingly collect or process personal data from minors. If you believe we have done so inadvertently, please contact us immediately.
+    </p>
+
+    <h2>11. Changes to This Policy</h2>
+    <p>
+      We may update this Privacy Policy to reflect changes in our practices or legal obligations. The most current version will always be available at <strong>nickdwtyay.com.br/privacy</strong>. Continued use of the service implies acceptance of the updated terms.
+    </p>
+
+    <h2>12. Contact Us</h2>
+    <div class="contact">
+      Nick Dwtyay Ltd.<br>
+      📧 Email: <a href="mailto:contato@nickdwtyay.com.br">contato@nickdwtyay.com.br</a>
+    </div>
+  </div>
+  <script>
+    // Basic switcher placeholder for future multilingual support
+    function switchLang(lang) {
+      alert('Language switching not implemented yet.');
+      // In production: Load and swap content for EN/PT here
+    }
+</script>
    <?php include __DIR__ . '/includes/footer.php'; ?>
 </body>
 </html>
