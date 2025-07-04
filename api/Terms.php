@@ -144,7 +144,7 @@ $current_page = "terms";
     </div>
 <div class="terms-content">
         <div class="big-title">Terms of Use and Property Rights</div>
-        <p><strong>Last updated:</strong> [insert preferred date]</p>
+        <p><strong>Last updated:</strong> 5/7/2025</p>
         <p>Welcome to Nickdwtyay.com.br (“Website”), operated by Nick Dwtyay Ltd. (“we,” “our,” or “the Company”).</p>
         <p>These Terms of Use set forth the legally binding rules and responsibilities governing your access to and use of the Website. By accessing or using the Website, you fully accept these Terms. If you do not agree, please refrain from using the Website.</p>
         
