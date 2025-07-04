@@ -125,7 +125,7 @@ error_reporting(E_ALL); // Corrigido de "error_reportin" pra "error_reporting"
 </head>
 <body>
     <div class="background-image"></div>
-    <div class="top-nav">
+    <div class="top-nav"><a href="/" class="nav-link">Home</a>
         <a href="/videos.php" class="nav-link">Videos</a>
         <a href="/about.php" class="nav-link">About</a>
         <a href="/contact.php" class="nav-link">Contact</a>
