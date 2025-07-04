@@ -13,82 +13,116 @@ $current_page = "terms";
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $page_title; ?></title>
 <link rel="icon" href="/api/static/dwtyay_favicon.gif" type="image/gif">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            overflow-x: hidden;
-        }
-        .background-image {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('https://codingdatatoday.co/wp-content/uploads/2024/06/Os-Principais-Tipos-de-Analise-de-Dados-e-Suas-Aplicacoes.webp');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            z-index: -1;
-            filter: brightness(70%);
-        }
-        .top-nav {
-            display: flex;
-            justify-content: center;
-            background-color: rgba(51, 51, 51, 0.9);
-            padding: 10px 0;
-            position: relative;
-            z-index: 1;
-        }
-        .nav-link {
-            padding: 10px 20px;
-            color: #fff;
-            text-decoration: none;
-            transition: background-color 0.3s ease;
-        }
-        .nav-link:hover {
-            background-color: #555;
-        }
-        .container {
-            max-width: 800px;
-            margin: 50px auto;
-            background-color: rgba(255, 255, 255, 0.95);
-            border: 1px solid #ccc;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            position: relative;
-            z-index: 1;
-        }
-        h1, h2 {
-            color: #333;
-            text-align: center;
-        }
-        p {
-            line-height: 1.6;
-            color: #555;
-        }
-        .footer {
-            background-color: rgba(51, 51, 51, 0.9);
-            padding: 20px;
-            text-align: center;
-            font-size: 14px;
-            color: #fff;
-            width: 100%;
-            position: relative;
-            bottom: 0;
-            z-index: 1;
-        }
-        .footer a {
-            color: #fff;
-            text-decoration: none;
-            margin: 0 5px;
-        }
-        .footer a:hover {
-            text-decoration: underline;
-        }
-    </style>
+   <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        overflow-x: hidden;
+        background-color: #f4f4f4;
+    }
+
+    .background-image {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('https://codingdatatoday.co/wp-content/uploads/2024/06/Os-Principais-Tipos-de-Analise-de-Dados-e-Suas-Aplicacoes.webp');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        z-index: -1;
+        filter: blur(2px) brightness(60%);
+    }
+
+    .container, .terms-content {
+        max-width: 850px;
+        margin: 80px auto;
+        background-color: rgba(255, 255, 255, 0.94);
+        padding: 30px 40px;
+        border-radius: 10px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(4px);
+        z-index: 2;
+        position: relative;
+    }
+
+    .big-title {
+        font-size: 28px;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 30px;
+        color: #222;
+    }
+
+    .section-title {
+        font-size: 20px;
+        font-weight: bold;
+        margin-top: 40px;
+        margin-bottom: 10px;
+        color: #444;
+    }
+
+    p, li {
+        line-height: 1.7;
+        color: #333;
+        font-size: 16px;
+    }
+
+    ul {
+        margin-left: 20px;
+    }
+
+    .top-nav {
+        display: flex;
+        justify-content: center;
+        background-color: rgba(34, 34, 34, 0.95);
+        padding: 12px 0;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 999;
+    }
+
+    .nav-link {
+        padding: 10px 20px;
+        color: #fff;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .nav-link:hover {
+        background-color: #555;
+    }
+
+    .footer {
+        background-color: #222;
+        padding: 25px 15px;
+        text-align: center;
+        font-size: 14px;
+        color: #fff;
+        z-index: 10;
+        position: relative;
+        margin-top: 50px;
+    }
+
+    .footer a {
+        color: #fff;
+        margin: 0 5px;
+        text-decoration: none;
+    }
+
+    .footer a:hover {
+        text-decoration: underline;
+    }
+
+    .footer-social img, .footer-social i {
+        vertical-align: middle;
+    }
+</style>
+
     <script>
         window.va = window.va || function (...args) { (window.vaq = window.vaq || []).push(args); };
     </script>
