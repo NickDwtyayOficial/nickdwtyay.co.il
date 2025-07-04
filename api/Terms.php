@@ -108,21 +108,75 @@ $current_page = "terms";
             <a href="/" class="nav-link">Login</a>
         <?php endif; ?>
     </div>
-    <div class="container">
-        <h1>Termos de Serviço</h1>
-        <h2>Nick Dwtyay, Ltd.</h2>
-        <p>Estes Termos de Serviço regem o uso do site e serviços fornecidos pela Nick Dwtyay, Ltd. Ao acessar ou usar nosso site, você concorda com os termos aqui descritos.</p>
-        <h3>1. Aceitação dos Termos</h3>
-        <p>Ao criar uma conta ou usar nossos serviços, você aceita cumprir estes termos. Caso não concorde, não utilize o site.</p>
-        <h3>2. Uso Permitido</h3>
-        <p>Você concorda em usar nossos serviços apenas para fins legais e de acordo com as leis aplicáveis.</p>
-        <h3>3. Propriedade Intelectual</h3>
-        <p>Todo o conteúdo do site é propriedade da Nick Dwtyay, Ltd. e protegido por leis de direitos autorais.</p>
-        <h3>4. Limitação de Responsabilidade</h3>
-        <p>Não nos responsabilizamos por danos indiretos ou interrupções no serviço causadas por fatores fora de nosso controle.</p>
-        <p>Última atualização: 07 de Março de 2025.</p>
-        <p><a href="/">Voltar ao Login</a></p>
-    </div>
+<div class="terms-content">
+        <div class="big-title">Terms of Use and Property Rights</div>
+        <p><strong>Last updated:</strong> [insert preferred date]</p>
+        <p>Welcome to Nickdwtyay.com.br (“Website”), operated by Nick Dwtyay Ltd. (“we,” “our,” or “the Company”).</p>
+        <p>These Terms of Use set forth the legally binding rules and responsibilities governing your access to and use of the Website. By accessing or using the Website, you fully accept these Terms. If you do not agree, please refrain from using the Website.</p>
+        
+        <div class="section-title">1. Jurisdiction and Governing Law</div>
+        <p>These Terms are governed by the laws of the State of Israel, without regard to its conflict of law principles. Any dispute arising under or in connection with this Website or these Terms shall be subject to the exclusive jurisdiction of the competent courts located in Tel Aviv, Israel, unless otherwise agreed upon in writing.</p>
+        
+        <div class="section-title">2. Changes to the Terms</div>
+        <p>We reserve the right to modify these Terms at any time, at our sole discretion. Any changes become effective immediately upon publication. It is your responsibility to review these Terms regularly.</p>
+        
+        <div class="section-title">3. Intellectual Property Rights</div>
+        <p>All content on this Website — including, but not limited to, texts, images, graphics, logos, trademarks, videos, software, interface structures, and data architecture — is protected by Israeli copyright, intellectual property laws, and international treaties.</p>
+        <p>You do not acquire any ownership rights by accessing or using the content. No content may be copied, distributed, modified, reproduced, published, or transmitted without prior written consent from the Company, except as allowed under the doctrine of fair use under Israeli law.</p>
+        
+        <div class="section-title">4. Permitted Use</div>
+        <p>You agree to use this Website only for lawful and legitimate purposes, including:</p>
+        <ul>
+            <li>Complying with the laws of Israel and your country of residence;</li>
+            <li>Respecting the Company’s and third parties’ intellectual property rights;</li>
+            <li>Maintaining the integrity and security of the Website.</li>
+        </ul>
+        <p>Prohibited actions include:</p>
+        <ul>
+            <li>Attempting to access servers or databases without authorization;</li>
+            <li>Reverse engineering, scraping, data mining, or any unauthorized commercial use.</li>
+        </ul>
+        
+        <div class="section-title">5. User-Generated Content</div>
+        <p>If the Website allows comments, uploads, forums, or other forms of user-generated content:</p>
+        <ul>
+            <li>You grant the Company an irrevocable, perpetual, worldwide, royalty-free license to use, reproduce, translate, adapt, distribute, and publicly display such content.</li>
+            <li>You affirm that you own or have the rights to post such content and that it does not infringe upon the rights of others.</li>
+        </ul>
+        <p>The Company reserves the right to remove any offensive, illegal, or inappropriate content at its sole discretion.</p>
+        
+        <div class="section-title">6. Privacy and Data Protection</div>
+        <p>The Company is committed to processing user data in compliance with the Israeli Protection of Privacy Law – 1981, and, where applicable, in accordance with international regulations such as the General Data Protection Regulation (GDPR).</p>
+        <p>By using this Website, you consent to the collection and use of your information as outlined in our Privacy Policy.</p>
+        
+        <div class="section-title">7. Disclaimer of Warranties and Limitation of Liability</div>
+        <p>The Website is provided "as is" and "as available," with no warranties of any kind, express or implied.</p>
+        <p>The Company shall not be liable for:</p>
+        <ul>
+            <li>Technical issues or service interruptions;</li>
+            <li>Financial or commercial losses resulting from the use or unavailability of the Website;</li>
+            <li>Third-party content accessed via external links.</li>
+        </ul>
+        <p>You understand and agree that use of the Website is at your own risk.</p>
+        
+        <div class="section-title">8. Indemnification</div>
+        <p>You agree to indemnify, defend, and hold harmless the Company from any claims, damages, liabilities, costs, or expenses (including legal fees) arising out of:</p>
+        <ul>
+            <li>Your violation of these Terms;</li>
+            <li>Your misuse of the Website;</li>
+            <li>Any content you submit or share through the Website.</li>
+        </ul>
+        
+        <div class="section-title">9. Termination and Restricted Access</div>
+        <p>The Company may, at its sole discretion, suspend, restrict, or terminate your access to the Website, with or without notice, if you breach these Terms or any applicable legal obligations.</p>
+        
+        <div class="section-title">10. Contact Information</div>
+        <p>
+            For questions, legal notices, or formal requests, please contact us at:<br>
+            <strong>Nick Dwtyay Ltd.</strong><br>
+            📧 Email: contato@nickdwtyay.com.br
+        </p>
+            </div>
     <?php include __DIR__ . '/includes/footer.php'; ?>
 </body>
 </html>
