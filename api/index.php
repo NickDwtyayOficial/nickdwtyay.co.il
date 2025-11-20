@@ -461,7 +461,7 @@ $visitor_info = $_SESSION['visitor_info'] ?? [];
 <!-- Cookie Consent Banner -->
 <div class="cookie-consent">
     <p>We use first-party cookies to improve our services. 
-        <a href="/api/Privacy_Policy.php#cookies">Learn more</a>
+        <a href="/api/Privacy_Policy.php">Learn more</a>
     </p>
     <div class="cookie-buttons">
         <button class="accept-btn">Accept</button>
