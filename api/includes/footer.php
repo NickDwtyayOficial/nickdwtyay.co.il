@@ -33,3 +33,54 @@
     window.va = window.va || function (...args) { (window.vaq = window.vaq || []).push(args); };
 </script>
 <script src="/_vercel/insights/script.js" defer></script>
+
+
+<script>
+(() => {
+  const RELOAD_MS = 180000; // 3 minutos
+  let timer = null;
+
+  function hardReload() {
+    // Adiciona/atualiza um parâmetro de cache-buster para forçar carregamento da rede
+    const url = new URL(window.location.href);
+    url.searchParams.set('_r', Date.now());
+    // Usamos replace para não criar entrada extra no histórico
+    window.location.replace(url.toString());
+  }
+
+  function schedule() {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      if (document.visibilityState === 'visible') {
+        // garante recarga completa (scripts, ads, tracking serão executados do zero)
+        hardReload();
+      } else {
+        // se aba estiver oculta, espera até ficar visível para recarregar
+        const onVis = () => {
+          if (document.visibilityState === 'visible') {
+            document.removeEventListener('visibilitychange', onVis);
+            hardReload();
+          }
+        };
+        document.addEventListener('visibilitychange', onVis);
+      }
+    }, RELOAD_MS);
+  }
+
+  // Reseta o temporizador ao detectar atividade do utilizador (evita recargas no meio de interação)
+  ['mousemove','keydown','scroll','touchstart'].forEach(evt =>
+    document.addEventListener(evt, () => {
+      schedule();
+    }, { passive: true })
+  );
+
+  // Se a página já estiver carregada, starta o agendamento
+  if (document.readyState === 'complete') schedule();
+  else window.addEventListener('load', schedule);
+})();
+</script>
+
+
+
+
+
