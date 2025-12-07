@@ -26,7 +26,7 @@
    
     <a href="/Terms.php">Terms</a> |
     <a href="/Privacy_Policy.php">Privacy Policy</a> |
-    All Rights Reserved © 2006 - 2025 Nick Dwtyay, Ltd.
+    All Rights Reserved © 2006 - 2026 Nick Dwtyay, Ltd.
 </footer>
 <!-- Scripts extras (se realmente forem necessários para todas as páginas) -->
 <script>
