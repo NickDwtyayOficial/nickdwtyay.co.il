@@ -348,7 +348,7 @@ $visitor_info = $_SESSION['visitor_info'] ?? [];
 <body>
     <div class="background-image"></div>
     <nav class="top-nav">
-        <a href="index.html" class="nav-link">home</a>
+        <a href="index.html" class="nav-link">Home</a>
         <a href="/videos.php" class="nav-link">Videos</a>
         <a href="/about.php" class="nav-link">About</a>
         <a href="/contact.php" class="nav-link">Contact</a>
