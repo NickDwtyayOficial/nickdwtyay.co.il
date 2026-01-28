@@ -80,6 +80,29 @@
 })();
 </script>
 
+<!-- Inclua a biblioteca SweetAlert2 (bota isso no head se possível, ou aqui mesmo) -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- O código do pop-up -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  Swal.fire({
+    title: "התראה",
+    text: "יש לנו בעיה קטנה בשחזור סיסמה. אנחנו כבר מטפלים, זה ייקח קצת זמן. רגע?",
+    icon: "warning", // pra dar um ar de atenção
+    confirmButtonText: "OK",
+    showCancelButton: true,
+    cancelButtonText: "Cancelar",
+    allowOutsideClick: false // pra não fechar clicando fora
+  }).then((result) => {
+    if (!result.isConfirmed) {
+      // Se cancelar, volta pra página anterior ou redireciona
+      window.history.back();
+    }
+  });
+});
+</script>
+
 
 
 
