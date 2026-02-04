@@ -16,7 +16,7 @@ on:
         required: false
         default: 'auto/update'
       commit_message:
-        description: 'Mensagem de commit (uso quando há mudanças)'
+        description: 'Mensagem de commit (uso quando há mudanças). Use ${date} para inserir timestamp.'
         required: false
         default: 'Automated update: ${date} [skip ci]'
   schedule:
@@ -39,6 +39,17 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
+      - name: Set branch name and commit message
+        id: set_vars
+        run: |
+          TIMESTAMP=$(date -u +%Y%m%d%H%M%S)
+          BRANCH="${{ github.event.inputs.pr_branch_prefix }}-${TIMESTAMP}"
+          INPUT_MSG="${{ github.event.inputs.commit_message }}"
+          COMMIT_MSG="${INPUT_MSG//\$\{date\}/$(date -u +%Y-%m-%dT%H:%M:%SZ)}"
+          echo "branch_name=${BRANCH}" >> $GITHUB_OUTPUT
+          echo "commit_msg=${COMMIT_MSG}" >> $GITHUB_OUTPUT
+        shell: bash
+
       - name: Make changes (example)
         id: make_changes
         run: |
@@ -59,12 +70,10 @@ jobs:
           echo "changes=true" >> $GITHUB_OUTPUT
         shell: bash
 
-      - name: Commit changes
+      - name: Commit changes (for direct push)
         if: steps.check_changes.outputs.changes == 'true' && (github.event.inputs.direct_push == 'true')
         run: |
-          MSG="${{ github.event.inputs.commit_message }}"
-          MSG="${MSG//\$\{date\}/$(date -u +%Y-%m-%dT%H:%M:%SZ)}"
-          git commit -m "$MSG"
+          git commit -m "${{ steps.set_vars.outputs.commit_msg }}"
         shell: bash
 
       - name: Push directly to target branch (uses PAT if provided)
@@ -82,10 +91,10 @@ jobs:
         if: steps.check_changes.outputs.changes == 'true' && (github.event.inputs.direct_push != 'true')
         uses: peter-evans/create-pull-request@v5
         with:
-          branch: ${{ github.event.inputs.pr_branch_prefix }}-$(date -u +'%Y%m%d%H%M%S')
-          title: Automated update: ${{ github.event.inputs.target_branch }}
+          branch: ${{ steps.set_vars.outputs.branch_name }}
+          title: ${{ steps.set_vars.outputs.commit_msg }}
           body: This PR was created automatically by the CI workflow.
-          commit-message: ${{ github.event.inputs.commit_message }}
+          commit-message: ${{ steps.set_vars.outputs.commit_msg }}
           base: ${{ github.event.inputs.target_branch }}
           labels: automated, ci
           maintainer-can-modify: true
