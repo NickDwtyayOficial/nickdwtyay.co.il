@@ -25,12 +25,19 @@ jobs:
           git config user.name "Agent-0 Bot"
           git config user.email "agent-0-bot@users.noreply.github.com"
       
-      # 🔧 PERSONALIZE AQUI: Comandos para atualizar seu Agent-0
-      # Exemplo para projeto Python:
-      # - name: Atualizar Agent-0
-      #   run: |
-      #     pip install -r requirements.txt
-      #     python generate_agent.py --update
+      # 🔧 PASSOS PARA PROJETO REACT/NEXT.JS (remova qualquer passo Python!)
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      # ⚠️ REMOVA ou COMENTE qualquer linha com "pip" ou "requirements.txt"
+      # ❌ ERRADO: pip install -r requirements.txt
+      # ✅ CERTO: npm run build (se precisar gerar conteúdo estático)
       
       - name: Commit e Push
         run: |
@@ -42,5 +49,4 @@ jobs:
           else
             git push origin HEAD:${{ github.event.inputs.target_branch }}-agent-update
             echo "SetBranch criado: ${{ github.event.inputs.target_branch }}-agent-update"
-            echo "➡️ Crie um Pull Request para revisão"
           fi
