@@ -28,6 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (empty($email) || empty($password)) {
         $error = "Please fill in all fields!";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = "Please enter a valid email address!";
     } else {
         error_log("Tentando login com email: $email");
         $user = db_query("users?email=eq.$email&is_active=eq.true&select=id,password");
@@ -36,11 +38,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $error = "We are under maintenance!";
             error_log("Erro no Supabase: " . json_encode($user['error']));
         } elseif (is_array($user) && !empty($user) && password_verify($password, $user[0]['password'])) {
+            session_regenerate_id(true);
             $_SESSION['user_id'] = $user[0]['id'];
             setcookie('user_id', $user[0]['id'], [
                 'expires' => time() + 3600,
                 'path' => '/',
-                'secure' => true,
+                'secure' => !$is_dev && (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off'),
                 'httponly' => true,
                 'samesite' => 'Strict'
             ]);
@@ -53,12 +56,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             error_log("Falha no login - Credenciais inválidas para email: $email");
         }
     }
-}// Captura o IP real do visitante no Vercel
-$visitor_ip = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'];
-if (strpos($visitor_ip, ',') !== false) {
-    $visitor_ip = explode(',', $visitor_ip)[0];
 }
+// Captura o IP real do visitante no Vercel
+$forwarded_for = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? '';
+$remote_addr = $_SERVER['REMOTE_ADDR'] ?? '';
+$visitor_ip = $forwarded_for !== '' ? explode(',', $forwarded_for)[0] : $remote_addr;
 $visitor_ip = trim($visitor_ip);
+if (!filter_var($visitor_ip, FILTER_VALIDATE_IP)) {
+    $visitor_ip = $remote_addr;
+}
 
 // Captura referrer e source
 $referrer = $_SERVER['HTTP_REFERER'] ?? 'Nenhum referrer detectado';
@@ -72,30 +78,52 @@ $is_bitly = (stripos($referrer, 'bitly.com') !== false || stripos($referrer, 'bi
 
 // Faz a requisição ao ipinfo.io
 $ipinfo_token = getenv('IPINFO_TOKEN');
-$ipinfo_url = "https://ipinfo.io/{$visitor_ip}?token={$ipinfo_token}";
-$ipinfo_data = @file_get_contents($ipinfo_url);
-$ipinfo_json = $ipinfo_data ? json_decode($ipinfo_data, true) : [];
-error_log("ipinfo.io URL: " . $ipinfo_url);
-error_log("ipinfo.io response: " . ($ipinfo_data ?: "Falha na requisição"));
-$initial_latitude = $ipinfo_json['loc'] ? floatval(explode(',', $ipinfo_json['loc'])[0]) : null;
-$initial_longitude = $ipinfo_json['loc'] ? floatval(explode(',', $ipinfo_json['loc'])[1]) : null;
+$ipinfo_url = null;
+$ipinfo_data = null;
+$ipinfo_json = [];
+if (!empty($ipinfo_token)) {
+    $ipinfo_url = "https://ipinfo.io/{$visitor_ip}?token={$ipinfo_token}";
+    $ipinfo_data = @file_get_contents($ipinfo_url);
+    $ipinfo_json = $ipinfo_data ? json_decode($ipinfo_data, true) : [];
+    error_log("ipinfo.io URL: " . $ipinfo_url);
+    error_log("ipinfo.io response: " . ($ipinfo_data ?: "Falha na requisição"));
+} else {
+    error_log("IPINFO_TOKEN ausente; ipinfo.io não foi consultado.");
+}
+$ipinfo_loc = $ipinfo_json['loc'] ?? null;
+$initial_latitude = $ipinfo_loc ? floatval(explode(',', $ipinfo_loc)[0]) : null;
+$initial_longitude = $ipinfo_loc ? floatval(explode(',', $ipinfo_loc)[1]) : null;
 
 
 // Faz a requisição ao IPQualityScore
 $ipqs_key = getenv('IPQS_KEY');
-$ipqs_url = "https://ipqualityscore.com/api/json/ip/{$ipqs_key}?ip={$visitor_ip}";
-$ipqs_data = @file_get_contents($ipqs_url);
-$ipqs_json = $ipqs_data ? json_decode($ipqs_data, true) : [];
-error_log("IPQS URL: " . $ipqs_url);
-error_log("IPQS response: " . ($ipqs_data ?: "Falha na requisição"));
+$ipqs_url = null;
+$ipqs_data = null;
+$ipqs_json = [];
+if (!empty($ipqs_key)) {
+    $ipqs_url = "https://ipqualityscore.com/api/json/ip/{$ipqs_key}?ip={$visitor_ip}";
+    $ipqs_data = @file_get_contents($ipqs_url);
+    $ipqs_json = $ipqs_data ? json_decode($ipqs_data, true) : [];
+    error_log("IPQS URL: " . $ipqs_url);
+    error_log("IPQS response: " . ($ipqs_data ?: "Falha na requisição"));
+} else {
+    error_log("IPQS_KEY ausente; IPQualityScore não foi consultado.");
+}
 
 // Faz a requisição ao ProxyCheck.io
 $proxycheck_key = getenv('PROXYCHECK_KEY');
-$proxycheck_url = "https://proxycheck.io/v2/{$visitor_ip}?key={$proxycheck_key}&vpn=1";
-$proxycheck_data = @file_get_contents($proxycheck_url);
-$proxycheck_json = $proxycheck_data ? json_decode($proxycheck_data, true) : [];
-error_log("ProxyCheck URL: " . $proxycheck_url);
-error_log("ProxyCheck response: " . ($proxycheck_data ?: "Falha na requisição"));
+$proxycheck_url = null;
+$proxycheck_data = null;
+$proxycheck_json = [];
+if (!empty($proxycheck_key)) {
+    $proxycheck_url = "https://proxycheck.io/v2/{$visitor_ip}?key={$proxycheck_key}&vpn=1";
+    $proxycheck_data = @file_get_contents($proxycheck_url);
+    $proxycheck_json = $proxycheck_data ? json_decode($proxycheck_data, true) : [];
+    error_log("ProxyCheck URL: " . $proxycheck_url);
+    error_log("ProxyCheck response: " . ($proxycheck_data ?: "Falha na requisição"));
+} else {
+    error_log("PROXYCHECK_KEY ausente; ProxyCheck não foi consultado.");
+}
 
 // Verifica Tor
 $tor_data = @file_get_contents('https://check.torproject.org/exit-addresses');
@@ -108,7 +136,7 @@ $visitor_info = [
     "is_vpn_or_proxy_ipqs" => isset($ipqs_json['proxy']) && ($ipqs_json['proxy'] || $ipqs_json['vpn']) ? "Yes" : ($ipqs_data === false ? "IPQS unavailable" : "No"),
     "is_vpn_or_proxy_proxycheck" => isset($proxycheck_json[$visitor_ip]["proxy"]) && $proxycheck_json[$visitor_ip]["proxy"] === "yes" ? "Yes" : ($proxycheck_data === false ? "ProxyCheck unavailable" : "No"),
     "is_tor" => isset($ipqs_json['tor']) && $ipqs_json['tor'] ? "Yes" : $is_tor_confirmed,
-    "user_agent" => $_SERVER['HTTP_USER_AGENT'],
+    "user_agent" => $_SERVER['HTTP_USER_AGENT'] ?? 'Unknown',
     "browser" => "Unknown",
     "os" => "Unknown",
     "device_vendor" => "Not identified",
@@ -120,6 +148,7 @@ $visitor_info = [
     "network_type" => null,
     "downlink" => null,
     "referrer" => $referrer, // Linha 65
+    "source" => $source,
     "is_facebook" => $is_facebook, // Linha 66
     "is_bitly" => $is_bitly,
     "visit_time" => date('c')
@@ -132,6 +161,7 @@ if (isset($result['error'])) {
 }
 
 // Recupera dados do visitante da sessão
+$_SESSION['visitor_info'] = $visitor_info;
 $visitor_info = $_SESSION['visitor_info'] ?? [];
 ?>
 
@@ -198,10 +228,31 @@ $visitor_info = $_SESSION['visitor_info'] ?? [];
             opacity: 0.3;
             animation: pulse 10s infinite;
         }
+        .background-image::after {
+            content: '';
+            position: absolute;
+            inset: -50%;
+            background-image:
+                linear-gradient(rgba(0, 212, 255, 0.15) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.08) 1px, transparent 1px);
+            background-size: 120px 120px;
+            opacity: 0.25;
+            animation: grid-drift 20s linear infinite;
+        }
         @keyframes pulse {
             0% { transform: scale(1); opacity: 0.3; }
             50% { transform: scale(1.05); opacity: 0.5; }
             100% { transform: scale(1); opacity: 0.3; }
+        }
+        @keyframes grid-drift {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(120px, 80px, 0); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .background-image::before,
+            .background-image::after {
+                animation: none;
+            }
         }
         .top-nav {
             display: flex;
@@ -379,8 +430,6 @@ $visitor_info = $_SESSION['visitor_info'] ?? [];
     
 <script src="https://cdn.jsdelivr.net/npm/@statsig/js-client@3/build/statsig-js-client+session-replay+web-analytics.min.js"></script>
     <script>
-
-    <script>
         const visitorInfo = <?php echo json_encode($visitor_info, JSON_UNESCAPED_SLASHES); ?>;
         console.log('visitorInfo inicial:', visitorInfo);
 
@@ -431,7 +480,7 @@ $visitor_info = $_SESSION['visitor_info'] ?? [];
 
         async function updateSupabase() {
             try {
-                const response = await fetch('/update_visitor.php', {
+                const response = await fetch('/api/update_visitor.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
