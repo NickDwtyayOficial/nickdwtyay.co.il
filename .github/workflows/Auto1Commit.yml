@@ -28,7 +28,9 @@ jobs:
     outputs:
       changes_made: ${{ steps.check_changes.outputs.changes }}
     steps:
+      # Checkout padrão (usado quando NÃO for push direto ou quando REPO_PAT não for fornecido)
       - name: Checkout (default GITHUB_TOKEN)
+        id: checkout_default
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -38,6 +40,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        shell: bash
 
       - name: Set branch name and commit message
         id: set_vars
@@ -53,10 +56,9 @@ jobs:
       - name: Make changes (example)
         id: make_changes
         run: |
-          # <<< Substitua por seus comandos reais que geram/atualizam arquivos >>>
-          # Exemplo de teste: gerar/atualizar changelog/test file
+          # <<< SUBSTITUA por seus comandos que geram/atualizam arquivos do projeto >>>
+          # Exemplo de teste: cria/atualiza changelog.txt
           echo "$(date -u) - Auto update by workflow" >> changelog.txt
-          # Fim do bloco a personalizar
         shell: bash
 
       - name: Check for changes
@@ -71,28 +73,35 @@ jobs:
           echo "changes=true" >> $GITHUB_OUTPUT
         shell: bash
 
+      # Commit local (apenas quando faremos push direto)
       - name: Commit changes (for direct push)
-        if: steps.check_changes.outputs.changes == 'true' && (github.event.inputs.direct_push == 'true')
+        if: steps.check_changes.outputs.changes == 'true' && github.event.inputs.direct_push == 'true'
         run: |
           git commit -m "${{ steps.set_vars.outputs.commit_msg }}"
         shell: bash
 
-      - name: Push directly to target branch (uses REPO_PAT if set)
-        if: steps.check_changes.outputs.changes == 'true' && (github.event.inputs.direct_push == 'true')
+      # If doing direct_push=true, re-checkout with PAT so push is done by PAT (not GITHUB_TOKEN)
+      - name: Checkout with REPO_PAT for direct push
+        if: github.event.inputs.direct_push == 'true'
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.REPO_PAT }}
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Push directly to target branch (uses REPO_PAT if provided)
+        if: steps.check_changes.outputs.changes == 'true' && github.event.inputs.direct_push == 'true'
         env:
           TARGET_BRANCH: ${{ github.event.inputs.target_branch }}
-          REPO_PAT: ${{ secrets.REPO_PAT }}
+          # REPO_PAT is referenced only via ${{ secrets.REPO_PAT }} above (not echoed)
         run: |
           set -euo pipefail
-          # Se foi fornecido REPO_PAT, configure remote para usar ele (mantendo token fora de logs).
-          if [ -n "${REPO_PAT:-}" ]; then
-            git remote set-url origin https://x-access-token:${REPO_PAT}@github.com/${{ github.repository }}
-          fi
+          # Push: when checkout used token: ${{ secrets.REPO_PAT }}, git push will use that credential
           git push origin "HEAD:${TARGET_BRANCH}"
         shell: bash
 
-      - name: Create branch and open Pull Request (recommended)
-        if: steps.check_changes.outputs.changes == 'true' && (github.event.inputs.direct_push != 'true')
+      - name: Create branch and open Pull Request (recommended fallback)
+        if: steps.check_changes.outputs.changes == 'true' && github.event.inputs.direct_push != 'true'
         uses: peter-evans/create-pull-request@v5
         with:
           branch: ${{ steps.set_vars.outputs.branch_name }}
