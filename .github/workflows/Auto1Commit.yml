@@ -1,0 +1,42 @@
+name: Auto Commit and Push
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 3 * * *' # diário às 03:00 UTC — ajuste conforme precisar
+
+jobs:
+  auto-commit:
+    runs-on: ubuntu-latest
+    env:
+      TARGET_BRANCH: main # altere para master ou outro branch se necessário
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true  # permite push com GITHUB_TOKEN
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Make changes (example)
+        run: |
+          # Substitua por seus comandos que geram/atualizam arquivos
+          echo "$(date -u) - Auto update by workflow" >> changelog.txt
+
+      - name: Commit changes if any
+        run: |
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          # [skip ci] evita que o commit dispare outros workflows (boa prática)
+          git commit -m "Automated update: $(date -u) [skip ci]"
+
+      - name: Push changes
+        run: |
+          git push origin "HEAD:${{ env.TARGET_BRANCH }}"
