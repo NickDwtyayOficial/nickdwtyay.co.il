@@ -3,137 +3,143 @@ on:
   workflow_dispatch:
     inputs:
       direct_push:
-        description: '🚀 Push direto para branch alvo (true/false)'
-        required: true
+        description: '🚀 Push direto ao branch alvo? (true/false)'
+        required: false
         default: 'false'
       target_branch:
-        description: '🎯 Branch alvo para push ou PR'
-        required: true
+        description: '🎯 Branch destino (ex: main)'
+        required: false
         default: 'main'
+      pr_branch_prefix:
+        description: '🏷️ Prefixo para branch de PR'
+        required: false
+        default: 'agent/update'
+      commit_message:
+        description: '📝 Mensagem de commit (${date} = timestamp)'
+        required: false
+        default: '🤖 Agent-0: ${date}'
 
 jobs:
-  update-agent:
+  auto-commit:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      actions: write
+      pull-requests: write
 
     steps:
       # 📦 PASSO 1: Checkout do repositório
       - name: 🔵 Checkout repository
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.REPO_PAT }}
           fetch-depth: 0
+          persist-credentials: true
       
       # 👤 PASSO 2: Configurar identidade Git
-      - name: 🟢 Configurar identidade Git
+      - name: 🟢 Configure Git identity
         run: |
           git config user.name "Agent-0 Bot"
           git config user.email "agent-0-bot@users.noreply.github.com"
-          echo "✅ Git configurado com sucesso!"
+          echo "✅ Git configurado!"
       
-      # ⚙️ PASSO 3: Setup Node.js (se necessário)
-      - name: 🟣 Verificar package.json
-        id: check-package
+      # ⚙️ PASSO 3: Definir variáveis dinâmicas
+      - name: 🟣 Set dynamic variables
+        id: set_vars
         run: |
-          if [ -f "package.json" ]; then
-            echo "package_exists=true" >> $GITHUB_OUTPUT
-            echo "✅ package.json encontrado!"
-          else
-            echo "package_exists=false" >> $GITHUB_OUTPUT
-            echo "⚠️ package.json não encontrado - pulando setup Node.js"
-          fi
+          TIMESTAMP=$(date -u +%Y%m%d%H%M%S)
+          BRANCH="${{ github.event.inputs.pr_branch_prefix }}-${TIMESTAMP}"
+          INPUT_MSG="${{ github.event.inputs.commit_message }}"
+          COMMIT_MSG="${INPUT_MSG//\$\{date\}/$(date -u '+%Y-%m-%d %H:%M:%S')}"
+          echo "branch_name=${BRANCH}" >> $GITHUB_OUTPUT
+          echo "commit_msg=${COMMIT_MSG}" >> $GITHUB_OUTPUT
+          echo "✅ Variáveis definidas!"
+          echo "   Branch: ${BRANCH}"
+          echo "   Commit: ${COMMIT_MSG}"
       
-      - name: 🟡 Setup Node.js
-        if: steps.check-package.outputs.package_exists == 'true'
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-          cache: 'npm'
-      
-      - name: 🔵 Install dependencies
-        if: steps.check-package.outputs.package_exists == 'true'
+      # 🔄 PASSO 4: Verificar se há alterações no repositório
+      - name: 🟡 Check for existing changes
+        id: check_changes
         run: |
-          echo "📦 Instalando dependências..."
-          npm ci
-          echo "✅ Dependências instaladas!"
-      
-      # 🔄 PASSO 4: Gerar/Atualizar conteúdo (se necessário)
-      - name: 🟢 Verificar scripts de geração
-        id: check-scripts
-        if: steps.check-package.outputs.package_exists == 'true'
-        run: |
-          if grep -q '"generate"' package.json || grep -q '"build"' package.json; then
-            echo "scripts_exist=true" >> $GITHUB_OUTPUT
-            echo "✅ Scripts de geração encontrados!"
-          else
-            echo "scripts_exist=false" >> $GITHUB_OUTPUT
-            echo "⚠️ Nenhum script de geração encontrado - pulando"
-          fi
-      
-      - name: 🔵 Executar geração (se existir)
-        if: steps.check-scripts.outputs.scripts_exist == 'true' && steps.check-package.outputs.package_exists == 'true'
-        run: |
-          echo "🔨 Executando scripts de geração..."
-          if npm run generate 2>/dev/null; then
-            echo "✅ Script 'generate' executado!"
-          elif npm run build 2>/dev/null; then
-            echo "✅ Script 'build' executado!"
-          else
-            echo "⚠️ Nenhum script executado - continuando..."
-          fi
-      
-      # 💾 PASSO 5: Commit e Push
-      - name: 🟣 Commit e Push
-        run: |
-          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-          echo "💾 Salvando alterações..."
-          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-          
-          # Adicionar todas as alterações
-          git add .
-          
-          # Verificar se há alterações para commitar
+          git add -A
           if git diff --cached --quiet; then
-            echo "⚠️ NENHUMA alteração detectada - nada para commitar!"
-            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "changes=false" >> $GITHUB_OUTPUT
+            echo "⚠️ Nenhuma alteração detectada no repositório"
             exit 0
           fi
-          
-          # Commit
-          COMMIT_MSG="🤖 Agent-0 atualizado: $(date '+%Y-%m-%d %H:%M:%S')"
-          git commit -m "$COMMIT_MSG"
-          echo "✅ Commit criado: $COMMIT_MSG"
-          
-          # Push baseado no input
-          if [ "${{ github.event.inputs.direct_push }}" == "true" ]; then
-            echo "🚀 Push DIRETO para ${{ github.event.inputs.target_branch }}"
-            git push origin ${{ github.event.inputs.target_branch }}
-            echo "✅ Push direto concluído com sucesso!"
-          else
-            BRANCH_NAME="${{ github.event.inputs.target_branch }}-agent-update"
-            echo "🔀 Push para branch: $BRANCH_NAME"
-            git push origin HEAD:$BRANCH_NAME
-            echo "✅ Branch criado: $BRANCH_NAME"
-            echo "➡️ Crie um Pull Request para merge!"
-          fi
-          
+          echo "changes=true" >> $GITHUB_OUTPUT
+          echo "✅ Alterações detectadas!"
+      
+      # 💾 PASSO 5: Commit local (apenas se houver mudanças e push direto)
+      - name: 🔵 Commit changes locally
+        if: steps.check_changes.outputs.changes == 'true' && github.event.inputs.direct_push == 'true'
+        run: |
+          git commit -m "${{ steps.set_vars.outputs.commit_msg }}"
+          echo "✅ Commit criado localmente"
+      
+      # 🔐 PASSO 6: Re-checkout com PAT para push direto
+      - name: 🟢 Checkout with REPO_PAT (direct push only)
+        if: steps.check_changes.outputs.changes == 'true' && github.event.inputs.direct_push == 'true'
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.REPO_PAT }}
+          fetch-depth: 0
+          persist-credentials: true
+      
+      # 🚀 PASSO 7: PUSH DIRETO (se solicitado)
+      - name: 🟣 Push directly to target branch
+        if: steps.check_changes.outputs.changes == 'true' && github.event.inputs.direct_push == 'true'
+        run: |
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "🚀 PUSH DIRETO para ${{ github.event.inputs.target_branch }}"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          git push origin "HEAD:${{ github.event.inputs.target_branch }}"
+          echo "✅ Push direto concluído com sucesso!"
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
       
-      # ✅ PASSO 6: Notificação de sucesso
-      - name: 🟢 ✅ Workflow concluído com sucesso!
+      # 🌿 PASSO 8: CRIAR PULL REQUEST (modo padrão/recomendado)
+      - name: 🟡 Create Pull Request (recommended)
+        if: steps.check_changes.outputs.changes == 'true' && github.event.inputs.direct_push != 'true'
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.REPO_PAT }}
+          branch: ${{ steps.set_vars.outputs.branch_name }}
+          title: ${{ steps.set_vars.outputs.commit_msg }}
+          body: |
+            🤖 **Pull Request criado automaticamente pelo Agent-0**
+            
+            - **Workflow**: Agent-0 Auto Update
+            - **Data**: ${{ steps.set_vars.outputs.commit_msg }}
+            - **Branch**: `${{ steps.set_vars.outputs.branch_name }}`
+            
+            ✅ Este PR foi gerado automaticamente. Por favor, revise antes de merge.
+          commit-message: ${{ steps.set_vars.outputs.commit_msg }}
+          base: ${{ github.event.inputs.target_branch }}
+          labels: automated, agent-0, ci
+          maintainer-can-modify: true
+      
+      # ✅ PASSO 9: Nenhuma alteração detectada
+      - name: 🔵 No changes detected
+        if: steps.check_changes.outputs.changes != 'true'
+        run: |
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "⏭️ NENHUMA ALTERAÇÃO DETECTADA"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "O repositório já está atualizado."
+          echo "Nada para commitar ou enviar."
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+      
+      # 🎉 PASSO 10: Sucesso
+      - name: 🟢 ✅ Workflow completed successfully!
         if: success()
         run: |
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-          echo "🎉 AGENT-0 ATUALIZADO COM SUCESSO!"
+          echo "🎉 AGENT-0 EXECUTADO COM SUCESSO!"
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
           echo "📊 Status: ✅ SUCESSO"
-          echo "📅 Data: $(date '+%Y-%m-%d %H:%M:%S')"
+          echo "📅 Data: $(date -u '+%Y-%m-%d %H:%M:%S')"
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
       
-      # ❌ PASSO 7: Notificação de falha
-      - name: 🔴 ❌ Workflow falhou!
+      # ❌ PASSO 11: Falha
+      - name: 🔴 ❌ Workflow failed!
         if: failure()
         run: |
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
