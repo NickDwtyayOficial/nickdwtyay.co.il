@@ -1,0 +1,46 @@
+name: Agent-0 Auto Update
+on:
+  workflow_dispatch:
+    inputs:
+      direct_push:
+        description: 'Push direto para branch alvo (true/false)'
+        required: true
+        default: 'false'
+      target_branch:
+        description: 'Branch alvo para push ou PR'
+        required: true
+        default: 'main'
+
+jobs:
+  update-agent:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.REPO_PAT }}
+      
+      - name: Configurar identidade Git
+        run: |
+          git config user.name "Agent-0 Bot"
+          git config user.email "agent-0-bot@users.noreply.github.com"
+      
+      # 🔧 PERSONALIZE AQUI: Comandos para atualizar seu Agent-0
+      # Exemplo para projeto Python:
+      # - name: Atualizar Agent-0
+      #   run: |
+      #     pip install -r requirements.txt
+      #     python generate_agent.py --update
+      
+      - name: Commit e Push
+        run: |
+          git add .
+          git commit -m "🤖 Agent-0 atualizado: $(date '+%Y-%m-%d %H:%M:%S')" || echo "⚠️ Nenhuma alteração detectada"
+          if [ "${{ github.event.inputs.direct_push }}" == "true" ]; then
+            git push origin ${{ github.event.inputs.target_branch }}
+            echo "✅ Push direto concluído em ${{ github.event.inputs.target_branch }}"
+          else
+            git push origin HEAD:${{ github.event.inputs.target_branch }}-agent-update
+            echo "SetBranch criado: ${{ github.event.inputs.target_branch }}-agent-update"
+            echo "➡️ Crie um Pull Request para revisão"
+          fi
