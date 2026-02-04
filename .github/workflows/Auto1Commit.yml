@@ -16,7 +16,7 @@ on:
         required: false
         default: 'auto/update'
       commit_message:
-        description: 'Mensagem de commit (uso quando há mudanças). Use ${date} para inserir timestamp.'
+        description: 'Mensagem de commit (use ${date} para inserir timestamp).'
         required: false
         default: 'Automated update: ${date} [skip ci]'
   schedule:
@@ -28,7 +28,7 @@ jobs:
     outputs:
       changes_made: ${{ steps.check_changes.outputs.changes }}
     steps:
-      - name: Checkout
+      - name: Checkout (default GITHUB_TOKEN)
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -53,10 +53,11 @@ jobs:
       - name: Make changes (example)
         id: make_changes
         run: |
-          # <<< Substitua por seus comandos que geram/atualizam arquivos >>>
-          # Exemplo: atualizar changelog
+          # <<< Substitua por seus comandos reais que geram/atualizam arquivos >>>
+          # Exemplo de teste: gerar/atualizar changelog/test file
           echo "$(date -u) - Auto update by workflow" >> changelog.txt
-          # Fim do bloco que você deve personalizar
+          # Fim do bloco a personalizar
+        shell: bash
 
       - name: Check for changes
         id: check_changes
@@ -76,15 +77,18 @@ jobs:
           git commit -m "${{ steps.set_vars.outputs.commit_msg }}"
         shell: bash
 
-      - name: Push directly to target branch (uses PAT if provided)
+      - name: Push directly to target branch (uses REPO_PAT if set)
         if: steps.check_changes.outputs.changes == 'true' && (github.event.inputs.direct_push == 'true')
         env:
           TARGET_BRANCH: ${{ github.event.inputs.target_branch }}
+          REPO_PAT: ${{ secrets.REPO_PAT }}
         run: |
-          if [ -n "${{ secrets.REPO_PAT }}" ]; then
-            git remote set-url origin https://x-access-token:${{ secrets.REPO_PAT }}@github.com/${{ github.repository }}
+          set -euo pipefail
+          # Se foi fornecido REPO_PAT, configure remote para usar ele (mantendo token fora de logs).
+          if [ -n "${REPO_PAT:-}" ]; then
+            git remote set-url origin https://x-access-token:${REPO_PAT}@github.com/${{ github.repository }}
           fi
-          git push origin HEAD:"${TARGET_BRANCH}"
+          git push origin "HEAD:${TARGET_BRANCH}"
         shell: bash
 
       - name: Create branch and open Pull Request (recommended)
@@ -102,3 +106,4 @@ jobs:
       - name: No changes - finish
         if: steps.check_changes.outputs.changes != 'true'
         run: echo "No changes detected — nothing to commit or push."
+        shell: bash
