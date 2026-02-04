@@ -99,7 +99,65 @@ if (isset($result['error'])) {
 // Armazena dados na sessão
 $_SESSION['visitor_info'] = $visitor_info;
 
-// Redireciona para index.php
-header("Location: /api/index.php");
-exit();
+// Exibe uma tela de carregamento antes de redirecionar para o login
+$redirect_url = "/api/index.php";
 ?>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="2;url=<?php echo htmlspecialchars($redirect_url, ENT_QUOTES); ?>">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carregando...</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: radial-gradient(circle at top, #1a1a2e 0%, #0f3460 50%, #0b132b 100%);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .loader {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            text-align: center;
+        }
+        .spinner {
+            width: 64px;
+            height: 64px;
+            border: 6px solid rgba(255, 255, 255, 0.2);
+            border-top-color: #4caf50;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .logo {
+            width: 80px;
+            height: auto;
+        }
+        .message {
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="loader">
+        <img src="/api/static/dwtyay_favicon.gif" alt="Nick Dwtyay" class="logo">
+        <div class="spinner" aria-label="Carregando"></div>
+        <div class="message">Carregando, aguarde...</div>
+    </div>
+    <script>
+        setTimeout(() => {
+            window.location.href = <?php echo json_encode($redirect_url); ?>;
+        }, 2000);
+    </script>
+</body>
+</html>

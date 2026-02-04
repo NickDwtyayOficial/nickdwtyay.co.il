@@ -52,7 +52,9 @@
 
 <script>
     function redirect() {
-      window.location.href = "api/index.php; // Substitua "Home.html" pelo URL da sua página inicial
+      if (!window.location.pathname.startsWith('/api/')) {
+        window.location.href = "/api/index.php";
+      }
     }
 
     setTimeout(redirect, 30000); // Tempo em milissegundos, 30 segundos = 30000 milissegundos
@@ -78,8 +80,51 @@
 
   gtag('config', 'G-5F4Q111FPX');
 </script>
+<style>
+  .cyber-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(76, 175, 80, 0.12), transparent 35%),
+      radial-gradient(circle at 80% 30%, rgba(0, 212, 255, 0.12), transparent 40%),
+      linear-gradient(120deg, rgba(10, 15, 30, 0.85), rgba(7, 20, 40, 0.9));
+  }
+  .cyber-bg::before,
+  .cyber-bg::after {
+    content: "";
+    position: absolute;
+    inset: -50%;
+    background-image:
+      linear-gradient(rgba(0, 212, 255, 0.15) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 212, 255, 0.08) 1px, transparent 1px);
+    background-size: 80px 80px;
+    animation: grid-drift 18s linear infinite;
+    opacity: 0.35;
+  }
+  .cyber-bg::after {
+    background-size: 160px 160px;
+    animation-duration: 28s;
+    opacity: 0.2;
+  }
+  @keyframes grid-drift {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(120px, 80px, 0); }
+  }
+  body > *:not(.cyber-bg) {
+    position: relative;
+    z-index: 1;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cyber-bg::before,
+    .cyber-bg::after {
+      animation: none;
+    }
+  }
+</style>
 </head>
-<body><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1922092235705770"
+<body><div class="cyber-bg" aria-hidden="true"></div><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1922092235705770"
      crossorigin="anonymous"></script>
 
 
