@@ -1,21 +1,38 @@
-name: Auto Commit and Push
+name: Auto Commit and Push (improved)
+
 on:
   workflow_dispatch:
+    inputs:
+      direct_push:
+        description: 'Push direto ao branch alvo? (true/false)'
+        required: false
+        default: 'false'
+      target_branch:
+        description: 'Branch destino (ex: main)'
+        required: false
+        default: 'main'
+      pr_branch_prefix:
+        description: 'Prefixo para a branch criada (quando não for push direto)'
+        required: false
+        default: 'auto/update'
+      commit_message:
+        description: 'Mensagem de commit (uso quando há mudanças)'
+        required: false
+        default: 'Automated update: ${date} [skip ci]'
   schedule:
-    - cron: '0 3 * * *' # diário às 03:00 UTC — ajuste conforme precisar
+    - cron: '0 3 * * *' # diário às 03:00 UTC — ajuste conforme necessário
 
 jobs:
   auto-commit:
     runs-on: ubuntu-latest
-    env:
-      TARGET_BRANCH: main # altere para master ou outro branch se necessário
-
+    outputs:
+      changes_made: ${{ steps.check_changes.outputs.changes }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          persist-credentials: true  # permite push com GITHUB_TOKEN
           fetch-depth: 0
+          persist-credentials: true
 
       - name: Configure Git
         run: |
@@ -23,20 +40,56 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Make changes (example)
+        id: make_changes
         run: |
-          # Substitua por seus comandos que geram/atualizam arquivos
+          # <<< Substitua por seus comandos que geram/atualizam arquivos >>>
+          # Exemplo: atualizar changelog
           echo "$(date -u) - Auto update by workflow" >> changelog.txt
+          # Fim do bloco que você deve personalizar
 
-      - name: Commit changes if any
+      - name: Check for changes
+        id: check_changes
         run: |
           git add -A
           if git diff --cached --quiet; then
+            echo "changes=false" >> $GITHUB_OUTPUT
             echo "No changes to commit"
             exit 0
           fi
-          # [skip ci] evita que o commit dispare outros workflows (boa prática)
-          git commit -m "Automated update: $(date -u) [skip ci]"
+          echo "changes=true" >> $GITHUB_OUTPUT
+        shell: bash
 
-      - name: Push changes
+      - name: Commit changes
+        if: steps.check_changes.outputs.changes == 'true' && (github.event.inputs.direct_push == 'true')
         run: |
-          git push origin "HEAD:${{ env.TARGET_BRANCH }}"
+          MSG="${{ github.event.inputs.commit_message }}"
+          MSG="${MSG//\$\{date\}/$(date -u +%Y-%m-%dT%H:%M:%SZ)}"
+          git commit -m "$MSG"
+        shell: bash
+
+      - name: Push directly to target branch (uses PAT if provided)
+        if: steps.check_changes.outputs.changes == 'true' && (github.event.inputs.direct_push == 'true')
+        env:
+          TARGET_BRANCH: ${{ github.event.inputs.target_branch }}
+        run: |
+          if [ -n "${{ secrets.REPO_PAT }}" ]; then
+            git remote set-url origin https://x-access-token:${{ secrets.REPO_PAT }}@github.com/${{ github.repository }}
+          fi
+          git push origin HEAD:"${TARGET_BRANCH}"
+        shell: bash
+
+      - name: Create branch and open Pull Request (recommended)
+        if: steps.check_changes.outputs.changes == 'true' && (github.event.inputs.direct_push != 'true')
+        uses: peter-evans/create-pull-request@v5
+        with:
+          branch: ${{ github.event.inputs.pr_branch_prefix }}-$(date -u +'%Y%m%d%H%M%S')
+          title: Automated update: ${{ github.event.inputs.target_branch }}
+          body: This PR was created automatically by the CI workflow.
+          commit-message: ${{ github.event.inputs.commit_message }}
+          base: ${{ github.event.inputs.target_branch }}
+          labels: automated, ci
+          maintainer-can-modify: true
+
+      - name: No changes - finish
+        if: steps.check_changes.outputs.changes != 'true'
+        run: echo "No changes detected — nothing to commit or push."
