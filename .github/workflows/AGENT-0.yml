@@ -1,12 +1,38 @@
-- name: Chama Grok - Responses API (endpoint atual)
+name: AGENT-0
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/30 * * * *" # a cada 30 minutos (pode mudar depois)
+
+permissions:
+  contents: write
+
+jobs:
+  agent0:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Instala dependências (jq + curl)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq curl
+
+      - name: Chama Grok (Responses API)
         env:
           GROK_API_KEY: ${{ secrets.GROK_API_KEY }}
         run: |
-          set -e  # Para se qualquer comando falhar, o job para
+          set -e
 
-          echo "Chamando https://api.x.ai/v1/responses ..."
+          if [ -z "$GROK_API_KEY" ]; then
+            echo "ERRO: GROK_API_KEY não está definido nos secrets."
+            exit 1
+          fi
 
-          RESPONSE=$(curl -s -X POST https://api.x.ai/v1/responses \
+          RESPONSE=$(curl -s -X POST "https://api.x.ai/v1/responses" \
             -H "Authorization: Bearer $GROK_API_KEY" \
             -H "Content-Type: application/json" \
             -d '{
@@ -14,35 +40,50 @@
               "input": [
                 {
                   "role": "user",
-                  "content": "Aqui está o conteúdo atual de api/index.php:\n\n$(cat api/index.php 2>/dev/null || echo 'Arquivo não encontrado')\n\nMelhore tudo: adicione proteção CSRF, otimize performance (menos requests, minify onde possível), melhore SEO (mais meta tags úteis), melhore privacidade (GDPR-compliant cookies), melhore acessibilidade. Retorne SOMENTE o código PHP/HTML/JS completo corrigido, sem explicações, sem markdown, sem texto fora das tags. Não adicione comentários."
+                  "content": "Melhore api/index.php: adiciona CSRF token, otimiza requests, SEO meta, privacidade GDPR. Retorna SOMENTE o código PHP/HTML/JS novo, sem nada fora."
                 }
               ],
               "temperature": 0.3,
-              "max_tokens": 12000
+              "max_tokens": 8000
             }')
 
-          echo "==== RESPOSTA CRUA DA API (RAW) ===="
-          echo "$RESPONSE" | head -c 2000  # limita pra não explodir o log
-          echo ""
-          echo "====================================="
+          echo "================ RAW RESPONSE ================"
+          echo "$RESPONSE"
+          echo "============================================="
 
-          # Extrai o texto da resposta (formato mais comum da Responses API)
-          CONTENT=$(echo "$RESPONSE" | jq -r '.output[0].content[0].text // .output[0].text // empty' 2>/dev/null || echo "")
+          # tenta pegar o texto em múltiplos formatos possíveis
+          CONTENT=$(echo "$RESPONSE" | jq -r '
+            .output[0].content[0].text //
+            .output[0].content[0].output_text //
+            .output_text //
+            empty
+          ')
 
           if [ -z "$CONTENT" ]; then
-            echo "ERRO: Conteúdo vazio ou jq não encontrou o campo esperado."
-            echo "Possíveis causas:"
-            echo "1. GROK_API_KEY inválida ou não configurada"
-            echo "2. Model 'grok-4-latest' não disponível na tua conta"
-            echo "3. Rate limit atingido"
-            echo "4. Erro 400/401/403/410 na API"
+            echo "Resposta vazia ou erro retornado pela API."
+            echo "Abortando sem commit."
             exit 0
           fi
 
-          echo "==== CONTEÚDO EXTRAÍDO COM SUCESSO ===="
-          echo "$CONTENT" | head -n 20
-          echo "====================================="
+          mkdir -p api
+          echo "$CONTENT" > api/index.php
 
-          echo "$CONTENT" > api/index.php.new
-          mv api/index.php.new api/index.php
-          echo "api/index.php sobrescrito com sucesso."
+          echo "Arquivo api/index.php atualizado com sucesso."
+
+      - name: Commit e Push automático
+        run: |
+          set -e
+
+          if git diff --quiet; then
+            echo "Nenhuma mudança detectada. Nada para commitar."
+            exit 0
+          fi
+
+          git config user.name "Agent-0"
+          git config user.email "agent-0@users.noreply.github.com"
+
+          git add api/index.php
+          git commit -m "Agent-0: melhoria automática do site"
+          git push
+
+          echo "Commit enviado com sucesso."
