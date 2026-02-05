@@ -1,35 +1,48 @@
-- name: Chama Grok API (novo endpoint /v1/responses)
+name: AGENT-0 - Melhorador Automático
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'  # A cada 6h
+  workflow_dispatch:
+
+jobs:
+  improve:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Chama Grok API
         env:
           GROK_API_KEY: ${{ secrets.GROK_API_KEY }}
         run: |
-          echo "Usando o novo Responses API..."
-          
-          RESPONSE=$(curl -s -X POST https://api.x.ai/v1/responses \
+          RESPONSE=$(curl -s -X POST https://api.x.ai/v1/chat/completions \
             -H "Authorization: Bearer $GROK_API_KEY" \
             -H "Content-Type: application/json" \
             -d '{
               "model": "grok-4-latest",
-              "input": [
-                {
-                  "role": "user",
-                  "content": "Analise api/index.php e melhore para performance, SEO, acessibilidade, segurança (CSRF, headers), privacidade. Retorne APENAS o código PHP/HTML/JS completo corrigido, sem texto extra."
-                }
-              ],
+              "messages": [{"role": "user", "content": "Melhore api/index.php para: performance rápida, SEO bom, acessibilidade, segurança (adicione CSRF), privacidade (GDPR cookies). Retorne SOMENTE o código PHP/HTML/JS completo, sem nada fora."}],
               "temperature": 0.3,
               "max_tokens": 8000
-            }')
-          
-          # Novo parse: output array com content blocks
-          CONTENT=$(echo "$RESPONSE" | jq -r '.output[0 0 0].text // empty')
-          
-          echo "Resposta completa da API:"
-          echo "$RESPONSE" | head -n 50
+            }' | jq -r '.choices[0].message.content // empty')
           
           if ; then
-            echo "ERRO: Resposta vazia ou formato inesperado. Log completo acima."
+            echo "Resposta vazia - API falhou."
             exit 0
           fi
           
-          echo "$CONTENT" > novo_api_index.php
-          mv novo_api_index.php api/index.php || echo "Falha ao mover arquivo"
-          echo "Arquivo atualizado!"
+          echo "$RESPONSE" > api/index.php.new
+          mv api/index.php.new api/index.php
+          echo "Arquivo atualizado."
+
+      - name: Commit automático
+        run: |
+          git config --global user.name "Agent-0"
+          git config --global user.email "agent@dwtyay.co.il"
+          git add api/index.php
+          git diff --cached --quiet || git commit -m "Grok melhorou api/index.php automaticamente"
+          git push origin HEAD:main || echo "Sem push"
