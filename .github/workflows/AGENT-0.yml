@@ -2,8 +2,8 @@ name: AGENT-0 - Melhorador Automático
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # todo dia à meia-noite
-  workflow_dispatch:    # tu consegue rodar quando quiser
+    - cron: '0 0 * * *'  # Todo dia à meia-noite (UTC)
+  workflow_dispatch:      # Permite rodar manualmente no GitHub
 
 jobs:
   improve-site:
@@ -13,25 +13,53 @@ jobs:
       pull-requests: write
 
     steps:
-      - name: Checkout
+      - name: Checkout do repositório
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          submodules: false
+          fetch-depth: 1
 
-      - name: Chama a IA
+      - name: Instala jq (se necessário, mas geralmente já tem)
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Chama Grok API para melhorar index.html
         env:
           GROK_API_KEY: ${{ secrets.GROK_API_KEY }}
         run: |
+          # Prompt mais preciso para a IA devolver só HTML limpo
           RESPONSE=$(curl -s -X POST https://api.x.ai/v1/chat/completions \
             -H "Authorization: Bearer $GROK_API_KEY" \
             -H "Content-Type: application/json" \
             -d '{
               "model": "grok-beta",
-              "messages": [{"role": "user", "content": "Melhore o index.html pra carregar rápido, SEO e acessibilidade. Devolve só o HTML novo, nada de texto fora."} 0].message.content' > novo_index.html
-          mv novo_index.html index.html
-          git config user.name "Agent-0"
-          git config user.email "agent@dwtyay.co.il"
+              "messages": [
+                {
+                  "role": "user",
+                  "content": "Analise e melhore o conteúdo do index.html atual para: 1) carregamento mais rápido, 2) melhor SEO, 3) melhor acessibilidade. Retorne APENAS o código HTML completo e corrigido, sem explicações, sem markdown, sem texto adicional fora das tags HTML."
+                }
+              ],
+              "temperature": 0.4,
+              "max_tokens": 4000
+            }' | jq -r '.choices[0].message.content')
+
+          # Salva a resposta (se vazia ou erro, não altera nada)
+          if [ -n "$RESPONSE" ] && [ "$RESPONSE" != "null" ]; then
+            echo "$RESPONSE" > novo_index.html
+            mv novo_index.html index.html || { echo "Falha ao mover arquivo"; exit 1; }
+          else
+            echo "Resposta da IA vazia ou inválida. Nada alterado."
+            exit 0
+          fi
+
+      - name: Configura Git e faz commit/push se houver mudanças
+        run: |
+          git config --global user.name "Agent-0"
+          git config --global user.email "agent@dwtyay.co.il"
+          
           git add index.html
-          git diff --cached --quiet || git commit -m "Atualização automática do index.html via IA"
-          git push
+          
+          # Só commita se realmente mudou algo
+          git diff --cached --quiet || git commit -m "Atualização automática: IA otimizou index.html (performance, SEO, acessibilidade)"
+          
+          # Push direto (se preferir PR, mude para criar pull request com outra action)
+          git push origin HEAD:main || echo "Nenhuma mudança para push ou push falhou"
