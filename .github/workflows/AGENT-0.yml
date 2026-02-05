@@ -1,79 +1,152 @@
-name: AGENT-0 - Cria zoutbrout.php (versão corrigida)
+name: AGENT-0 - C# .NET no GitHub Actions (cria zoutbrout.php)
 on:
-  workflow_dispatch:
+  workflow_dispatch:  # Rode manual pra testar
 
 jobs:
-  gerar:
+  gerar-com-csharp:
     runs-on: ubuntu-latest
     permissions:
       contents: write
 
     steps:
-      - name: Checkout do repositório
+      - name: Checkout repositório
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Instala dependências e roda Python
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'  # Versão estável e rápida
+
+      - name: Cria projeto console C# temporário
         run: |
-          pip install requests
+          mkdir GrokAgent
+          cd GrokAgent
+          dotnet new console -o GrokAgentApp
+          cd GrokAgentApp
 
-          python - <<EOF
-import requests
-import sys
-import subprocess
-import os
-
-print("🔹 Lendo api/index.php...")
-try:
-    with open('api/index.php', 'r') as f:
-        original = f.read()
-except Exception as e:
-    print("❌ Erro ao ler arquivo:", e)
-    sys.exit(1)
-
-print("🔹 Chamando Grok API...")
-resp = requests.post(
-    'https://api.x.ai/v1/responses',
-    headers={
-        'Authorization': f'Bearer {os.getenv("GROK_API_KEY")}',
-        'Content-Type': 'application/json'
-    },
-    json={
-        'model': 'grok-4-latest',
-        'input': [
-            {
-                'role': 'user',
-                'content': f'Melhore esse código completo:\n\n{original}\n\nAdicione CSRF, performance, SEO, GDPR, acessibilidade. Retorne SÓ o código PHP/HTML/JS corrigido. Sem explicações, sem markdown, sem texto extra.'
-            }
-        ],
-        'temperature': 0.3,
-        'max_tokens': 12000
-    }
-)
-
-if resp.status_code != 200:
-    print("❌ Erro na API:", resp.status_code, resp.text)
-    sys.exit(1)
-
-data = resp.json()
-try:
-    novo_codigo = data['output'][0]['content'][0]['text']
-except KeyError as e:
-    print("❌ Parse falhou. Chave não encontrada:", e)
-    print("Resposta completa:", data)
-    sys.exit(1)
-
-print("✅ Código gerado com sucesso. Salvando em api/zoutbrout.php...")
-with open('api/zoutbrout.php', 'w') as f:
-    f.write(novo_codigo)
-
-print("🔹 Comitando alterações...")
-subprocess.run(['git', 'add', 'api/zoutbrout.php'], check=True)
-subprocess.run(['git', 'commit', '-m', 'Grok: versão melhorada salva em zoutbrout.php'], check=True)
-subprocess.run(['git', 'push', 'origin', 'main'], check=True)
-
-print("🎉 Feito! zoutbrout.php criado e enviado.")
-EOF
+      - name: Adiciona código C# e roda
         env:
           GROK_API_KEY: ${{ secrets.GROK_API_KEY }}
+        run: |
+          cd GrokAgent/GrokAgentApp
+
+          # Código C# completo (substitui Program.cs)
+          cat > Program.cs << 'EOF'
+using System;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Text.Json;
+using System.IO;
+using System.Threading.Tasks;
+
+class Program
+{
+    static async Task Main(string[] args)
+    {
+        Console.WriteLine("🔹 Iniciando Grok Agent em C#...");
+
+        string key = Environment.GetEnvironmentVariable("GROK_API_KEY");
+        if (string.IsNullOrEmpty(key))
+        {
+            Console.WriteLine("❌ GROK_API_KEY não encontrada.");
+            return;
+        }
+
+        // Lê o arquivo original
+        string originalPath = "../../api/index.php";
+        string original = "";
+        if (File.Exists(originalPath))
+        {
+            original = File.ReadAllText(originalPath);
+            Console.WriteLine("✅ Arquivo lido.");
+        }
+        else
+        {
+            Console.WriteLine("⚠️ api/index.php não encontrado.");
+        }
+
+        // Prepara payload
+        var payload = new
+        {
+            model = "grok-4-latest",
+            input = new[]
+            {
+                new { role = "user", content = $"Melhore esse código:\n\n{original}\n\nAdicione CSRF, performance, SEO, GDPR, acessibilidade. Retorne SÓ o código PHP/HTML/JS corrigido. Sem explicações." }
+            },
+            temperature = 0.3,
+            max_tokens = 12000
+        };
+
+        using var client = new HttpClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", key);
+        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+        var content = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
+
+        Console.WriteLine("🔹 Chamando xAI API...");
+        var response = await client.PostAsync("https://api.x.ai/v1/responses", content);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            Console.WriteLine($"❌ Erro API: {response.StatusCode} - {await response.Content.ReadAsStringAsync()}");
+            return;
+        }
+
+        var json = await response.Content.ReadAsStringAsync();
+        Console.WriteLine("Resposta crua: " + json.Substring(0, Math.Min(500, json.Length)) + "...");
+
+        // Parse simples (ajuste se o formato mudar)
+        var data = JsonDocument.Parse(json);
+        string novoCodigo = "";
+        if (data.RootElement.TryGetProperty("output", out var output) &&
+            output[0 0].TryGetProperty("text", out var textElem))
+        {
+            novoCodigo = textElem.GetString() ?? "";
+        }
+
+        if (string.IsNullOrEmpty(novoCodigo))
+        {
+            Console.WriteLine("❌ Não conseguiu extrair o código.");
+            return;
+        }
+
+        // Salva novo arquivo
+        string newPath = "../../api/zoutbrout.php";
+        File.WriteAllText(newPath, novoCodigo);
+        Console.WriteLine("✅ zoutbrout.php criado!");
+
+        // Commit e push
+        Console.WriteLine("🔹 Commitando...");
+        Directory.SetCurrentDirectory("../../");
+        await RunGit("add api/zoutbrout.php");
+        await RunGit("commit -m \"Grok via C#: versão melhorada em zoutbrout.php\"");
+        await RunGit("push origin main");
+        Console.WriteLine("🎉 Tudo enviado!");
+    }
+
+    static async Task RunGit(string cmd)
+    {
+        var process = new System.Diagnostics.Process
+        {
+            StartInfo = new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = "git",
+                Arguments = cmd,
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            }
+        };
+        process.Start();
+        await process.WaitForExitAsync();
+        Console.WriteLine($"Git {cmd}: {await process.StandardOutput.ReadToEndAsync()}");
+    }
+}
+EOF
+
+          # Roda o app
+          dotnet run
+        shell: bash
