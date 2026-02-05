@@ -1,57 +1,34 @@
-name: AGENT-0 - Melhorador Automático (Versão Estável)
-
-on:
-  schedule:
-    - cron: '0 */6 * * *'  # A cada 6h pra não spam
-  workflow_dispatch:
-
-jobs:
-  improve:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          fetch-depth: 0
-
-      - name: Chama Grok API
+- name: Chama Grok API (novo endpoint /v1/responses)
         env:
           GROK_API_KEY: ${{ secrets.GROK_API_KEY }}
         run: |
-          RESPONSE=$(curl -s -X POST https://api.x.ai/v1/chat/completions \
+          echo "Tentando novo endpoint Responses API..."
+          
+          RESPONSE=$(curl -s -X POST https://api.x.ai/v1/responses \
             -H "Authorization: Bearer $GROK_API_KEY" \
             -H "Content-Type: application/json" \
             -d '{
               "model": "grok-4-latest",
-              "messages": [{"role": "user", "content": "Analise api/index.php e outros arquivos chave (index.html, styles, scripts). Melhore para performance rápida, SEO melhor, acessibilidade, segurança (CSRF, headers), privacidade (GDPR cookies). Retorne APENAS o código completo corrigido de cada arquivo alterado, no formato: --- arquivo: caminho/do/arquivo.php\n[código completo]\n---"}],
+              "messages": [
+                {
+                  "role": "user",
+                  "content": "Analise api/index.php e melhore para performance, SEO, acessibilidade, segurança (CSRF, headers), privacidade. Retorne APENAS o código PHP/HTML/JS completo corrigido, sem texto extra."
+                }
+              ],
               "temperature": 0.3,
               "max_tokens": 8000
-            }' | jq -r '.choices[0].message.content // empty')
-
-          echo "Resposta Grok:"
-          echo "$RESPONSE" | head -n 30
-
-          if [ -z "$RESPONSE" ] || [ "$RESPONSE" = "null" ]; then
-            echo "Resposta vazia. Cheque key/model."
+            }')
+          
+          # Parse diferente: /v1/responses usa formato próprio (não .choices[0])
+          CONTENT=$(echo "$RESPONSE" | jq -r '.response // .text // empty')
+          
+          echo "Resposta completa:"
+          echo "$RESPONSE"
+          
+          if [ -z "$CONTENT" ]; then
+            echo "Resposta vazia ou erro no novo endpoint. Log: $RESPONSE"
             exit 0
           fi
-
-          # Salva resposta em temp e aplica (exemplo simples: assume formato --- arquivo: ...\ncode)
-          echo "$RESPONSE" > changes.txt
-          # Aqui você pode parsear com awk/sed pra aplicar em arquivos reais, mas por agora sobrescreve api/index.php como teste
-          grep -A 1000 "api/index.php" changes.txt | tail -n +2 > api/index.php.new || echo "Sem mudança em index.php"
-          mv api/index.php.new api/index.php 2>/dev/null || echo "Nada pra mv"
-
-      - name: Commit & Push
-        run: |
-          git config --global user.name "Agent-0"
-          git config --global user.email "agent@dwtyay.co.il"
-          git add .
-          git diff --cached --quiet && echo "Sem mudanças" || {
-            git commit -m "Melhoria automática via Grok: otimizações gerais"
-            git push origin HEAD:main
-          }
+          
+          echo "$CONTENT" > novo_api_index.php
+          mv novo_api_index.php api/index.php || echo "Falha mv"
