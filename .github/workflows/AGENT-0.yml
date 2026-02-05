@@ -3,7 +3,7 @@ name: AGENT-0 - Melhorador Automático
 on:
   schedule:
     - cron: '0 0 * * *'  # Todo dia à meia-noite (UTC)
-  workflow_dispatch:      # Permite rodar manualmente no GitHub
+  workflow_dispatch:      # Permite rodar manualmente
 
 jobs:
   improve-site:
@@ -19,14 +19,11 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 1
 
-      - name: Instala jq (se necessário, mas geralmente já tem)
-        run: sudo apt-get update && sudo apt-get install -y jq
-
       - name: Chama Grok API para melhorar index.html
         env:
           GROK_API_KEY: ${{ secrets.GROK_API_KEY }}
         run: |
-          # Prompt mais preciso para a IA devolver só HTML limpo
+          # Prompt para IA devolver SÓ HTML limpo
           RESPONSE=$(curl -s -X POST https://api.x.ai/v1/chat/completions \
             -H "Authorization: Bearer $GROK_API_KEY" \
             -H "Content-Type: application/json" \
@@ -40,26 +37,25 @@ jobs:
               ],
               "temperature": 0.4,
               "max_tokens": 4000
-            }' | jq -r '.choices[0].message.content')
+            }' | jq -r '.choices[0].message.content // empty')
 
-          # Salva a resposta (se vazia ou erro, não altera nada)
-          if [ -n "$RESPONSE" ] && [ "$RESPONSE" != "null" ]; then
-            echo "$RESPONSE" > novo_index.html
-            mv novo_index.html index.html || { echo "Falha ao mover arquivo"; exit 1; }
-          else
+          # Verifica se veio algo útil
+          if [ -z "$RESPONSE" ] || [ "$RESPONSE" = "null" ]; then
             echo "Resposta da IA vazia ou inválida. Nada alterado."
             exit 0
           fi
 
-      - name: Configura Git e faz commit/push se houver mudanças
+          echo "$RESPONSE" > novo_index.html
+          mv novo_index.html index.html || { echo "Falha ao mover arquivo"; exit 1; }
+
+      - name: Configura Git e commit/push se houver mudanças
         run: |
           git config --global user.name "Agent-0"
           git config --global user.email "agent@dwtyay.co.il"
           
-          git add index.html
+          git add index.html   # <-- só o arquivo que a IA mexeu
           
-          # Só commita se realmente mudou algo
-          git diff --cached --quiet || git commit -m "Atualização automática: IA otimizou index.html (performance, SEO, acessibilidade)"
+          # Só commita se mudou de verdade
+          git diff --cached --quiet && echo "Nenhuma mudança real no index.html" || git commit -m "Atualização automática: IA otimizou index.html (performance, SEO, acessibilidade)"
           
-          # Push direto (se preferir PR, mude para criar pull request com outra action)
-          git push origin HEAD:main || echo "Nenhuma mudança para push ou push falhou"
+          git push origin HEAD:main || echo "Push falhou ou sem mudanças"
