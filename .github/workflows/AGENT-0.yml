@@ -1,89 +1,64 @@
-name: AGENT-0
-
-on:
-  workflow_dispatch:
-  schedule:
-    - cron: "*/30 * * * *" # a cada 30 minutos (pode mudar depois)
-
-permissions:
-  contents: write
-
+name: AGENT-0 - Cria zoutbrout.php (seguro)
+on: workflow_dispatch
 jobs:
-  agent0:
+  gerar:
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: write
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Instala dependências (jq + curl)
+      - name: Python: lê index.php, melhora, salva zoutbrout.php
         run: |
-          sudo apt-get update
-          sudo apt-get install -y jq curl
+          pip install requests
 
-      - name: Chama Grok (Responses API)
+          python -c "
+import requests
+import sys
+
+# Lê original
+try:
+    with open('api/index.php') as f:
+        original = f.read()
+except Exception as e:
+    print('ERRO: ', e)
+    sys.exit(1)
+
+print('Chamando Grok...')
+
+# Chama API
+resp = requests.post(
+    'https://api.x.ai/v1/responses',
+    headers={
+        'Authorization': f'Bearer {os.getenv(\"GROK_API_KEY\")}',
+        'Content-Type': 'application/json'
+    },
+    json={
+        'model': 'grok-4-latest',
+        'input': [{'role': 'user', 'content': f'Melhore isso:\n\n{original}\n\nAdicione CSRF, performance, SEO, GDPR, acessibilidade. Retorne SÓ o código. Nada mais.'}],
+        'temperature': 0.2
+    }
+)
+
+# Extrai
+data = resp.json()
+try:
+    novo_codigo = data [0] [0] except Exception as e:
+    print('Falhou no parse:', e)
+    print('Resposta:', resp.text)
+    sys.exit(1)
+
+# Salva no novo arquivo
+with open('api/zoutbrout.php', 'w') as f:
+    f.write(novo_codigo)
+
+# Comita
+subprocess.run(['git', 'add', 'api/zoutbrout.php' 'git', 'commit', '-m', 'Grok: criou versão melhorada (zoutbrout.php)'], check=True)
+subprocess.run( , check=True)
+
+print('✅ Pronto. zoutbrout.php criado e enviado.')
+          "
         env:
           GROK_API_KEY: ${{ secrets.GROK_API_KEY }}
-        run: |
-          set -e
-
-          if [ -z "$GROK_API_KEY" ]; then
-            echo "ERRO: GROK_API_KEY não está definido nos secrets."
-            exit 1
-          fi
-
-          RESPONSE=$(curl -s -X POST "https://api.x.ai/v1/responses" \
-            -H "Authorization: Bearer $GROK_API_KEY" \
-            -H "Content-Type: application/json" \
-            -d '{
-              "model": "grok-4-latest",
-              "input": [
-                {
-                  "role": "user",
-                  "content": "Melhore api/index.php: adiciona CSRF token, otimiza requests, SEO meta, privacidade GDPR. Retorna SOMENTE o código PHP/HTML/JS novo, sem nada fora."
-                }
-              ],
-              "temperature": 0.3,
-              "max_tokens": 8000
-            }')
-
-          echo "================ RAW RESPONSE ================"
-          echo "$RESPONSE"
-          echo "============================================="
-
-          # tenta pegar o texto em múltiplos formatos possíveis
-          CONTENT=$(echo "$RESPONSE" | jq -r '
-            .output[0].content[0].text //
-            .output[0].content[0].output_text //
-            .output_text //
-            empty
-          ')
-
-          if [ -z "$CONTENT" ]; then
-            echo "Resposta vazia ou erro retornado pela API."
-            echo "Abortando sem commit."
-            exit 0
-          fi
-
-          mkdir -p api
-          echo "$CONTENT" > api/index.php
-
-          echo "Arquivo api/index.php atualizado com sucesso."
-
-      - name: Commit e Push automático
-        run: |
-          set -e
-
-          if git diff --quiet; then
-            echo "Nenhuma mudança detectada. Nada para commitar."
-            exit 0
-          fi
-
-          git config user.name "Agent-0"
-          git config user.email "agent-0@users.noreply.github.com"
-
-          git add api/index.php
-          git commit -m "Agent-0: melhoria automática do site"
-          git push
-
-          echo "Commit enviado com sucesso."
