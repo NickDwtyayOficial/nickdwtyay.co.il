@@ -1,64 +1,78 @@
-name: AGENT-0 - Cria zoutbrout.php (seguro)
-on: workflow_dispatch
+name: AGENT-0 - Cria zoutbrout.php (versão corrigida)
+on:
+  workflow_dispatch:
+
 jobs:
   gerar:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+
     steps:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Python: lê index.php, melhora, salva zoutbrout.php
+      - name: Instala requests e roda Python
         run: |
           pip install requests
 
-          python -c "
+          python - <<EOF
 import requests
 import sys
+import subprocess
 
-# Lê original
+print("Lendo api/index.php...")
 try:
-    with open('api/index.php') as f:
+    with open('api/index.php', 'r') as f:
         original = f.read()
 except Exception as e:
-    print('ERRO: ', e)
+    print("Erro ao ler arquivo:", e)
     sys.exit(1)
 
-print('Chamando Grok...')
-
-# Chama API
+print("Chamando Grok API...")
 resp = requests.post(
     'https://api.x.ai/v1/responses',
     headers={
-        'Authorization': f'Bearer {os.getenv(\"GROK_API_KEY\")}',
+        'Authorization': f'Bearer {os.getenv("GROK_API_KEY")}',
         'Content-Type': 'application/json'
     },
     json={
         'model': 'grok-4-latest',
-        'input': [{'role': 'user', 'content': f'Melhore isso:\n\n{original}\n\nAdicione CSRF, performance, SEO, GDPR, acessibilidade. Retorne SÓ o código. Nada mais.'}],
-        'temperature': 0.2
+        'input': [
+            {
+                'role': 'user',
+                'content': f'Melhore esse código completo:\n\n{original}\n\nAdicione CSRF, performance, SEO, GDPR, acessibilidade. Retorne SÓ o código PHP/HTML/JS corrigido. Sem explicações, sem markdown, sem texto extra.'
+            }
+        ],
+        'temperature': 0.3,
+        'max_tokens': 12000
     }
 )
 
-# Extrai
-data = resp.json()
-try:
-    novo_codigo = data [0] [0] except Exception as e:
-    print('Falhou no parse:', e)
-    print('Resposta:', resp.text)
+if resp.status_code != 200:
+    print("Erro na API:", resp.status_code, resp.text)
     sys.exit(1)
 
-# Salva no novo arquivo
+data = resp.json()
+try:
+    # Tenta parse comum da Responses API
+    novo_codigo = data['output'][0]['content'][0]['text']
+except KeyError as e:
+    print("Parse falhou. Chave não encontrada:", e)
+    print("Resposta completa:", data)
+    sys.exit(1)
+
+print("Código gerado com sucesso. Salvando em api/zoutbrout.php...")
 with open('api/zoutbrout.php', 'w') as f:
     f.write(novo_codigo)
 
-# Comita
-subprocess.run(['git', 'add', 'api/zoutbrout.php' 'git', 'commit', '-m', 'Grok: criou versão melhorada (zoutbrout.php)'], check=True)
-subprocess.run( , check=True)
+print("Comitando...")
+subprocess.run(['git', 'add', 'api/zoutbrout.php'], check=True)
+subprocess.run(['git', 'commit', '-m', 'Grok: versão melhorada salva em zoutbrout.php'], check=True)
+subprocess.run(['git', 'push', 'origin', 'main'], check=True)
 
-print('✅ Pronto. zoutbrout.php criado e enviado.')
-          "
+print("Feito! zoutbrout.php criado e enviado.")
+EOF
         env:
           GROK_API_KEY: ${{ secrets.GROK_API_KEY }}
