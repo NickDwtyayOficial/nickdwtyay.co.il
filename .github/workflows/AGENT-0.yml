@@ -9,11 +9,12 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Instala requests e roda Python
+      - name: Instala dependências e roda Python
         run: |
           pip install requests
 
@@ -21,16 +22,17 @@ jobs:
 import requests
 import sys
 import subprocess
+import os
 
-print("Lendo api/index.php...")
+print("🔹 Lendo api/index.php...")
 try:
     with open('api/index.php', 'r') as f:
         original = f.read()
 except Exception as e:
-    print("Erro ao ler arquivo:", e)
+    print("❌ Erro ao ler arquivo:", e)
     sys.exit(1)
 
-print("Chamando Grok API...")
+print("🔹 Chamando Grok API...")
 resp = requests.post(
     'https://api.x.ai/v1/responses',
     headers={
@@ -51,28 +53,27 @@ resp = requests.post(
 )
 
 if resp.status_code != 200:
-    print("Erro na API:", resp.status_code, resp.text)
+    print("❌ Erro na API:", resp.status_code, resp.text)
     sys.exit(1)
 
 data = resp.json()
 try:
-    # Tenta parse comum da Responses API
     novo_codigo = data['output'][0]['content'][0]['text']
 except KeyError as e:
-    print("Parse falhou. Chave não encontrada:", e)
+    print("❌ Parse falhou. Chave não encontrada:", e)
     print("Resposta completa:", data)
     sys.exit(1)
 
-print("Código gerado com sucesso. Salvando em api/zoutbrout.php...")
+print("✅ Código gerado com sucesso. Salvando em api/zoutbrout.php...")
 with open('api/zoutbrout.php', 'w') as f:
     f.write(novo_codigo)
 
-print("Comitando...")
+print("🔹 Comitando alterações...")
 subprocess.run(['git', 'add', 'api/zoutbrout.php'], check=True)
 subprocess.run(['git', 'commit', '-m', 'Grok: versão melhorada salva em zoutbrout.php'], check=True)
 subprocess.run(['git', 'push', 'origin', 'main'], check=True)
 
-print("Feito! zoutbrout.php criado e enviado.")
+print("🎉 Feito! zoutbrout.php criado e enviado.")
 EOF
         env:
           GROK_API_KEY: ${{ secrets.GROK_API_KEY }}
