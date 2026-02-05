@@ -2,14 +2,14 @@
         env:
           GROK_API_KEY: ${{ secrets.GROK_API_KEY }}
         run: |
-          echo "Tentando novo endpoint Responses API..."
+          echo "Usando o novo Responses API..."
           
           RESPONSE=$(curl -s -X POST https://api.x.ai/v1/responses \
             -H "Authorization: Bearer $GROK_API_KEY" \
             -H "Content-Type: application/json" \
             -d '{
               "model": "grok-4-latest",
-              "messages": [
+              "input": [
                 {
                   "role": "user",
                   "content": "Analise api/index.php e melhore para performance, SEO, acessibilidade, segurança (CSRF, headers), privacidade. Retorne APENAS o código PHP/HTML/JS completo corrigido, sem texto extra."
@@ -19,16 +19,17 @@
               "max_tokens": 8000
             }')
           
-          # Parse diferente: /v1/responses usa formato próprio (não .choices[0])
-          CONTENT=$(echo "$RESPONSE" | jq -r '.response // .text // empty')
+          # Novo parse: output array com content blocks
+          CONTENT=$(echo "$RESPONSE" | jq -r '.output[0 0 0].text // empty')
           
-          echo "Resposta completa:"
-          echo "$RESPONSE"
+          echo "Resposta completa da API:"
+          echo "$RESPONSE" | head -n 50
           
-          if [ -z "$CONTENT" ]; then
-            echo "Resposta vazia ou erro no novo endpoint. Log: $RESPONSE"
+          if ; then
+            echo "ERRO: Resposta vazia ou formato inesperado. Log completo acima."
             exit 0
           fi
           
           echo "$CONTENT" > novo_api_index.php
-          mv novo_api_index.php api/index.php || echo "Falha mv"
+          mv novo_api_index.php api/index.php || echo "Falha ao mover arquivo"
+          echo "Arquivo atualizado!"
