@@ -1,152 +1,148 @@
-name: AGENT-0 - C# .NET no GitHub Actions (cria zoutbrout.php)
+name: 🤖 Agent-0 Auto Update
 on:
-  workflow_dispatch:  # Rode manual pra testar
+  workflow_dispatch:
+    inputs:
+      direct_push:
+        description: '🚀 Push direto ao branch alvo? (true/false)'
+        required: false
+        default: 'false'
+      target_branch:
+        description: '🎯 Branch destino (ex: main)'
+        required: false
+        default: 'main'
+      pr_branch_prefix:
+        description: '🏷️ Prefixo para branch de PR'
+        required: false
+        default: 'agent/update'
+      commit_message:
+        description: '📝 Mensagem de commit (${date} = timestamp)'
+        required: false
+        default: '🤖 Agent-0: ${date}'
 
 jobs:
-  gerar-com-csharp:
+  auto-commit:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pull-requests: write
 
     steps:
-      - name: Checkout repositório
+      # 📦 PASSO 1: Checkout do repositório
+      - name: 🔵 Checkout repository
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Setup .NET SDK
-        uses: actions/setup-dotnet@v4
+          fetch-depth: 0
+          persist-credentials: true
+      
+      # 👤 PASSO 2: Configurar identidade Git
+      - name: 🟢 Configure Git identity
+        run: |
+          git config user.name "Agent-0 Bot"
+          git config user.email "agent-0-bot@users.noreply.github.com"
+          echo "✅ Git configurado!"
+      
+      # ⚙️ PASSO 3: Definir variáveis dinâmicas
+      - name: 🟣 Set dynamic variables
+        id: set_vars
+        run: |
+          TIMESTAMP=$(date -u +%Y%m%d%H%M%S)
+          BRANCH="${{ github.event.inputs.pr_branch_prefix }}-${TIMESTAMP}"
+          INPUT_MSG="${{ github.event.inputs.commit_message }}"
+          COMMIT_MSG="${INPUT_MSG//\$\{date\}/$(date -u '+%Y-%m-%d %H:%M:%S')}"
+          echo "branch_name=${BRANCH}" >> $GITHUB_OUTPUT
+          echo "commit_msg=${COMMIT_MSG}" >> $GITHUB_OUTPUT
+          echo "✅ Variáveis definidas!"
+      
+      # 🔄 PASSO 4: Verificar se há alterações no repositório
+      - name: 🟡 Check for existing changes
+        id: check_changes
+        run: |
+          git add -A
+          if git diff --cached --quiet; then
+            echo "changes=false" >> $GITHUB_OUTPUT
+            echo "⚠️ Nenhuma alteração detectada no repositório"
+            exit 0
+          fi
+          echo "changes=true" >> $GITHUB_OUTPUT
+          echo "✅ Alterações detectadas!"
+      
+      # 💾 PASSO 5: COMMIT LOCAL (apenas se houver mudanças e push direto)
+      - name: 🔵 Commit changes locally
+        if: steps.check_changes.outputs.changes == 'true' && github.event.inputs.direct_push == 'true'
+        run: |
+          git commit -m "${{ steps.set_vars.outputs.commit_msg }}"
+          echo "✅ Commit criado localmente"
+      
+      # 🔐 PASSO 6: Re-checkout com PAT para push direto
+      - name: 🟢 Checkout with REPO_PAT (direct push only)
+        if: steps.check_changes.outputs.changes == 'true' && github.event.inputs.direct_push == 'true'
+        uses: actions/checkout@v4
         with:
-          dotnet-version: '8.0.x'  # Versão estável e rápida
-
-      - name: Cria projeto console C# temporário
+          token: ${{ secrets.REPO_PAT }}
+          fetch-depth: 0
+          persist-credentials: true
+      
+      # 🚀 PASSO 7: PUSH DIRETO (se solicitado)
+      - name: 🟣 Push directly to target branch
+        if: steps.check_changes.outputs.changes == 'true' && github.event.inputs.direct_push == 'true'
         run: |
-          mkdir GrokAgent
-          cd GrokAgent
-          dotnet new console -o GrokAgentApp
-          cd GrokAgentApp
-
-      - name: Adiciona código C# e roda
-        env:
-          GROK_API_KEY: ${{ secrets.GROK_API_KEY }}
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "🚀 PUSH DIRETO para ${{ github.event.inputs.target_branch }}"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          git push origin "HEAD:${{ github.event.inputs.target_branch }}"
+          echo "✅ Push direto concluído com sucesso!"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+      
+      # 🌿 PASSO 8: CRIAR PULL REQUEST (modo padrão/recomendado)
+      - name: 🟡 Create Pull Request (recommended)
+        if: steps.check_changes.outputs.changes == 'true' && github.event.inputs.direct_push != 'true'
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.REPO_PAT }}
+          branch: ${{ steps.set_vars.outputs.branch_name }}
+          title: ${{ steps.set_vars.outputs.commit_msg }}
+          body: |
+            🤖 **Pull Request criado automaticamente pelo Agent-0**
+            
+            - **Workflow**: Agent-0 Auto Update
+            - **Data**: ${{ steps.set_vars.outputs.commit_msg }}
+            - **Branch**: `${{ steps.set_vars.outputs.branch_name }}`
+            
+            ✅ Este PR foi gerado automaticamente. Por favor, revise antes de merge.
+          commit-message: ${{ steps.set_vars.outputs.commit_msg }}
+          base: ${{ github.event.inputs.target_branch }}
+          labels: automated, agent-0, ci
+          maintainer-can-modify: true
+      
+      # ✅ PASSO 9: Nenhuma alteração detectada
+      - name: 🔵 No changes detected
+        if: steps.check_changes.outputs.changes != 'true'
         run: |
-          cd GrokAgent/GrokAgentApp
-
-          # Código C# completo (substitui Program.cs)
-          cat > Program.cs << 'EOF'
-using System;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Text.Json;
-using System.IO;
-using System.Threading.Tasks;
-
-class Program
-{
-    static async Task Main(string[] args)
-    {
-        Console.WriteLine("🔹 Iniciando Grok Agent em C#...");
-
-        string key = Environment.GetEnvironmentVariable("GROK_API_KEY");
-        if (string.IsNullOrEmpty(key))
-        {
-            Console.WriteLine("❌ GROK_API_KEY não encontrada.");
-            return;
-        }
-
-        // Lê o arquivo original
-        string originalPath = "../../api/index.php";
-        string original = "";
-        if (File.Exists(originalPath))
-        {
-            original = File.ReadAllText(originalPath);
-            Console.WriteLine("✅ Arquivo lido.");
-        }
-        else
-        {
-            Console.WriteLine("⚠️ api/index.php não encontrado.");
-        }
-
-        // Prepara payload
-        var payload = new
-        {
-            model = "grok-4-latest",
-            input = new[]
-            {
-                new { role = "user", content = $"Melhore esse código:\n\n{original}\n\nAdicione CSRF, performance, SEO, GDPR, acessibilidade. Retorne SÓ o código PHP/HTML/JS corrigido. Sem explicações." }
-            },
-            temperature = 0.3,
-            max_tokens = 12000
-        };
-
-        using var client = new HttpClient();
-        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", key);
-        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-        var content = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
-
-        Console.WriteLine("🔹 Chamando xAI API...");
-        var response = await client.PostAsync("https://api.x.ai/v1/responses", content);
-
-        if (!response.IsSuccessStatusCode)
-        {
-            Console.WriteLine($"❌ Erro API: {response.StatusCode} - {await response.Content.ReadAsStringAsync()}");
-            return;
-        }
-
-        var json = await response.Content.ReadAsStringAsync();
-        Console.WriteLine("Resposta crua: " + json.Substring(0, Math.Min(500, json.Length)) + "...");
-
-        // Parse simples (ajuste se o formato mudar)
-        var data = JsonDocument.Parse(json);
-        string novoCodigo = "";
-        if (data.RootElement.TryGetProperty("output", out var output) &&
-            output[0 0].TryGetProperty("text", out var textElem))
-        {
-            novoCodigo = textElem.GetString() ?? "";
-        }
-
-        if (string.IsNullOrEmpty(novoCodigo))
-        {
-            Console.WriteLine("❌ Não conseguiu extrair o código.");
-            return;
-        }
-
-        // Salva novo arquivo
-        string newPath = "../../api/zoutbrout.php";
-        File.WriteAllText(newPath, novoCodigo);
-        Console.WriteLine("✅ zoutbrout.php criado!");
-
-        // Commit e push
-        Console.WriteLine("🔹 Commitando...");
-        Directory.SetCurrentDirectory("../../");
-        await RunGit("add api/zoutbrout.php");
-        await RunGit("commit -m \"Grok via C#: versão melhorada em zoutbrout.php\"");
-        await RunGit("push origin main");
-        Console.WriteLine("🎉 Tudo enviado!");
-    }
-
-    static async Task RunGit(string cmd)
-    {
-        var process = new System.Diagnostics.Process
-        {
-            StartInfo = new System.Diagnostics.ProcessStartInfo
-            {
-                FileName = "git",
-                Arguments = cmd,
-                RedirectStandardOutput = true,
-                UseShellExecute = false,
-                CreateNoWindow = true
-            }
-        };
-        process.Start();
-        await process.WaitForExitAsync();
-        Console.WriteLine($"Git {cmd}: {await process.StandardOutput.ReadToEndAsync()}");
-    }
-}
-EOF
-
-          # Roda o app
-          dotnet run
-        shell: bash
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "⏭️ NENHUMA ALTERAÇÃO DETECTADA"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "O repositório já está atualizado."
+          echo "Nada para commitar ou enviar."
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+      
+      # 🎉 PASSO 10: Sucesso
+      - name: 🟢 ✅ Workflow completed successfully!
+        if: success()
+        run: |
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "🎉 AGENT-0 EXECUTADO COM SUCESSO!"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "📊 Status: ✅ SUCESSO"
+          echo "📅 Data: $(date -u '+%Y-%m-%d %H:%M:%S')"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+      
+      # ❌ PASSO 11: Falha
+      - name: 🔴 ❌ Workflow failed!
+        if: failure()
+        run: |
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "⚠️ ATENÇÃO: OCORREU UM ERRO!"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "📊 Status: ❌ FALHA"
+          echo "🔍 Verifique os logs acima para detalhes"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
