@@ -1,34 +1,48 @@
-name: AGENT-0 - Grok Direto
-on:
-  schedule:
-    - cron: '*/30 * * * *'  # a cada 30 min, pra testar
-  workflow_dispatch:
-jobs:
-  grok:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Chama Grok e melhora
+- name: Chama Grok - Responses API (endpoint atual)
         env:
-          GROK_KEY: ${{ secrets.GROK_API_KEY }}
+          GROK_API_KEY: ${{ secrets.GROK_API_KEY }}
         run: |
-          RES=$(curl -s https://api.x.ai/v1/chat/completions \
-            -H "Authorization: Bearer $GROK_KEY" \
+          set -e  # Para se qualquer comando falhar, o job para
+
+          echo "Chamando https://api.x.ai/v1/responses ..."
+
+          RESPONSE=$(curl -s -X POST https://api.x.ai/v1/responses \
+            -H "Authorization: Bearer $GROK_API_KEY" \
             -H "Content-Type: application/json" \
             -d '{
               "model": "grok-4-latest",
-              "messages": [{"role": "user", "content": "Aqui está api/index.php atual: . Melhora tudo: CSRF, performance, SEO, segurança. Retorna SOMENTE o código PHP/HTML novo, sem texto, sem markdown, sem nada."} 0].message.content // ""')
+              "input": [
+                {
+                  "role": "user",
+                  "content": "Aqui está o conteúdo atual de api/index.php:\n\n$(cat api/index.php 2>/dev/null || echo 'Arquivo não encontrado')\n\nMelhore tudo: adicione proteção CSRF, otimize performance (menos requests, minify onde possível), melhore SEO (mais meta tags úteis), melhore privacidade (GDPR-compliant cookies), melhore acessibilidade. Retorne SOMENTE o código PHP/HTML/JS completo corrigido, sem explicações, sem markdown, sem texto fora das tags. Não adicione comentários."
+                }
+              ],
+              "temperature": 0.3,
+              "max_tokens": 12000
+            }')
 
-          if ; then
-            echo "Eu não respondi, caralho."
+          echo "==== RESPOSTA CRUA DA API (RAW) ===="
+          echo "$RESPONSE" | head -c 2000  # limita pra não explodir o log
+          echo ""
+          echo "====================================="
+
+          # Extrai o texto da resposta (formato mais comum da Responses API)
+          CONTENT=$(echo "$RESPONSE" | jq -r '.output[0].content[0].text // .output[0].text // empty' 2>/dev/null || echo "")
+
+          if [ -z "$CONTENT" ]; then
+            echo "ERRO: Conteúdo vazio ou jq não encontrou o campo esperado."
+            echo "Possíveis causas:"
+            echo "1. GROK_API_KEY inválida ou não configurada"
+            echo "2. Model 'grok-4-latest' não disponível na tua conta"
+            echo "3. Rate limit atingido"
+            echo "4. Erro 400/401/403/410 na API"
             exit 0
           fi
 
-          echo "$RES" > api/index.php
-          git add api/index.php
-          git commit -m "Grok melhorou api/index.php" || true
-          git push origin main || true
+          echo "==== CONTEÚDO EXTRAÍDO COM SUCESSO ===="
+          echo "$CONTENT" | head -n 20
+          echo "====================================="
+
+          echo "$CONTENT" > api/index.php.new
+          mv api/index.php.new api/index.php
+          echo "api/index.php sobrescrito com sucesso."
