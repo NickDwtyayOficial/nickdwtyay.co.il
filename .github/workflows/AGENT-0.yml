@@ -1,61 +1,80 @@
-name: AGENT-0 - Melhorador Automático
+name: AGENT-0 - Melhorador Automático do Repositório Inteiro
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # Todo dia à meia-noite (UTC)
-  workflow_dispatch:      # Permite rodar manualmente
+    - cron: '0 0 * * *'  # Todo dia à meia-noite UTC
+  workflow_dispatch:      # Rode manualmente quando quiser
 
 jobs:
-  improve-site:
+  improve-repo:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      pull-requests: write
+      contents: write      # Autorização pra escrever/editar arquivos no repo
+      pull-requests: write # Autorização pra criar PRs se preferir
 
     steps:
-      - name: Checkout do repositório
+      - name: Checkout do repositório inteiro
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          fetch-depth: 1
+          fetch-depth: 0     # Pega histórico completo pra diffs melhores
 
-      - name: Chama Grok API para melhorar index.html
+      - name: Chama Grok API pra analisar e melhorar o repo
         env:
           GROK_API_KEY: ${{ secrets.GROK_API_KEY }}
         run: |
-          # Prompt para IA devolver SÓ HTML limpo
+          echo "Iniciando análise e melhorias via Grok API..."
+          
+          # Prompt pra IA sugerir e aplicar mudanças em TODO o repo
           RESPONSE=$(curl -s -X POST https://api.x.ai/v1/chat/completions \
             -H "Authorization: Bearer $GROK_API_KEY" \
             -H "Content-Type: application/json" \
             -d '{
-              "model": "grok-beta",
+              "model": "grok-4-latest",
               "messages": [
                 {
                   "role": "user",
-                  "content": "Analise e melhore o conteúdo do index.html atual para: 1) carregamento mais rápido, 2) melhor SEO, 3) melhor acessibilidade. Retorne APENAS o código HTML completo e corrigido, sem explicações, sem markdown, sem texto adicional fora das tags HTML."
+                  "content": "Analise TODO o repositório nickdwtyay.co.il (incluindo api/index.php, index.html, styles, scripts, configs Vercel/Supabase, .env exemplo, pastas como api/, public/, images/, etc.). Sugira e devolva um SCRIPT BASH ou PYTHON executável que aplique melhorias automáticas para: 1) Performance (minify, cache, lazy load, otimizar requests). 2) SEO (meta tags, structured data, sitemap). 3) Acessibilidade (ARIA, contrast, keyboard nav). 4) Segurança (CSRF tokens, headers, input sanitization, rate limit). 5) Privacidade (GDPR cookies, opt-out). 6) Código limpo (refatorar redundâncias, remover dead code). Retorne APENAS o script executável completo (sem explicações fora do código), que edite arquivos in-place e crie novos se necessário."
                 }
               ],
-              "temperature": 0.4,
-              "max_tokens": 4000
+              "temperature": 0.3,
+              "max_tokens": 8000
             }' | jq -r '.choices[0].message.content // empty')
-
-          # Verifica se veio algo útil
+          
+          echo "Resposta da API (primeiras linhas pra debug):"
+          echo "$RESPONSE" | head -n 20
+          
           if [ -z "$RESPONSE" ] || [ "$RESPONSE" = "null" ]; then
-            echo "Resposta da IA vazia ou inválida. Nada alterado."
+            echo "ERRO: Resposta vazia/inválida. Verifique key/model/endpoint."
             exit 0
           fi
+          
+          # Salva e executa o script gerado pela IA
+          echo "$RESPONSE" > improve_script.sh
+          chmod +x improve_script.sh
+          ./improve_script.sh || { echo "Falha ao executar script da IA"; exit 1; }
+          echo "Melhorias aplicadas com sucesso."
 
-          echo "$RESPONSE" > novo_index.html
-          mv novo_index.html index.html || { echo "Falha ao mover arquivo"; exit 1; }
-
-      - name: Configura Git e commit/push se houver mudanças
+      - name: Commit & Push todas as mudanças
         run: |
           git config --global user.name "Agent-0"
           git config --global user.email "agent@dwtyay.co.il"
           
-          git add index.html   # <-- só o arquivo que a IA mexeu
+          # Adiciona TUDO que mudou no repo (autorização completa pra mexer em qualquer arquivo/pasta)
+          git add .   # <-- Aqui: edita o repo inteiro se a IA mexer
           
-          # Só commita se mudou de verdade
-          git diff --cached --quiet && echo "Nenhuma mudança real no index.html" || git commit -m "Atualização automática: IA otimizou index.html (performance, SEO, acessibilidade)"
+          # Só commita se houver mudanças reais
+          git diff --cached --quiet && echo "Nenhuma mudança detectada no repo" || {
+            git commit -m "Atualização automática via Grok-4: otimizações em todo o repositório (performance, SEO, segurança, etc.)"
+            git push origin HEAD:main || echo "Push falhou - verifique permissões ou conflitos"
+          }
           
-          git push origin HEAD:main || echo "Push falhou ou sem mudanças"
+          # Alternativa: Cria PR em vez de push direto (descomente se quiser revisar)
+          # - name: Cria Pull Request
+          #   uses: peter-evans/create-pull-request@v6
+          #   with:
+          #     token: ${{ secrets.GITHUB_TOKEN }}
+          #     commit-message: "Atualização automática via Grok-4"
+          #     title: "AGENT-0: Melhorias automáticas no repo inteiro"
+          #     body: "Mudanças geradas pela Grok API - revise antes de merge."
+          #     branch: agent-0-full-improvements
