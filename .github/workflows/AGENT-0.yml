@@ -1,48 +1,78 @@
-name: AGENT-0 - Melhorador Automático
+name: AGENT-0 - Automatizador Completo com OpenAI API
 
 on:
   schedule:
-    - cron: '0 */6 * * *'  # A cada 6h
-  workflow_dispatch:
+    - cron: '0 */6 * * *'  # Executa a cada 6 horas
+  workflow_dispatch:      # Permite execução manual
 
 jobs:
-  improve:
+  automatizar-repo:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: write  # Permissão para editar e commitar arquivos
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0  # Pega histórico completo para diffs
 
-      - name: Chama Grok API
+      - name: Chama OpenAI API para analisar e melhorar o repositório
         env:
-          GROK_API_KEY: ${{ secrets.GROK_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}  # Adicione essa secret no Settings > Secrets do repo
         run: |
-          RESPONSE=$(curl -s -X POST https://api.x.ai/v1/chat/completions \
-            -H "Authorization: Bearer $GROK_API_KEY" \
+          echo "Iniciando automação completa via OpenAI API..."
+          
+          # Chamada à API OpenAI para gerar melhorias
+          RESPONSE=$(curl -s -X POST https://api.openai.com/v1/chat/completions \
+            -H "Authorization: Bearer $OPENAI_API_KEY" \
             -H "Content-Type: application/json" \
             -d '{
-              "model": "grok-4-latest",
-              "messages": [{"role": "user", "content": "Melhore api/index.php para: performance rápida, SEO bom, acessibilidade, segurança (adicione CSRF), privacidade (GDPR cookies). Retorne SOMENTE o código PHP/HTML/JS completo, sem nada fora."}],
-              "temperature": 0.3,
+              "model": "gpt-4o",  # Use gpt-4o ou gpt-4-turbo para melhor performance
+              "messages": [
+                {
+                  "role": "system",
+                  "content": "Você é um agente de automação que melhora repositórios GitHub. Analise o código, sugira e aplique melhorias."
+                },
+                {
+                  "role": "user",
+                  "content": "Analise TODO o repositório nickdwtyay.co.il (incluindo api/index.php, index.html, CSS, JS, configs Vercel/Supabase). Gere um SCRIPT BASH executável que aplique melhorias para: performance (minify, cache), SEO (meta tags), acessibilidade (ARIA), segurança (CSRF, headers), privacidade (GDPR). Retorne APENAS o script bash completo (começando com #!/bin/bash), sem explicações fora do código."
+                }
+              ],
+              "temperature": 0.5,
               "max_tokens": 8000
             }' | jq -r '.choices[0].message.content // empty')
           
-          if ; then
-            echo "Resposta vazia - API falhou."
+          echo "Resposta da OpenAI API (primeiras linhas para debug):"
+          echo "$RESPONSE" | head -n 20
+          
+          if [ -z "$RESPONSE" ] || [ "$RESPONSE" = "null" ]; then
+            echo "ERRO: Resposta vazia ou inválida da API. Verifique a chave ou model."
             exit 0
           fi
           
-          echo "$RESPONSE" > api/index.php.new
-          mv api/index.php.new api/index.php
-          echo "Arquivo atualizado."
+          # Salva e executa o script gerado pela API
+          echo "$RESPONSE" > improve_script.sh
+          chmod +x improve_script.sh
+          ./improve_script.sh || { echo "Falha ao executar script da API"; exit 1; }
+          echo "Melhorias aplicadas automaticamente."
 
-      - name: Commit automático
+      - name: Commit e Push todas as mudanças
         run: |
-          git config --global user.name "Agent-0"
+          git config --global user.name "Agent-0 Automatizador"
           git config --global user.email "agent@dwtyay.co.il"
-          git add api/index.php
-          git diff --cached --quiet || git commit -m "Grok melhorou api/index.php automaticamente"
-          git push origin HEAD:main || echo "Sem push"
+          
+          # Adiciona todas as mudanças no repositório (automatiza tudo)
+          git add .
+          
+          # Só commita se houver mudanças reais e evita loops infinitos
+          git diff --cached --quiet && echo "Nenhuma mudança detectada" || {
+            LAST_COMMIT_MSG=$(git log -1 --pretty=%B)
+            if [[ "$LAST_COMMIT_MSG" == *"Automatizador"* ]]; then
+              echo "Último commit foi do agente. Evitando loop."
+            else
+              git commit -m "Automação completa via OpenAI: otimizações gerais no repositório (performance, SEO, segurança, etc.)"
+              git push origin HEAD:main || echo "Push falhou - verifique permissões"
+            fi
+          fi
