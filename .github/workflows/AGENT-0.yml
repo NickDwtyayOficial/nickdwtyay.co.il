@@ -1,69 +1,57 @@
-name: AGENT-0 - AROMATIZADOR TOTAL DO REPO
+name: AGENT-0 - Melhorador Automático (Versão Estável)
 
 on:
   schedule:
-    - cron: '0 */6 * * *'   # A cada 6 horas (pra ficar vivo sem spam)
+    - cron: '0 */6 * * *'  # A cada 6h pra não spam
   workflow_dispatch:
 
 jobs:
-  aromatizar:
+  improve:
     runs-on: ubuntu-latest
     permissions:
       contents: write
       pull-requests: write
 
     steps:
-      - name: Checkout completo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
-      - name: Chama Grok pra aromatizar o repo inteiro
+      - name: Chama Grok API
         env:
           GROK_API_KEY: ${{ secrets.GROK_API_KEY }}
         run: |
-          echo "=== INICIANDO AROMATIZAÇÃO VIA GROK ==="
-          
           RESPONSE=$(curl -s -X POST https://api.x.ai/v1/chat/completions \
             -H "Authorization: Bearer $GROK_API_KEY" \
             -H "Content-Type: application/json" \
             -d '{
               "model": "grok-4-latest",
-              "messages": [{"role": "user", "content": "Você é um agente agressivo de otimização. Analise TODO o repositório nickdwtyay.co.il (HTML, PHP na pasta api/, CSS, JS, configs Vercel, imagens, etc.). Melhore tudo: performance (minify, lazy, cache), SEO (metas, schema, speed), segurança (CSRF, headers, sanitização), acessibilidade, privacidade (cookies GDPR), código limpo (refatorar, remover lixo). Gere um SCRIPT BASH executável que edite arquivos in-place, crie novos se necessário, e faça as mudanças reais. Retorne APENAS o script bash completo (começando com #!/bin/bash), sem texto fora do código."}],
-              "temperature": 0.5,
-              "max_tokens": 12000
+              "messages": [{"role": "user", "content": "Analise api/index.php e outros arquivos chave (index.html, styles, scripts). Melhore para performance rápida, SEO melhor, acessibilidade, segurança (CSRF, headers), privacidade (GDPR cookies). Retorne APENAS o código completo corrigido de cada arquivo alterado, no formato: --- arquivo: caminho/do/arquivo.php\n[código completo]\n---"}],
+              "temperature": 0.3,
+              "max_tokens": 8000
             }' | jq -r '.choices[0].message.content // empty')
-          
-          echo "Resposta Grok (primeiras 20 linhas):"
-          echo "$RESPONSE" | head -n 20
-          
-          if [[ -z "$RESPONSE" || "$RESPONSE" == "null" ]]; then
-            echo "Grok não deu bola. Saindo sem mudar nada."
+
+          echo "Resposta Grok:"
+          echo "$RESPONSE" | head -n 30
+
+          if [ -z "$RESPONSE" ] || [ "$RESPONSE" = "null" ]; then
+            echo "Resposta vazia. Cheque key/model."
             exit 0
           fi
-          
-          echo "$RESPONSE" > /tmp/aromatiza.sh
-          chmod +x /tmp/aromatiza.sh
-          echo "Executando script gerado pela Grok..."
-          /tmp/aromatiza.sh || echo "Script da Grok deu pau, mas continuando..."
 
-      - name: Commit e push sem dó
+          # Salva resposta em temp e aplica (exemplo simples: assume formato --- arquivo: ...\ncode)
+          echo "$RESPONSE" > changes.txt
+          # Aqui você pode parsear com awk/sed pra aplicar em arquivos reais, mas por agora sobrescreve api/index.php como teste
+          grep -A 1000 "api/index.php" changes.txt | tail -n +2 > api/index.php.new || echo "Sem mudança em index.php"
+          mv api/index.php.new api/index.php 2>/dev/null || echo "Nada pra mv"
+
+      - name: Commit & Push
         run: |
-          git config --global user.name "Agent-0 AROMATIZADOR"
+          git config --global user.name "Agent-0"
           git config --global user.email "agent@dwtyay.co.il"
-          
           git add .
-          
-          # Só commita se mudou algo e não é commit do próprio agente (evita loop)
-          if git diff --cached --quiet; then
-            echo "Nenhuma mudança real. Sem commit."
-          else
-            LAST_COMMIT_MSG=$(git log -1 --pretty=%B)
-            if [[ "$LAST_COMMIT_MSG" == *"AROMATIZADOR"* ]]; then
-              echo "Último commit foi do agente. Evitando loop infinito."
-            else
-              git commit -m "AROMATIZAÇÃO AUTOMÁTICA VIA GROK: melhorias gerais no repo inteiro"
-              git push origin HEAD:main || echo "Push falhou (confira permissões)"
-            fi
-          fi
+          git diff --cached --quiet && echo "Sem mudanças" || {
+            git commit -m "Melhoria automática via Grok: otimizações gerais"
+            git push origin HEAD:main
+          }
