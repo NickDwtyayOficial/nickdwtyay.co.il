@@ -1,80 +1,69 @@
-name: AGENT-0 - Melhorador Automático do Repositório Inteiro
+name: AGENT-0 - AROMATIZADOR TOTAL DO REPO
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # Todo dia à meia-noite UTC
-  workflow_dispatch:      # Rode manualmente quando quiser
+    - cron: '0 */6 * * *'   # A cada 6 horas (pra ficar vivo sem spam)
+  workflow_dispatch:
 
 jobs:
-  improve-repo:
+  aromatizar:
     runs-on: ubuntu-latest
     permissions:
-      contents: write      # Autorização pra escrever/editar arquivos no repo
-      pull-requests: write # Autorização pra criar PRs se preferir
+      contents: write
+      pull-requests: write
 
     steps:
-      - name: Checkout do repositório inteiro
+      - name: Checkout completo
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          fetch-depth: 0     # Pega histórico completo pra diffs melhores
+          fetch-depth: 0
 
-      - name: Chama Grok API pra analisar e melhorar o repo
+      - name: Chama Grok pra aromatizar o repo inteiro
         env:
           GROK_API_KEY: ${{ secrets.GROK_API_KEY }}
         run: |
-          echo "Iniciando análise e melhorias via Grok API..."
+          echo "=== INICIANDO AROMATIZAÇÃO VIA GROK ==="
           
-          # Prompt pra IA sugerir e aplicar mudanças em TODO o repo
           RESPONSE=$(curl -s -X POST https://api.x.ai/v1/chat/completions \
             -H "Authorization: Bearer $GROK_API_KEY" \
             -H "Content-Type: application/json" \
             -d '{
               "model": "grok-4-latest",
-              "messages": [
-                {
-                  "role": "user",
-                  "content": "Analise TODO o repositório nickdwtyay.co.il (incluindo api/index.php, index.html, styles, scripts, configs Vercel/Supabase, .env exemplo, pastas como api/, public/, images/, etc.). Sugira e devolva um SCRIPT BASH ou PYTHON executável que aplique melhorias automáticas para: 1) Performance (minify, cache, lazy load, otimizar requests). 2) SEO (meta tags, structured data, sitemap). 3) Acessibilidade (ARIA, contrast, keyboard nav). 4) Segurança (CSRF tokens, headers, input sanitization, rate limit). 5) Privacidade (GDPR cookies, opt-out). 6) Código limpo (refatorar redundâncias, remover dead code). Retorne APENAS o script executável completo (sem explicações fora do código), que edite arquivos in-place e crie novos se necessário."
-                }
-              ],
-              "temperature": 0.3,
-              "max_tokens": 8000
+              "messages": [{"role": "user", "content": "Você é um agente agressivo de otimização. Analise TODO o repositório nickdwtyay.co.il (HTML, PHP na pasta api/, CSS, JS, configs Vercel, imagens, etc.). Melhore tudo: performance (minify, lazy, cache), SEO (metas, schema, speed), segurança (CSRF, headers, sanitização), acessibilidade, privacidade (cookies GDPR), código limpo (refatorar, remover lixo). Gere um SCRIPT BASH executável que edite arquivos in-place, crie novos se necessário, e faça as mudanças reais. Retorne APENAS o script bash completo (começando com #!/bin/bash), sem texto fora do código."}],
+              "temperature": 0.5,
+              "max_tokens": 12000
             }' | jq -r '.choices[0].message.content // empty')
           
-          echo "Resposta da API (primeiras linhas pra debug):"
+          echo "Resposta Grok (primeiras 20 linhas):"
           echo "$RESPONSE" | head -n 20
           
-          if [ -z "$RESPONSE" ] || [ "$RESPONSE" = "null" ]; then
-            echo "ERRO: Resposta vazia/inválida. Verifique key/model/endpoint."
+          if [[ -z "$RESPONSE" || "$RESPONSE" == "null" ]]; then
+            echo "Grok não deu bola. Saindo sem mudar nada."
             exit 0
           fi
           
-          # Salva e executa o script gerado pela IA
-          echo "$RESPONSE" > improve_script.sh
-          chmod +x improve_script.sh
-          ./improve_script.sh || { echo "Falha ao executar script da IA"; exit 1; }
-          echo "Melhorias aplicadas com sucesso."
+          echo "$RESPONSE" > /tmp/aromatiza.sh
+          chmod +x /tmp/aromatiza.sh
+          echo "Executando script gerado pela Grok..."
+          /tmp/aromatiza.sh || echo "Script da Grok deu pau, mas continuando..."
 
-      - name: Commit & Push todas as mudanças
+      - name: Commit e push sem dó
         run: |
-          git config --global user.name "Agent-0"
+          git config --global user.name "Agent-0 AROMATIZADOR"
           git config --global user.email "agent@dwtyay.co.il"
           
-          # Adiciona TUDO que mudou no repo (autorização completa pra mexer em qualquer arquivo/pasta)
-          git add .   # <-- Aqui: edita o repo inteiro se a IA mexer
+          git add .
           
-          # Só commita se houver mudanças reais
-          git diff --cached --quiet && echo "Nenhuma mudança detectada no repo" || {
-            git commit -m "Atualização automática via Grok-4: otimizações em todo o repositório (performance, SEO, segurança, etc.)"
-            git push origin HEAD:main || echo "Push falhou - verifique permissões ou conflitos"
-          }
-          
-          # Alternativa: Cria PR em vez de push direto (descomente se quiser revisar)
-          # - name: Cria Pull Request
-          #   uses: peter-evans/create-pull-request@v6
-          #   with:
-          #     token: ${{ secrets.GITHUB_TOKEN }}
-          #     commit-message: "Atualização automática via Grok-4"
-          #     title: "AGENT-0: Melhorias automáticas no repo inteiro"
-          #     body: "Mudanças geradas pela Grok API - revise antes de merge."
-          #     branch: agent-0-full-improvements
+          # Só commita se mudou algo e não é commit do próprio agente (evita loop)
+          if git diff --cached --quiet; then
+            echo "Nenhuma mudança real. Sem commit."
+          else
+            LAST_COMMIT_MSG=$(git log -1 --pretty=%B)
+            if [[ "$LAST_COMMIT_MSG" == *"AROMATIZADOR"* ]]; then
+              echo "Último commit foi do agente. Evitando loop infinito."
+            else
+              git commit -m "AROMATIZAÇÃO AUTOMÁTICA VIA GROK: melhorias gerais no repo inteiro"
+              git push origin HEAD:main || echo "Push falhou (confira permissões)"
+            fi
+          fi
