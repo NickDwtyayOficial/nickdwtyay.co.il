@@ -10,14 +10,6 @@ on:
         description: '🎯 Branch destino (ex: main)'
         required: false
         default: 'main'
-      pr_branch_prefix:
-        description: '🏷️ Prefixo para branch de PR'
-        required: false
-        default: 'agent/update'
-      commit_message:
-        description: '📝 Mensagem de commit (${date} = timestamp)'
-        required: false
-        default: '🤖 Agent-0: ${date}'
 
 jobs:
   auto-commit:
@@ -27,122 +19,51 @@ jobs:
       pull-requests: write
 
     steps:
-      # 📦 PASSO 1: Checkout do repositório
       - name: 🔵 Checkout repository
         uses: actions/checkout@v4
         with:
+          token: ${{ secrets.REPO_PAT }}
           fetch-depth: 0
-          persist-credentials: true
       
-      # 👤 PASSO 2: Configurar identidade Git
       - name: 🟢 Configure Git identity
         run: |
           git config user.name "Agent-0 Bot"
           git config user.email "agent-0-bot@users.noreply.github.com"
-          echo "✅ Git configurado!"
       
-      # ⚙️ PASSO 3: Definir variáveis dinâmicas
-      - name: 🟣 Set dynamic variables
-        id: set_vars
-        run: |
-          TIMESTAMP=$(date -u +%Y%m%d%H%M%S)
-          BRANCH="${{ github.event.inputs.pr_branch_prefix }}-${TIMESTAMP}"
-          INPUT_MSG="${{ github.event.inputs.commit_message }}"
-          COMMIT_MSG="${INPUT_MSG//\$\{date\}/$(date -u '+%Y-%m-%d %H:%M:%S')}"
-          echo "branch_name=${BRANCH}" >> $GITHUB_OUTPUT
-          echo "commit_msg=${COMMIT_MSG}" >> $GITHUB_OUTPUT
-          echo "✅ Variáveis definidas!"
-      
-      # 🔄 PASSO 4: Verificar se há alterações no repositório
-      - name: 🟡 Check for existing changes
+      - name: 🟡 Check for changes
         id: check_changes
         run: |
           git add -A
           if git diff --cached --quiet; then
             echo "changes=false" >> $GITHUB_OUTPUT
-            echo "⚠️ Nenhuma alteração detectada no repositório"
+            echo "⏭️ Nenhuma alteração detectada"
             exit 0
           fi
           echo "changes=true" >> $GITHUB_OUTPUT
           echo "✅ Alterações detectadas!"
       
-      # 💾 PASSO 5: COMMIT LOCAL (apenas se houver mudanças e push direto)
-      - name: 🔵 Commit changes locally
-        if: steps.check_changes.outputs.changes == 'true' && github.event.inputs.direct_push == 'true'
+      - name: 🟣 Commit and Push
+        if: steps.check_changes.outputs.changes == 'true'
         run: |
-          git commit -m "${{ steps.set_vars.outputs.commit_msg }}"
-          echo "✅ Commit criado localmente"
-      
-      # 🔐 PASSO 6: Re-checkout com PAT para push direto
-      - name: 🟢 Checkout with REPO_PAT (direct push only)
-        if: steps.check_changes.outputs.changes == 'true' && github.event.inputs.direct_push == 'true'
-        uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.REPO_PAT }}
-          fetch-depth: 0
-          persist-credentials: true
-      
-      # 🚀 PASSO 7: PUSH DIRETO (se solicitado)
-      - name: 🟣 Push directly to target branch
-        if: steps.check_changes.outputs.changes == 'true' && github.event.inputs.direct_push == 'true'
-        run: |
-          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-          echo "🚀 PUSH DIRETO para ${{ github.event.inputs.target_branch }}"
-          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-          git push origin "HEAD:${{ github.event.inputs.target_branch }}"
-          echo "✅ Push direto concluído com sucesso!"
-          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-      
-      # 🌿 PASSO 8: CRIAR PULL REQUEST (modo padrão/recomendado)
-      - name: 🟡 Create Pull Request (recommended)
-        if: steps.check_changes.outputs.changes == 'true' && github.event.inputs.direct_push != 'true'
-        uses: peter-evans/create-pull-request@v5
-        with:
-          token: ${{ secrets.REPO_PAT }}
-          branch: ${{ steps.set_vars.outputs.branch_name }}
-          title: ${{ steps.set_vars.outputs.commit_msg }}
-          body: |
-            🤖 **Pull Request criado automaticamente pelo Agent-0**
+          TIMESTAMP=$(date -u '+%Y-%m-%d %H:%M:%S')
+          COMMIT_MSG="🤖 Agent-0 update: ${TIMESTAMP}"
+          git commit -m "${COMMIT_MSG}"
+          
+          if [ "${{ github.event.inputs.direct_push }}" == "true" ]; then
+            echo "🚀 PUSH DIRETO para ${{ github.event.inputs.target_branch }}"
+            git push origin ${{ github.event.inputs.target_branch }}
+          else
+            BRANCH="agent-update-$(date -u +%Y%m%d%H%M%S)"
+            echo "🌿 Criando branch: ${BRANCH}"
+            git push origin HEAD:${BRANCH}
             
-            - **Workflow**: Agent-0 Auto Update
-            - **Data**: ${{ steps.set_vars.outputs.commit_msg }}
-            - **Branch**: `${{ steps.set_vars.outputs.branch_name }}`
-            
-            ✅ Este PR foi gerado automaticamente. Por favor, revise antes de merge.
-          commit-message: ${{ steps.set_vars.outputs.commit_msg }}
-          base: ${{ github.event.inputs.target_branch }}
-          labels: automated, agent-0, ci
-          maintainer-can-modify: true
+            echo "✅ Branch criada! Agora crie um Pull Request manualmente:"
+            echo "   https://github.com/NickDwtyayOficial/nickdwtyay.co.il/compare/${{ github.event.inputs.target_branch }}...${BRANCH}"
+          fi
       
-      # ✅ PASSO 9: Nenhuma alteração detectada
-      - name: 🔵 No changes detected
-        if: steps.check_changes.outputs.changes != 'true'
-        run: |
-          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-          echo "⏭️ NENHUMA ALTERAÇÃO DETECTADA"
-          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-          echo "O repositório já está atualizado."
-          echo "Nada para commitar ou enviar."
-          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-      
-      # 🎉 PASSO 10: Sucesso
-      - name: 🟢 ✅ Workflow completed successfully!
+      - name: 🔵 Success notification
         if: success()
         run: |
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
           echo "🎉 AGENT-0 EXECUTADO COM SUCESSO!"
-          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-          echo "📊 Status: ✅ SUCESSO"
-          echo "📅 Data: $(date -u '+%Y-%m-%d %H:%M:%S')"
-          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-      
-      # ❌ PASSO 11: Falha
-      - name: 🔴 ❌ Workflow failed!
-        if: failure()
-        run: |
-          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-          echo "⚠️ ATENÇÃO: OCORREU UM ERRO!"
-          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-          echo "📊 Status: ❌ FALHA"
-          echo "🔍 Verifique os logs acima para detalhes"
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
