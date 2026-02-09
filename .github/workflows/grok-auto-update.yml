@@ -1,0 +1,23 @@
+name: Grok Auto Update
+on: jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch Grok response
+        env:
+          GROK_KEY: ${{ secrets.GROK_API }}
+        run: |
+          RESPONSE=$(curl -s -H "Authorization: Bearer $GROK_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"model": "grok-beta", "messages": }' \
+            https://api.x.ai/v1/chat/completions)
+          echo "$RESPONSE" > status.txt
+          jq -r '.choices[0].message.content' <<< "$RESPONSE" > site/status.md || echo "Erro no Grok" > site/status.md
+      - name: Commit changes
+        run: |
+          git config --global user.name 'GrokBot'
+          git config --global user.email 'bot@github.com'
+          git add site/status.md
+          git commit -m "Atualização automática Grok" || echo "No changes"
+          git push
