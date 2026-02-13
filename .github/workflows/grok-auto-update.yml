@@ -1,23 +1,54 @@
 name: Grok Auto Update
-on: jobs:
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+jobs:
   update:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
+      
       - name: Fetch Grok response
         env:
           GROK_KEY: ${{ secrets.GROK_API }}
         run: |
-          RESPONSE=$(curl -s -H "Authorization: Bearer $GROK_KEY" \
+          RESPONSE=$(curl -s -X POST \
+            -H "Authorization: Bearer $GROK_KEY" \
             -H "Content-Type: application/json" \
-            -d '{"model": "grok-beta", "messages": }' \
+            -d '{
+              "model": "grok-beta",
+              "messages": [
+                {
+                  "role": "user",
+                  "content": "Qual é o status atual do seu serviço?"
+                }
+              ],
+              "temperature": 0.7
+            }' \
             https://api.x.ai/v1/chat/completions)
+          
           echo "$RESPONSE" > status.txt
-          jq -r '.choices[0].message.content' <<< "$RESPONSE" > site/status.md || echo "Erro no Grok" > site/status.md
-      - name: Commit changes
+          
+          if echo "$RESPONSE" | jq -e '.choices[0].message.content' > /dev/null 2>&1; then
+            jq -r '.choices[0].message.content' <<< "$RESPONSE" > site/status.md
+          else
+            echo "Erro ao processar resposta do Grok" > site/status.md
+            echo "Response: $RESPONSE" >> site/status.md
+          fi
+      
+      - name: Commit and push changes
         run: |
           git config --global user.name 'GrokBot'
-          git config --global user.email 'bot@github.com'
+          git config --global user.email 'grokbot@github.com'
           git add site/status.md
-          git commit -m "Atualização automática Grok" || echo "No changes"
-          git push
+          
+          if git diff --cached --quiet; then
+            echo "Nenhuma mudança para fazer commit"
+          else
+            git commit -m "🤖 Atualização automática pelo Grok"
+            git push origin main
+          fi
