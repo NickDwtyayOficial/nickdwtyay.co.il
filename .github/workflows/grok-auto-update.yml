@@ -1,17 +1,21 @@
 name: Grok Auto Update
+
 on:
   schedule:
-    - cron: '0 */6 * * *'
-  workflow_dispatch:
+    - cron: '0 */6 * * *'   # a cada 6 horas
+  workflow_dispatch:        # permite rodar manualmente
 
 jobs:
   update:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+
     steps:
       - uses: actions/checkout@v4
-      
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}   # importante pra push funcionar
+
       - name: Fetch Grok response
         env:
           GROK_KEY: ${{ secrets.GROK_API }}
@@ -22,33 +26,31 @@ jobs:
             -d '{
               "model": "grok-beta",
               "messages": [
-                {
-                  "role": "user",
-                  "content": "Qual é o status atual do seu serviço?"
-                }
+                { "role": "user", "content": "Qual é o status atual do site nickdwtyay.co.il? Responda em português e seja direto." }
               ],
               "temperature": 0.7
             }' \
             https://api.x.ai/v1/chat/completions)
-          
-          echo "$RESPONSE" > status.txt
+
+          echo "$RESPONSE" > grok-response.json
           
           if echo "$RESPONSE" | jq -e '.choices[0].message.content' > /dev/null 2>&1; then
-            jq -r '.choices[0].message.content' <<< "$RESPONSE" > site/status.md
+            jq -r '.choices[0].message.content' <<< "$RESPONSE" > STATUS.md
           else
-            echo "Erro ao processar resposta do Grok" > site/status.md
-            echo "Response: $RESPONSE" >> site/status.md
+            echo "Erro ao chamar Grok API" > STATUS.md
+            echo "$RESPONSE" >> STATUS.md
           fi
-      
-      - name: Commit and push changes
+
+      - name: Commit and push (se houver mudança)
         run: |
           git config --global user.name 'GrokBot'
           git config --global user.email 'grokbot@github.com'
-          git add site/status.md
+          
+          git add STATUS.md
           
           if git diff --cached --quiet; then
-            echo "Nenhuma mudança para fazer commit"
+            echo "Nenhuma mudança detectada"
           else
-            git commit -m "🤖 Atualização automática pelo Grok"
+            git commit -m "🤖 Atualização automática pelo Grok - status do site"
             git push origin main
           fi
