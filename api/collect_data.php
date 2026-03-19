@@ -129,7 +129,7 @@ $redirect_url = "/api/index.php";
     <meta charset="UTF-8">
     <meta http-equiv="refresh" content="2;url=<?php echo htmlspecialchars($redirect_url, ENT_QUOTES); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carregando...</title>
+    <title>טְעִינָה...</title>
     <style>
         body {
             margin: 0;
