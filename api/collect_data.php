@@ -30,16 +30,37 @@ $source = (stripos($referrer, 'facebook.com') !== false || $utm_source === 'face
 $is_facebook = ($source === 'facebook');
 $is_bitly = (stripos($referrer, 'bitly.com') !== false || stripos($referrer, 'bit.ly') !== false);
 
+
+
 // Requisições às APIs externas
 $ipinfo_token = getenv('IPINFO_TOKEN');
 $ipinfo_url = "https://ipinfo.io/{$visitor_ip}?token={$ipinfo_token}";
+
+// Silencia o erro com @ e trata a falha no if
 $ipinfo_data = @file_get_contents($ipinfo_url);
+
 if ($ipinfo_data === false) {
-    error_log("Falha na API IPinfo para IP $visitor_ip: " . error_get_last()['message']);
+    error_log("Falha na API IPinfo para IP $visitor_ip: " . (error_get_last()['message'] ?? 'Erro desconhecido'));
 }
+
+// Decodifica o JSON ou retorna um array vazio se falhar
 $ipinfo_json = $ipinfo_data ? json_decode($ipinfo_data, true) : [];
-$initial_latitude = $ipinfo_json['loc'] ? floatval(explode(',', $ipinfo_json['loc'])[0]) : null;
-$initial_longitude = $ipinfo_json['loc'] ? floatval(explode(',', $ipinfo_json['loc'])[1]) : null;
+
+// --- CORREÇÃO DO ERRO "LOC" ---
+// Pegamos o valor de 'loc' com segurança. Se não existir, fica null.
+$loc = $ipinfo_json['loc'] ?? null;
+
+// Só tentamos explodir e converter para float se $loc contiver dados válidos
+if ($loc && strpos($loc, ',') !== false) {
+    $coords = explode(',', $loc);
+    $initial_latitude  = isset($coords[0]) ? floatval($coords[0]) : null;
+    $initial_longitude = isset($coords[1]) ? floatval($coords[1]) : null;
+} else {
+    $initial_latitude  = null;
+    $initial_longitude = null;
+}
+
+
 
 $ipqs_key = getenv('IPQS_KEY');
 $ipqs_url = "https://ipqualityscore.com/api/json/ip/{$ipqs_key}?ip={$visitor_ip}";
