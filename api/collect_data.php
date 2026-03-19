@@ -173,7 +173,7 @@ $redirect_url = "/api/index.php";
     <div class="loader">
         <img src="/api/static/dwtyay_favicon.gif" alt="Nick Dwtyay" class="logo">
         <div class="spinner" aria-label="Carregando"></div>
-        <div class="message">Carregando, aguarde...</div>
+        <div class="message">טוען, אנא המתן....</div>
     </div>
     <script>
         setTimeout(() => {
